@@ -1,5 +1,5 @@
 class SupabaseConstants {
   SupabaseConstants._();
-  static const String url = 'https://YOUR_PROJECT_ID.supabase.co';
-  static const String anonKey = 'YOUR_SUPABASE_ANON_KEY';
+  static const String url = 'https://pobzzmqtcgxcuhpaveed.supabase.co';
+  static const String anonKey = 'sb_publishable_oTlBhaeYsXE7z8xn2HOrHA_GSSDREeW';
 }

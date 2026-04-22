@@ -1,52 +1,59 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
 class AppTextStyles {
   AppTextStyles._();
 
-  static const TextStyle heading1 = TextStyle(
+  static final TextStyle heading1 = GoogleFonts.inter(
     fontSize: 28,
     fontWeight: FontWeight.bold,
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle heading2 = TextStyle(
+  static final TextStyle heading1Primary = GoogleFonts.inter(
+    fontSize: 28,
+    fontWeight: FontWeight.w800,
+    color: AppColors.primary,
+  );
+
+  static final TextStyle heading2 = GoogleFonts.inter(
     fontSize: 22,
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle heading3 = TextStyle(
+  static final TextStyle heading3 = GoogleFonts.inter(
     fontSize: 18,
     fontWeight: FontWeight.w600,
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle bodyLarge = TextStyle(
+  static final TextStyle bodyLarge = GoogleFonts.inter(
     fontSize: 16,
     fontWeight: FontWeight.normal,
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle bodyMedium = TextStyle(
+  static final TextStyle bodyMedium = GoogleFonts.inter(
     fontSize: 14,
     fontWeight: FontWeight.normal,
     color: AppColors.textPrimary,
   );
 
-  static const TextStyle bodySmall = TextStyle(
+  static final TextStyle bodySmall = GoogleFonts.inter(
     fontSize: 12,
     fontWeight: FontWeight.normal,
     color: AppColors.textSecondary,
   );
 
-  static const TextStyle button = TextStyle(
+  static final TextStyle button = GoogleFonts.inter(
     fontSize: 14,
     fontWeight: FontWeight.w600,
     color: Colors.white,
   );
 
-  static const TextStyle caption = TextStyle(
+  static final TextStyle caption = GoogleFonts.inter(
     fontSize: 12,
     fontWeight: FontWeight.w400,
     color: AppColors.textSecondary,

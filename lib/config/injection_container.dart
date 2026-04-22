@@ -11,6 +11,13 @@ import '../features/auth/domain/usecases/register_usecase.dart';
 import '../features/auth/domain/usecases/logout_usecase.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
 
+import '../features/onboarding/data/datasources/onboarding_local_data_source.dart';
+import '../features/onboarding/data/repositories/onboarding_repository_impl.dart';
+import '../features/onboarding/domain/repositories/onboarding_repository.dart';
+import '../features/onboarding/domain/usecases/get_onboarding_pages.dart';
+import '../features/onboarding/presentation/bloc/onboarding_bloc.dart';
+
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -21,6 +28,16 @@ Future<void> init() async {
       logoutUseCase: sl(),
     ),
   );
+
+  sl.registerFactory(() => OnboardingBloc(sl()));
+  sl.registerLazySingleton(() => GetOnboardingPages(sl()));
+  sl.registerLazySingleton<OnboardingRepository>(
+    () => OnboardingRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<OnboardingLocalDataSource>(
+    () => OnboardingLocalDataSourceImpl(),
+  );
+
 
   sl.registerLazySingleton(() => LoginUseCase(sl()));
   sl.registerLazySingleton(() => RegisterUseCase(sl()));

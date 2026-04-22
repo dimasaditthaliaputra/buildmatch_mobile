@@ -1,3 +1,4 @@
+import 'package:buildmatch_mobile/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
 
 class AuthFormField extends StatelessWidget {
@@ -43,6 +44,20 @@ class AuthFormField extends StatelessWidget {
             hintText: hintText,
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              borderSide: const BorderSide(color: Colors.grey, width: 1.0),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(20.0),
+              borderSide: const BorderSide(
+                color: AppColors.primary,
+                width: 2.0,
+              ),
+            )
           ),
         ),
       ],

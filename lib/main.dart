@@ -9,7 +9,7 @@ void main() async {
 
   await SupabaseService.initialize();
 
-  await PushNotificationService.initialize();
+  // await PushNotificationService.initialize();
 
   await di.init();
 
