@@ -26,6 +26,14 @@ class OnboardingPage extends StatefulWidget {
 class _OnboardingPageState extends State<OnboardingPage> {
   final PageController _pageController = PageController();
 
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      FocusManager.instance.primaryFocus?.unfocus();
+    });
+  }
+
   void _nextPage(int currentIndex) {
     _pageController.animateToPage(
       currentIndex + 1,
@@ -54,8 +62,11 @@ class _OnboardingPageState extends State<OnboardingPage> {
         resizeToAvoidBottomInset: false,
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         body: SafeArea(
-          child: BlocBuilder<OnboardingBloc, OnboardingState>(
-            builder: (context, state) {
+          child: GestureDetector(
+            onTap: () => FocusScope.of(context).unfocus(),
+            behavior: HitTestBehavior.opaque,
+            child: BlocBuilder<OnboardingBloc, OnboardingState>(
+              builder: (context, state) {
               if (state.pages.isEmpty) {
                 return const Center(child: CircularProgressIndicator());
               }
@@ -154,7 +165,8 @@ class _OnboardingPageState extends State<OnboardingPage> {
           ),
         ),
       ),
-    );
+    ),
+  );
   }
 
   Widget _buildPage(OnboardingEntity data, bool isLastPage) {
