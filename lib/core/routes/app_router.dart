@@ -5,6 +5,7 @@ import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
+import '../../features/contractor/presentation/pages/proyek_page.dart';
 
 class AppRouter {
   AppRouter._();
@@ -50,6 +51,14 @@ class AppRouter {
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
           child: const HomePage(),
+        ),
+      ),
+      GoRoute(
+        path: '/contractor-proyek',
+        name: 'contractor-proyek',
+        pageBuilder: (context, state) => buildFadeTransitionPage(
+          key: state.pageKey,
+          child: const ProyekPage(),
         ),
       ),
     ],

@@ -17,6 +17,11 @@ import '../features/onboarding/domain/repositories/onboarding_repository.dart';
 import '../features/onboarding/domain/usecases/get_onboarding_pages.dart';
 import '../features/onboarding/presentation/bloc/onboarding_bloc.dart';
 
+import '../features/contractor/data/datasources/project_datasource.dart';
+import '../features/contractor/data/repositories/project_repository_impl.dart';
+import '../features/contractor/domain/repositories/project_repository.dart';
+import '../features/contractor/domain/usecases/get_projects.dart';
+import '../features/contractor/presentation/bloc/project_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -38,7 +43,6 @@ Future<void> init() async {
     () => OnboardingLocalDataSourceImpl(),
   );
 
-
   sl.registerLazySingleton(() => LoginUseCase(sl()));
   sl.registerLazySingleton(() => RegisterUseCase(sl()));
   sl.registerLazySingleton(() => LogoutUseCase(sl()));
@@ -53,4 +57,13 @@ Future<void> init() async {
 
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
   sl.registerLazySingleton(() => Connectivity());
+
+  sl.registerFactory(() => ProjectBloc(sl()));
+  sl.registerLazySingleton(() => GetProjects(sl()));
+  sl.registerLazySingleton<ProjectRepository>(
+    () => ProjectRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<ProjectLocalDataSource>(
+    () => ProjectLocalDataSourceImpl(),
+  );
 }
