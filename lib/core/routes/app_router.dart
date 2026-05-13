@@ -1,17 +1,24 @@
 import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
+import '../../config/injection_container.dart';
+
 import '../../features/auth/presentation/pages/login_page.dart';
 import '../../features/home/presentation/pages/home_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/splash/presentation/pages/splash_page.dart';
+import '../../features/contractor/presentation/pages/contractor_dashboard_page.dart';
+import '../../features/contractor/presentation/bloc/contractor_dashboard_bloc.dart';
+
 import '../../features/contractor/presentation/pages/proyek_page.dart';
 
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/contractor-dashboard',
     routes: [
       GoRoute(
         path: '/splash',
@@ -51,6 +58,17 @@ class AppRouter {
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
           child: const HomePage(),
+        ),
+      ),
+      GoRoute(
+        path: '/contractor-dashboard',
+        name: 'contractor-dashboard',
+        pageBuilder: (context, state) => buildFadeTransitionPage(
+          key: state.pageKey,
+          child: BlocProvider(
+            create: (context) => sl<ContractorDashboardBloc>(),
+            child: const ContractorDashboardPage(),
+          ),
         ),
       ),
       GoRoute(

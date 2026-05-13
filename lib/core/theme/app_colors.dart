@@ -22,6 +22,10 @@ class AppColors {
   static const Color textDark = Color(0xFF7A3700);
   static const Color textMid = Color(0xFFA85A00);
   static const Color textSecondary = Color(0xFFBBBBBB);
+  static const Color textLight = Color(0xFFFFFFFF);
+  static const Color textOrangeDark = Color(0xFFF97316);
+  static const Color textOrangeLight = Color(0xFFFB8C00);
+  static const Color textOrangeSecondary = Color(0xFFFF6B00);
 
   // Status
   static const Color success = Color(0xFF3B6D11);
@@ -29,4 +33,7 @@ class AppColors {
   static const Color warning = Color(0xFFFFC107);
   static const Color error = Color(0xFFE53935);
   static const Color pending = Color(0xFFBBBBBB);
+
+  // Shadow
+  static const Color shadowDark = Color(0xFF000000);
 }
