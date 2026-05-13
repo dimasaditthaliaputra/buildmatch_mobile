@@ -1,8 +1,15 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as math;
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/idr_formatter.dart';
+import '../../../../core/utils/screen_size.dart';
 import '../../domain/entities/contractor_dashboard_entity.dart';
+
+import '../../../../core/widgets/main_button.dart';
+import '../../../../core/widgets/section_header.dart';
+import '../../../../core/widgets/app_badge.dart';
+import '../../../../core/widgets/info_column_text.dart';
 
 class ProjectListingSection extends StatelessWidget {
   final List<ProjectListingEntity> listings;
@@ -20,32 +27,14 @@ class ProjectListingSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Text(
-              'Permintaan baru',
-              style: AppTextStyles.heading3.copyWith(
-                color: AppColors.textPrimary,
-                fontWeight: FontWeight.w700,
-                fontSize: 22,
-              ),
-            ),
-            GestureDetector(
-              onTap: onSeeAll,
-              child: Text(
-                'LIHAT SEMUA',
-                style: AppTextStyles.labelSmall.copyWith(
-                  color: AppColors.textPrimary,
-                  fontWeight: FontWeight.w600,
-                  letterSpacing: 0.5,
-                  fontSize: 12,
-                ),
-              ),
-            ),
-          ],
+        SectionHeader(
+          title: 'Daftar Proyek', 
+          actionText: 'LIHAT SEMUA',
+          onActionTap: onSeeAll
         ),
+
         const SizedBox(height: 12),
+        
         ...listings.map(
           (listing) => Padding(
             padding: const EdgeInsets.only(bottom: 12),
@@ -111,36 +100,19 @@ class ProjectListingCard extends StatelessWidget {
                 ),
               ),
               if (listing.isNew)
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 8,
-                    vertical: 3,
-                  ),
-                  decoration: BoxDecoration(
-                    color: AppColors.primary.withOpacity(0.12),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: AppColors.primary.withOpacity(0.4),
-                      width: 1,
-                    ),
-                  ),
-                  child: Text(
-                    'NEW',
-                    style: AppTextStyles.labelSmall.copyWith(
-                      color: AppColors.primary,
-                      fontSize: 9,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: 1,
-                    ),
-                  ),
-                ),
+                CustomBadge(
+                  text: 'New', 
+                  textColor: AppColors.primary, 
+                  backgroundColor: AppColors.primary.withOpacity(0.12), 
+                  borderColor: AppColors.primary.withOpacity(0.4)
+                )   
             ],
           ),
           const SizedBox(height: 12),
           Row(
             children: [
               Expanded(
-                child: _InfoItem(
+                child: InfoColumnText(
                   label: 'Rentang Harga',
                   value: IdrFormatter.formatRupiahRange(
                     listing.minPrice,
@@ -148,8 +120,9 @@ class ProjectListingCard extends StatelessWidget {
                   ),
                 ),
               ),
+              const SizedBox(width: 12),
               Expanded(
-                child: _InfoItem(
+                child: InfoColumnText(
                   label: 'Luas Bangunan',
                   value: '${listing.buildingArea.toInt()} m²',
                 ),
@@ -157,63 +130,21 @@ class ProjectListingCard extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: onDetailTap,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primary,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.symmetric(vertical: 12),
-                elevation: 0,
-              ),
-              child: Text(
-                'Lihat Detail',
-                style: AppTextStyles.bodyMedium.copyWith(
-                  fontWeight: FontWeight.w600,
-                  color: Colors.white,
-                  fontSize: 13,
-                ),
-              ),
-            ),
+
+         SizedBox(
+          width: double.infinity,
+          height: math.max(context.heightPct(0.055), 45.0),
+          child: MainButton(
+            text: 'Lihat Detail',
+            onPressed: onDetailTap,
+            borderRadius: 25,
+            fontSize: 14,
+            fontWeight: FontWeight.w900,
+            padding: EdgeInsets.zero,
           ),
+         )
         ],
       ),
-    );
-  }
-}
-
-class _InfoItem extends StatelessWidget {
-  final String label;
-  final String value;
-
-  const _InfoItem({required this.label, required this.value});
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(
-          label,
-          style: AppTextStyles.labelSmall.copyWith(
-            color: AppColors.textSecondary,
-            fontSize: 10,
-          ),
-        ),
-        const SizedBox(height: 2),
-        Text(
-          value,
-          style: AppTextStyles.bodySmall.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w600,
-            fontSize: 12,
-          ),
-        ),
-      ],
     );
   }
 }

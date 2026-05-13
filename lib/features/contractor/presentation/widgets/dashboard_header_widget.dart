@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/utils/screen_size.dart';
 
 class DashboardHeaderWidget extends StatelessWidget {
   final String contractorName;
@@ -24,10 +25,9 @@ class DashboardHeaderWidget extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          // ─── Baris Atas: Profil & Notifikasi ──────────────────────────
           Row(
             children: [
-              _buildAvatar(),
+              _buildAvatar(context),
               const SizedBox(width: 12),
               Expanded(
                 child: Column(
@@ -37,7 +37,7 @@ class DashboardHeaderWidget extends StatelessWidget {
                       'Kontraktor Dashboard',
                       style: AppTextStyles.bodyMedium.copyWith(
                         color: AppColors.textLight,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w700,
                         fontSize: 18,
                       ),
                     ),
@@ -46,7 +46,7 @@ class DashboardHeaderWidget extends StatelessWidget {
                       'BuildMatch',
                       style: AppTextStyles.bodySmall.copyWith(
                         color: AppColors.textLight,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         fontSize: 12,
                       ),
                     ),
@@ -59,7 +59,6 @@ class DashboardHeaderWidget extends StatelessWidget {
           
           const SizedBox(height: 24),
           
-          // ─── Baris Bawah: Ucapan Selamat Datang ───────────────────────
           Text(
             'Selamat Datang,',
             style: AppTextStyles.bodyMedium.copyWith(
@@ -82,10 +81,10 @@ class DashboardHeaderWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildAvatar() {
+  Widget _buildAvatar(BuildContext context) {
     return Container(
-      width: 50, 
-      height: 48,
+      width: context.widthPct(0.13), 
+      height: context.widthPct(0.13),
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         color: AppColors.textLight.withOpacity(0.2),

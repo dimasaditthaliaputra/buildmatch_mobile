@@ -46,7 +46,7 @@ class ContractorDashboardRemoteDataSourceImpl
         'name': 'Modern Zen Villa',
         'location': 'Cibubur',
         'phase': 'Fase 3: Konstruksi & Pengawasan',
-        'progress_percent': 65.0,
+        'progress_percent': 0.65,
         'status': 'AKTIF',
         'target_date': 'Est. 2024',
         'start_date': 'Mulai Jun 2024',

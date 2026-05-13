@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/utils/screen_size.dart';
 import '../../domain/entities/contractor_dashboard_entity.dart';
+
+import '../../../../core/widgets/app_badge.dart';
+import '../../../../core/widgets/custom_progress_bar.dart';
+import '../../../../core/widgets/section_header.dart';
 
 class ActiveProjectSection extends StatelessWidget {
   final List<ActiveProjectEntity> projects;
@@ -18,8 +23,14 @@ class ActiveProjectSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _SectionHeader(title: 'Proyek Aktif', onSeeAll: onSeeAll),
+        SectionHeader(
+          title: 'Proyek Aktif', 
+          actionText: 'LIHAT SEMUA',
+          onActionTap: onSeeAll
+        ),
+
         const SizedBox(height: 16),
+
         ...projects.map(
           (project) => Padding(
             padding: const EdgeInsets.only(bottom: 16),
@@ -31,42 +42,6 @@ class ActiveProjectSection extends StatelessWidget {
   }
 }
 
-class _SectionHeader extends StatelessWidget {
-  final String title;
-  final VoidCallback? onSeeAll;
-
-  const _SectionHeader({required this.title, this.onSeeAll});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        Text(
-          title,
-          style: AppTextStyles.heading3.copyWith(
-            color: AppColors.textPrimary,
-            fontWeight: FontWeight.w700,
-            fontSize: 22,
-          ),
-        ),
-        GestureDetector(
-          onTap: onSeeAll,
-          child: Text(
-            'LIHAT SEMUA',
-            style: AppTextStyles.labelSmall.copyWith(
-              color: AppColors.textPrimary,
-              fontWeight: FontWeight.w600,
-              letterSpacing: 0.5,
-              fontSize: 12,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
 
 class ActiveProjectCard extends StatelessWidget {
   final ActiveProjectEntity project;
@@ -94,7 +69,7 @@ class ActiveProjectCard extends StatelessWidget {
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildImagePlaceholder(),
+              _buildImagePlaceholder(context),
               const SizedBox(width: 16),
               Expanded(
                 child: Column(
@@ -121,13 +96,15 @@ class ActiveProjectCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              _buildStatusBadge(project.status),
+              StatusBadge(
+                status: project.status,
+              ),
             ],
           ),
           const SizedBox(height: 24),
 
           Text(
-            '${project.progressPercent.toInt()}%',
+            '${(project.progressPercent * 100).toStringAsFixed(0)}%',
             style: AppTextStyles.heading3.copyWith(
               color: AppColors.primary,
               fontWeight: FontWeight.w700,
@@ -136,7 +113,10 @@ class ActiveProjectCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
 
-          _buildProgressBar(project.progressPercent),
+          CustomProgressBar(
+            percent: project.progressPercent,
+          ),
+
           const SizedBox(height: 12),
 
           Row(
@@ -167,10 +147,10 @@ class ActiveProjectCard extends StatelessWidget {
     );
   }
 
-  Widget _buildImagePlaceholder() {
+  Widget _buildImagePlaceholder(BuildContext context) {
     return Container(
-      width: 70,
-      height: 70,
+      width: context.widthPct(0.18),
+      height: context.widthPct(0.18),
       decoration: BoxDecoration(
         color: Colors.grey.shade300,
         borderRadius: BorderRadius.circular(8),
@@ -184,64 +164,6 @@ class ActiveProjectCard extends StatelessWidget {
       child: project.imageUrl == null
           ? null 
           : null,
-    );
-  }
-
-  Widget _buildStatusBadge(String status) {
-    Color bgColor;
-    Color textColor;
-    Color borderColor;
-
-    switch (status.toUpperCase()) {
-      case 'AKTIF':
-        textColor = AppColors.success;
-        bgColor = AppColors.successBackground;
-        borderColor = AppColors.success.withOpacity(0.3);
-        break;
-      case 'REVIEW':
-        textColor = AppColors.textMid;
-        bgColor = AppColors.surfaceCream;
-        borderColor = AppColors.primaryLight.withOpacity(0.5);
-        break;
-      case 'PENDING':
-        textColor = AppColors.textSecondary;
-        bgColor = AppColors.surfacePale;
-        borderColor = AppColors.border;
-        break;
-      default:
-        textColor = AppColors.primary;
-        bgColor = AppColors.surfacePale;
-        borderColor = AppColors.primaryLight.withOpacity(0.4);
-    }
-
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-      decoration: BoxDecoration(
-        color: bgColor,
-        border: Border.all(color: borderColor),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        status.toUpperCase(),
-        style: AppTextStyles.labelSmall.copyWith(
-          color: textColor,
-          fontSize: 10,
-          fontWeight: FontWeight.w800,
-          letterSpacing: 0.5,
-        ),
-      ),
-    );
-  }
-
-  Widget _buildProgressBar(double percent) {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(10),
-      child: LinearProgressIndicator(
-        value: percent / 100,
-        backgroundColor: AppColors.primary.withOpacity(0.25), // Background bar
-        valueColor: AlwaysStoppedAnimation<Color>(AppColors.primary),
-        minHeight: 8,
-      ),
     );
   }
 }
