@@ -1,4 +1,5 @@
-import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles.dart';
+import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
+import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -13,12 +14,13 @@ import '../../features/contractor/presentation/pages/contractor_dashboard_page.d
 import '../../features/contractor/presentation/bloc/contractor_dashboard_bloc.dart';
 
 import '../../features/contractor/presentation/pages/proyek_page.dart';
+import '../widgets/no_connection_page.dart';
 
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/contractor-dashboard',
+    initialLocation: '/splash',
     routes: [
       GoRoute(
         path: '/splash',
@@ -27,6 +29,11 @@ class AppRouter {
           key: state.pageKey,
           child: const SplashScreen(),
         ),
+      ),
+      GoRoute(
+        path: '/no-connection',
+        name: 'no-connection',
+        builder: (context, state) => const NoConnectionPage(),
       ),
       GoRoute(
         path: '/onboarding',
@@ -42,6 +49,14 @@ class AppRouter {
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
           child: const AuthPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/otp',
+        name: 'otp',
+        pageBuilder: (context, state) => buildFadeTransitionPage(
+          key: state.pageKey,
+          child: const OtpPage(),
         ),
       ),
       GoRoute(

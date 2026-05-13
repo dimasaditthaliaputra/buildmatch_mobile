@@ -1,6 +1,8 @@
-import 'package:buildmatch_mobile/core/theme/app_colors.dart';
 import 'package:buildmatch_mobile/core/theme/app_text_styles.dart';
 import 'package:buildmatch_mobile/core/widgets/logo.dart';
+import 'package:buildmatch_mobile/core/widgets/error_state_view.dart';
+import 'package:buildmatch_mobile/core/utils/snackbar_utils.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,8 +24,15 @@ class _SplashScreenState extends State<SplashScreen> {
     super.didChangeDependencies();
     if (!_initialized) {
       _initialized = true;
+      SnackbarUtils.suppressSnackbars = true;
       _initSplash();
     }
+  }
+
+  @override
+  void dispose() {
+    SnackbarUtils.suppressSnackbars = false;
+    super.dispose();
   }
 
   Future<void> _initSplash() async {
@@ -38,9 +47,21 @@ class _SplashScreenState extends State<SplashScreen> {
       });
     }
 
+    // Biarkan logo splash screen tampil (misal 2 detik)
     await Future.delayed(const Duration(seconds: 2));
 
+    // Setelah loading selesai, baru cek internet
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult.contains(ConnectivityResult.none)) {
+      if (mounted) {
+        SnackbarUtils.suppressSnackbars = false;
+        context.go('/no-connection'); // Arahkan ke halaman terputus
+      }
+      return;
+    }
+
     if (mounted) {
+      SnackbarUtils.suppressSnackbars = false;
       context.go('/onboarding');
     }
   }
