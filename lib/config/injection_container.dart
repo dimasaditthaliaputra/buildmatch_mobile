@@ -22,6 +22,12 @@ import '../features/contractor/data/repositories/project_repository_impl.dart';
 import '../features/contractor/domain/repositories/project_repository.dart';
 import '../features/contractor/domain/usecases/get_projects.dart';
 import '../features/contractor/presentation/bloc/project_bloc.dart';
+import '../features/contractor/data/repositories/contractor_dashboard_repository_impl.dart';
+import '../features/contractor/domain/repositories/contractor_dashboard_repository.dart';
+import '../features/contractor/domain/usecases/get_contractor_dashboard_usecase.dart';
+import '../features/contractor/presentation/bloc/contractor_dashboard_bloc.dart';
+import '../features/contractor/data/datasources/contractor_dashboard_remote_datasource.dart';
+
 
 final sl = GetIt.instance;
 
@@ -66,4 +72,13 @@ Future<void> init() async {
   sl.registerLazySingleton<ProjectLocalDataSource>(
     () => ProjectLocalDataSourceImpl(),
   );
+  
+  initContractorDashboard();
+}
+
+void initContractorDashboard() {
+  sl.registerFactory(() => ContractorDashboardBloc(getDashboardUseCase: sl()));
+  sl.registerLazySingleton(() => GetContractorDashboardUseCase(repository: sl()));
+  sl.registerLazySingleton<ContractorDashboardRepository>(() => ContractorDashboardRepositoryImpl(remoteDataSource: sl()));
+  sl.registerLazySingleton<ContractorDashboardRemoteDataSource>(() => ContractorDashboardRemoteDataSourceImpl());
 }
