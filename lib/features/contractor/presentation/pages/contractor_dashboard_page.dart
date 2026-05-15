@@ -1,7 +1,9 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/utils/screen_size.dart';
 import '../bloc/contractor_dashboard_bloc.dart';
 import '../widgets/dashboard_header_widget.dart';
 import '../widgets/financial_summary_section.dart';
@@ -85,7 +87,8 @@ class _ContractorDashboardPageState extends State<ContractorDashboardPage> {
 
   Widget _buildOrangeHeader() {
     return Container(
-      height: 120 + MediaQuery.of(context).padding.top,
+      height: math.max(
+          context.heightPct(0.15) + MediaQuery.of(context).padding.top, 100.0),
       decoration: const BoxDecoration(
         gradient: LinearGradient(
           begin: Alignment.topLeft,
@@ -108,127 +111,104 @@ class _ContractorDashboardPageState extends State<ContractorDashboardPage> {
         );
         await Future.delayed(const Duration(milliseconds: 600));
       },
-      child: CustomScrollView(
+      child: SingleChildScrollView(
         controller: _scrollController,
-        physics: const BouncingScrollPhysics(),
-        slivers: [
-          SliverAppBar(
-            expandedHeight: 200,
-            floating: false,
-            pinned: true,
-            stretch: true,
-            backgroundColor: AppColors.primary,
-            elevation: 0,
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                bottom: Radius.circular(24),
+        physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+        child: Stack(
+          children: [
+            Container(
+              height: math.max(context.heightPct(0.32), 260.0),
+              decoration: const BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(32),
+                ),
               ),
             ),
-            flexibleSpace: FlexibleSpaceBar(
-              stretchModes: const [StretchMode.zoomBackground],
-              background: Container(
-                color: AppColors.primary,
-                child: SafeArea(
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 8),
+
+            SafeArea(
+              bottom: false,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
                     child: DashboardHeaderWidget(
                       contractorName: dashboard.contractorName,
                       contractorRole: dashboard.contractorRole,
                       avatarUrl: dashboard.avatarUrl,
                     ),
                   ),
-                ),
-              ),
-            ),
-          ),
 
-          SliverToBoxAdapter(
-            child: Stack(
-              children: [
-                Container(
-                  height: 120,
-                  decoration: const BoxDecoration(
-                    color: AppColors.primary,
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(24), 
+                  const SizedBox(height: 16),
+
+                  FinancialSummarySection(summary: dashboard.financialSummary),
+
+                  const SizedBox(height: 24),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: ActiveProjectSection(
+                      projects: dashboard.activeProjects,
+                      onSeeAll: () {},
                     ),
                   ),
-                ),
 
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+                  const SizedBox(height: 24),
 
-                    const SizedBox(height: 10), 
-                    
-                    FinancialSummarySection(summary: dashboard.financialSummary),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: ProjectListingSection(
+                      listings: dashboard.projectListings,
+                      onSeeAll: () {},
+                      onDetailTap: (listing) {},
+                    ),
+                  ),
 
-                    const SizedBox(height: 24),
+                  const SizedBox(height: 24),
 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ActiveProjectSection(
-                        projects: dashboard.activeProjects,
-                        onSeeAll: () {},
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      'Grafik',
+                      style: AppTextStyles.heading3.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 22,
                       ),
                     ),
+                  ),
 
-                    const SizedBox(height: 24),
+                  const SizedBox(height: 12),
 
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: ProjectListingSection(
-                        listings: dashboard.projectListings,
-                        onSeeAll: () {},
-                        onDetailTap: (listing) {},
-                      ),
-                    ),
-
-                    const SizedBox(height: 24),
-
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 16),
-                      child: Text(
-                        'Grafik',
-                        style: AppTextStyles.heading3.copyWith(
-                          color: AppColors.textPrimary,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+                  SizedBox(
+                    height: math.max(context.heightPct(0.38), 290.0),
+                    child: PageView(
+                      controller: _chartPageController,
+                      physics: const BouncingScrollPhysics(),
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: FinancialChartWidget(
+                            data: dashboard.financialChartData,
+                          ),
                         ),
-                      ),
-                    ),
-                    
-                    const SizedBox(height: 12),
-                    
-                    SizedBox(
-                      height: 310, 
-                      child: PageView(
-                        controller: _chartPageController,
-                        physics: const BouncingScrollPhysics(),
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 6),
-                            child: FinancialChartWidget(
-                              data: dashboard.financialChartData,
-                            ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 6),
+                          child: ProjectDonutChart(
+                            stats: dashboard.projectStats,
                           ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 6),
-                            child: ProjectDonutChart(
-                              stats: dashboard.projectStats,
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
+                  ),
 
-                    const SizedBox(height: 32),
-                  ],
-                ),
-              ],
+                  const SizedBox(height: 32),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

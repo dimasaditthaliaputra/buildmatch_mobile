@@ -2,9 +2,9 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/utils/screen_size.dart';
 import '../../domain/entities/contractor_dashboard_entity.dart';
 
-// ─── Project Donut Chart ───────────────────────────────────────────────────────
 class ProjectDonutChart extends StatelessWidget {
   final ProjectStatsEntity stats;
 
@@ -27,7 +27,7 @@ class ProjectDonutChart extends StatelessWidget {
             style: AppTextStyles.bodyMedium.copyWith(
               fontWeight: FontWeight.w700,
               color: AppColors.textPrimary,
-              fontSize: 22,
+              fontSize: 13,
             ),
           ),
           Text(
@@ -329,10 +329,10 @@ class _FinancialChartWidgetState extends State<FinancialChartWidget> {
           ),
           const SizedBox(height: 16),
           SizedBox(
-            height: 120,
+            height: context.heightPct(0.15),
             child: CustomPaint(
               painter: _LineChartPainter(data: widget.data),
-              size: const Size(double.infinity, 120),
+              size: Size(double.infinity, context.heightPct(0.15)),
             ),
           ),
           const SizedBox(height: 8),

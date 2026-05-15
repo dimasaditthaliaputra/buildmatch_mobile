@@ -1,8 +1,12 @@
+import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/idr_formatter.dart';
+import '../../../../core/utils/screen_size.dart';
 import '../../domain/entities/contractor_dashboard_entity.dart';
+
+import '../../../../core/widgets/carousel_dot_indicator.dart';
 
 class FinancialSummarySection extends StatefulWidget {
   final FinancialSummaryEntity summary;
@@ -25,7 +29,7 @@ class _FinancialSummarySectionState extends State<FinancialSummarySection> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 140, 
+      height: math.max(context.heightPct(0.14), 125.0), 
       child: PageView(
         controller: _pageController,
         physics: const BouncingScrollPhysics(),
@@ -96,7 +100,7 @@ class _FinancialSummaryCardState extends State<_FinancialSummaryCard> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 115,
+      height: math.max(context.heightPct(0.18), 150.0),
       padding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 8),
       decoration: BoxDecoration(
         color: AppColors.surface,
@@ -189,30 +193,12 @@ class _FinancialSummaryCardState extends State<_FinancialSummaryCard> {
           
           const Spacer(),
 
-          _buildCarouselDots(widget.pageIndex),
+          const CarouselDotIndicator(
+            itemCount: 3, 
+            currentIndex: 0
+          ),
         ],
       ),
-    );
-  }
-
-  Widget _buildCarouselDots(int currentIndex) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(3, (index) {
-        final isActive = index == currentIndex;
-        return AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          margin: const EdgeInsets.symmetric(horizontal: 2.5),
-          width: isActive ? 14 : 6,
-          height: 6,
-          decoration: BoxDecoration(
-            color: isActive
-                ? AppColors.primary
-                : AppColors.border,
-            borderRadius: BorderRadius.circular(4),
-          ),
-        );
-      }),
     );
   }
 }
