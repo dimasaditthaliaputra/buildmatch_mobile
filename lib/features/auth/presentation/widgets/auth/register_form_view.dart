@@ -133,7 +133,7 @@ class _RegisterFormViewState extends State<RegisterFormView> {
                                     ? null
                                     : () {
                                         if (_formKey.currentState!.validate()) {
-                                          context.go('/choose-roles');
+                                          context.go('/otp');
                                         }
                                       },
                                 style: ElevatedButton.styleFrom(
