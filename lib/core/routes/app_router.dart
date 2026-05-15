@@ -15,12 +15,13 @@ import '../../features/contractor/presentation/bloc/contractor_dashboard_bloc.da
 
 import '../../features/contractor/presentation/pages/proyek_page.dart';
 import '../widgets/no_connection_page.dart';
+import '../../features/contractor/presentation/pages/project_detail_page.dart';
 
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/proyek-detail/:id',
     routes: [
       GoRoute(
         path: '/splash',
@@ -94,6 +95,17 @@ class AppRouter {
           child: const ProyekPage(),
         ),
       ),
+      GoRoute(
+        path: '/proyek-detail/:id', 
+        name: 'proyek-detail',
+        pageBuilder: (context, state) {
+          final String id = state.pathParameters['id'] ?? '0';
+          return buildFadeTransitionPage(
+            key: state.pageKey,
+            child: ProjectDetailPage(projectId: id), 
+          );
+        },
+      ),
     ],
   );
 }
@@ -111,7 +123,7 @@ CustomTransitionPage<void> buildFadeTransitionPage({
       return FadeTransition(
         opacity: CurvedAnimation(
           parent: animation,
-          curve: Curves.easeInOut, // lebih smooth daripada linear
+          curve: Curves.easeInOut, 
         ),
         child: child,
       );
