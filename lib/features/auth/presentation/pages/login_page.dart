@@ -6,9 +6,9 @@ import '../../../../config/injection_container.dart';
 import '../bloc/auth_bloc.dart';
 import '../bloc/auth_state.dart';
 import '../../../../core/widgets/global_background.dart';
-import '../widgets/login_options_view.dart';
-import '../widgets/email_login_form_view.dart';
-import '../widgets/register_form_view.dart';
+import '../widgets/auth/login_options_view.dart';
+import '../widgets/auth/email_login_form_view.dart';
+import '../widgets/auth/register_form_view.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});

@@ -1,4 +1,5 @@
-import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles.dart';
+import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
+import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -13,6 +14,8 @@ import '../../features/contractor/presentation/pages/contractor_dashboard_page.d
 import '../../features/contractor/presentation/bloc/contractor_dashboard_bloc.dart';
 
 import '../../features/contractor/presentation/pages/proyek_page.dart';
+import '../widgets/no_connection_page.dart';
+import '../../features/contractor/presentation/pages/project_detail_page.dart';
 
 import '../../features/contractor/presentation/pages/formpenawaran_page.dart';
 
@@ -20,7 +23,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/form-penawaran',
+    initialLocation: '/splash',
     routes: [
       GoRoute(
         path: '/splash',
@@ -29,6 +32,11 @@ class AppRouter {
           key: state.pageKey,
           child: const SplashScreen(),
         ),
+      ),
+      GoRoute(
+        path: '/no-connection',
+        name: 'no-connection',
+        builder: (context, state) => const NoConnectionPage(),
       ),
       GoRoute(
         path: '/onboarding',
@@ -44,6 +52,14 @@ class AppRouter {
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
           child: const AuthPage(),
+        ),
+      ),
+      GoRoute(
+        path: '/otp',
+        name: 'otp',
+        pageBuilder: (context, state) => buildFadeTransitionPage(
+          key: state.pageKey,
+          child: const OtpPage(),
         ),
       ),
       GoRoute(
@@ -85,17 +101,34 @@ class AppRouter {
         path: '/form-penawaran',
         name: 'form-penawaran',
         pageBuilder: (context, state) {
-          final args = state.extra as FormPenawaranArgs? ?? FormPenawaranArgs(
-          proyekId: 'TEST-123',
-          namaProyek: 'Proyek Dummy (Testing)',
-          budgetKlienMin: 100000000.0,
-          budgetKlienMax: 200000000.0,
-          batasWaktuKlien: DateTime.now(),
-          deskripsiProyek: 'Ini adalah deskripsi dummy karena halaman dibuka langsung tanpa membawa data extra.',
-        );
+          final args =
+              state.extra as FormPenawaranArgs? ??
+              FormPenawaranArgs(
+                proyekId: 'TEST-123',
+                namaProyek: 'Proyek Dummy (Testing)',
+                budgetKlienMin: 100000000.0,
+                budgetKlienMax: 200000000.0,
+                batasWaktuKlien: DateTime.now(),
+                deskripsiProyek:
+                    'Ini adalah deskripsi dummy karena halaman dibuka langsung tanpa membawa data extra.',
+              );
+
           return buildFadeTransitionPage(
             key: state.pageKey,
             child: FormPenawaranPageProvider(args: args),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: '/proyek-detail/:id',
+        name: 'proyek-detail',
+        pageBuilder: (context, state) {
+          final String id = state.pathParameters['id'] ?? '0';
+
+          return buildFadeTransitionPage(
+            key: state.pageKey,
+            child: ProjectDetailPage(projectId: id),
           );
         },
       ),
@@ -116,7 +149,7 @@ CustomTransitionPage<void> buildFadeTransitionPage({
       return FadeTransition(
         opacity: CurvedAnimation(
           parent: animation,
-          curve: Curves.easeInOut, // lebih smooth daripada linear
+          curve: Curves.easeInOut, 
         ),
         child: child,
       );

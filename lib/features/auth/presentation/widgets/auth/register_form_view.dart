@@ -7,11 +7,11 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
-import '../../../../core/theme/app_colors.dart';
-import '../../../../core/utils/validators.dart';
-import '../bloc/auth_bloc.dart';
-import '../bloc/auth_event.dart';
-import '../bloc/auth_state.dart';
+import '../../../../../core/theme/app_colors.dart';
+import '../../../../../core/utils/validators.dart';
+import '../../bloc/auth_bloc.dart';
+import '../../bloc/auth_event.dart';
+import '../../bloc/auth_state.dart';
 import 'auth_form_field.dart';
 
 class RegisterFormView extends StatefulWidget {
@@ -133,7 +133,7 @@ class _RegisterFormViewState extends State<RegisterFormView> {
                                     ? null
                                     : () {
                                         if (_formKey.currentState!.validate()) {
-                                          context.go('/choose-roles');
+                                          context.go('/otp');
                                         }
                                       },
                                 style: ElevatedButton.styleFrom(
@@ -223,7 +223,7 @@ class _RegisterFormViewState extends State<RegisterFormView> {
                               ),
                               const SizedBox(width: 12),
                               Text(
-                                'Masuk Dengan Google',
+                                'Daftar Dengan Google',
                                 style: GoogleFonts.inter(
                                   fontSize: (screenWidth * 0.1).clamp(12, 16),
                                   fontWeight: FontWeight.w600,

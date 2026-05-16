@@ -34,6 +34,11 @@ import '../features/contractor/data/repositories/penawaran_repository_impl.dart'
 import '../features/contractor/presentation/bloc/penawaran_bloc.dart';
 import '../features/contractor/data/datasources/penawaran_remote_datasource.dart';
 
+import '../features/contractor/data/datasources/project_detail_local_data_source.dart';
+import '../features/contractor/data/repositories/project_detail_repository_impl.dart';
+import '../features/contractor/domain/repositories/project_detail_repository.dart';
+import '../features/contractor/domain/usecases/get_project_detail.dart';
+import '../features/contractor/presentation/bloc/project_detail_bloc.dart';
 
 final sl = GetIt.instance;
 
@@ -70,6 +75,36 @@ Future<void> init() async {
   sl.registerLazySingleton<NetworkInfo>(() => NetworkInfoImpl(sl()));
   sl.registerLazySingleton(() => Connectivity());
 
+  initContractorDashboard();
+  initContractorProjectDetail();
+  initContractorProject();
+}
+
+void initContractorDashboard() {
+  sl.registerFactory(() => ContractorDashboardBloc(getDashboardUseCase: sl()));
+  sl.registerLazySingleton(
+    () => GetContractorDashboardUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<ContractorDashboardRepository>(
+    () => ContractorDashboardRepositoryImpl(remoteDataSource: sl()),
+  );
+  sl.registerLazySingleton<ContractorDashboardRemoteDataSource>(
+    () => ContractorDashboardRemoteDataSourceImpl(),
+  );
+}
+
+void initContractorProjectDetail() {
+  sl.registerFactory(() => ProjectDetailBloc(sl()));
+  sl.registerLazySingleton(() => GetProjectDetail(sl()));
+  sl.registerLazySingleton<ProjectDetailRepository>(
+    () => ProjectDetailRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<ProjectDetailLocalDataSource>(
+    () => ProjectDetailLocalDataSourceImpl(),
+  );
+}
+
+void initContractorProject() {
   sl.registerFactory(() => ProjectBloc(sl()));
   sl.registerLazySingleton(() => GetProjects(sl()));
   sl.registerLazySingleton<ProjectRepository>(
