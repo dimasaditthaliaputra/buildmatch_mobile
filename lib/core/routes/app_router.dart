@@ -17,11 +17,13 @@ import '../../features/contractor/presentation/pages/proyek_page.dart';
 import '../widgets/no_connection_page.dart';
 import '../../features/contractor/presentation/pages/project_detail_page.dart';
 
+import '../../features/contractor/presentation/pages/formpenawaran_page.dart';
+
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/proyek-detail/:id',
+    initialLocation: '/splash',
     routes: [
       GoRoute(
         path: '/splash',
@@ -96,13 +98,37 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: '/proyek-detail/:id', 
+        path: '/form-penawaran',
+        name: 'form-penawaran',
+        pageBuilder: (context, state) {
+          final args =
+              state.extra as FormPenawaranArgs? ??
+              FormPenawaranArgs(
+                proyekId: 'TEST-123',
+                namaProyek: 'Proyek Dummy (Testing)',
+                budgetKlienMin: 100000000.0,
+                budgetKlienMax: 200000000.0,
+                batasWaktuKlien: DateTime.now(),
+                deskripsiProyek:
+                    'Ini adalah deskripsi dummy karena halaman dibuka langsung tanpa membawa data extra.',
+              );
+
+          return buildFadeTransitionPage(
+            key: state.pageKey,
+            child: FormPenawaranPageProvider(args: args),
+          );
+        },
+      ),
+
+      GoRoute(
+        path: '/proyek-detail/:id',
         name: 'proyek-detail',
         pageBuilder: (context, state) {
           final String id = state.pathParameters['id'] ?? '0';
+
           return buildFadeTransitionPage(
             key: state.pageKey,
-            child: ProjectDetailPage(projectId: id), 
+            child: ProjectDetailPage(projectId: id),
           );
         },
       ),
