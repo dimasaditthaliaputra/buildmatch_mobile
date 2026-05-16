@@ -7,7 +7,10 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../config/injection_container.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/widgets/project_card.dart';
+import '../../../../core/utils/screen_size.dart'; 
+import '../../../../core/widgets/global_app_bar.dart'; 
+
+import '../widgets/project_card.dart'; 
 import '../bloc/project_bloc.dart';
 import '../bloc/project_event.dart';
 import '../bloc/project_state.dart';
@@ -31,52 +34,31 @@ class _ProyekView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: _buildAppBar(context),
+      appBar: const GlobalAppBar(
+        title: 'Proyek',
+      ),
       body: Column(
         children: [
           _buildSearchBar(context),
-          Expanded(child: _buildProjectList()),
+          Expanded(child: _buildProjectList(context)),
         ],
       ),
     );
   }
 
-  PreferredSizeWidget _buildAppBar(BuildContext context) {
-    return AppBar(
-      backgroundColor: AppColors.background,
-      elevation: 0,
-      surfaceTintColor: Colors.transparent,
-      leading: Padding(
-        padding: const EdgeInsets.only(left: 16),
-        child: GestureDetector(
-          onTap: () => context.pop(),
-          child: const Icon(
-            LucideIcons.arrowLeft,
-            color: AppColors.textPrimary,
-            size: 22,
-          ),
-        ),
-      ),
-      title: Text(
-        'Proyek',
-        style: AppTextStyles.heading3.copyWith(
-          fontSize: 18,
-          fontWeight: FontWeight.w700,
-        ),
-      ),
-      centerTitle: false,
-    );
-  }
-
   Widget _buildSearchBar(BuildContext context) {
+    final double searchBarHeight = context.heightPct(0.055).clamp(46.0, 56.0);
+    final double searchPadH = context.widthPct(0.04).clamp(16.0, 20.0);
+    final double searchPadV = context.heightPct(0.01).clamp(8.0, 12.0);
+
     return Container(
       color: AppColors.background,
-      padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+      padding: EdgeInsets.fromLTRB(searchPadH, searchPadV, searchPadH, searchPadV * 1.5),
       child: Row(
         children: [
           Expanded(
             child: Container(
-              height: 46,
+              height: searchBarHeight,
               decoration: BoxDecoration(
                 color: AppColors.surface,
                 borderRadius: BorderRadius.circular(12),
@@ -87,27 +69,35 @@ class _ProyekView extends StatelessWidget {
                   hintText: 'Cari proyek...',
                   hintStyle: AppTextStyles.bodySmall.copyWith(
                     color: AppColors.textSecondary,
-                    fontSize: 13,
+                    fontSize: context.widthPct(0.035).clamp(13.0, 15.0),
                   ),
-                  prefixIcon: const Icon(
+                  prefixIcon: Icon(
                     LucideIcons.search,
-                    size: 18,
+                    size: context.widthPct(0.05).clamp(18.0, 22.0),
                     color: AppColors.textSecondary,
                   ),
                   border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(vertical: 13),
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: context.heightPct(0.015).clamp(13.0, 16.0),
+                  ),
                 ),
               ),
             ),
           ),
-          const SizedBox(width: 10),
-          _FilterButton(),
+          SizedBox(width: context.widthPct(0.025).clamp(10.0, 14.0)),
+          _FilterButton(height: searchBarHeight),
         ],
       ),
     );
   }
 
-  Widget _buildProjectList() {
+  Widget _buildProjectList(BuildContext context) {
+    final double listPadH = context.widthPct(0.04).clamp(16.0, 20.0);
+    final double listPadV = context.heightPct(0.01).clamp(8.0, 12.0);
+    final double locIconSize = context.widthPct(0.045).clamp(16.0, 20.0);
+    final double locTextSize = context.widthPct(0.035).clamp(12.0, 14.0);
+    final double titleSize = context.widthPct(0.045).clamp(16.0, 20.0);
+
     return BlocBuilder<ProjectBloc, ProjectState>(
       builder: (context, state) {
         if (state.isLoading) {
@@ -123,31 +113,96 @@ class _ProyekView extends StatelessWidget {
         return ScrollConfiguration(
           behavior: ScrollConfiguration.of(context).copyWith(overscroll: false),
           child: ListView.builder(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 24),
+            padding: EdgeInsets.fromLTRB(listPadH, listPadV, listPadH, listPadV * 3),
             itemCount: state.filteredProjects.length,
             itemBuilder: (context, index) {
               final project = state.filteredProjects[index];
-              return AppCard(
-                imageUrl: project.imageUrl,
-                tag: project.category,
-                location: project.city,
-                title: project.title,
-                infoItems: [
-                  AppCardInfo(
-                    label: 'Rentang Harga',
-                    value: '${project.rentPriceMin} - ${project.rentPriceMax}',
+              
+              return Padding(
+                padding: EdgeInsets.only(bottom: context.heightPct(0.03).clamp(24.0, 32.0)),
+                child: ProjectCard(
+                  imageUrl: project.imageUrl,
+                  onTap: () => context.push('/project/${project.id}'),
+                  infoItems: [
+                    AppCardInfo(
+                      label: 'Rentang Harga',
+                      value: '${project.rentPriceMin} - ${project.rentPriceMax}',
+                    ),
+                    AppCardInfo(
+                      label: 'Luas Bangunan',
+                      value: project.buildingArea,
+                    ),
+                  ],
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          _buildTag(context, project.category), 
+                          SizedBox(width: context.widthPct(0.015).clamp(6.0, 10.0)),
+                          Icon(
+                            LucideIcons.mapPin,
+                            size: locIconSize,
+                            color: AppColors.primaryDark,
+                          ),
+                          const SizedBox(width: 4),
+                          Expanded(
+                            child: Text(
+                              project.city,
+                              style: AppTextStyles.bodySmall.copyWith(
+                                color: AppColors.primaryDark,
+                                fontWeight: FontWeight.w600,
+                                fontSize: locTextSize,
+                              ),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: context.heightPct(0.01).clamp(8.0, 12.0)),
+                      Text(
+                        project.title,
+                        style: AppTextStyles.heading3.copyWith(
+                          fontSize: titleSize,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.textPrimary,
+                        ),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      SizedBox(height: context.heightPct(0.015).clamp(12.0, 16.0)),
+                    ],
                   ),
-                  AppCardInfo(
-                    label: 'Luas Bangunan',
-                    value: project.buildingArea,
-                  ),
-                ],
-                onTap: () => context.push('/project/${project.id}'),
+                ),
               );
             },
           ),
         );
       },
+    );
+  }
+
+  Widget _buildTag(BuildContext context, String label) {
+    final double tagFs = context.widthPct(0.028).clamp(9.0, 11.0);
+    final double tagPadH = context.widthPct(0.02).clamp(8.0, 12.0);
+    final double tagPadV = context.heightPct(0.004).clamp(3.0, 6.0);
+
+    return Container(
+      padding: EdgeInsets.symmetric(horizontal: tagPadH, vertical: tagPadV),
+      decoration: BoxDecoration(
+        color: AppColors.surfaceCream,
+        borderRadius: BorderRadius.circular(16), 
+      ),
+      child: Text(
+        label.toUpperCase(),
+        style: GoogleFonts.inter(
+          fontSize: tagFs,
+          fontWeight: FontWeight.w600,
+          color: AppColors.primaryDark,
+          letterSpacing: 0.4,
+        ),
+      ),
     );
   }
 
@@ -183,22 +238,26 @@ class _ProyekView extends StatelessWidget {
 }
 
 class _FilterButton extends StatelessWidget {
+  final double height;
+
+  const _FilterButton({required this.height});
+
   @override
   Widget build(BuildContext context) {
+    final double iconSize = context.widthPct(0.05).clamp(18.0, 22.0);
+
     return GestureDetector(
-      onTap: () {
-        // TODO: open filter bottom sheet
-      },
+      onTap: () {},
       child: Container(
-        width: 46,
-        height: 46,
+        width: height, 
+        height: height,
         decoration: BoxDecoration(
           color: AppColors.primaryDark,
           borderRadius: BorderRadius.circular(12),
         ),
-        child: const Icon(
+        child: Icon(
           LucideIcons.slidersHorizontal,
-          size: 20,
+          size: iconSize,
           color: Colors.white,
         ),
       ),
