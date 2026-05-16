@@ -100,24 +100,10 @@ class AppRouter {
       GoRoute(
         path: '/form-penawaran',
         name: 'form-penawaran',
-        pageBuilder: (context, state) {
-          final args =
-              state.extra as FormPenawaranArgs? ??
-              FormPenawaranArgs(
-                proyekId: 'TEST-123',
-                namaProyek: 'Proyek Dummy (Testing)',
-                budgetKlienMin: 100000000.0,
-                budgetKlienMax: 200000000.0,
-                batasWaktuKlien: DateTime.now(),
-                deskripsiProyek:
-                    'Ini adalah deskripsi dummy karena halaman dibuka langsung tanpa membawa data extra.',
-              );
-
-          return buildFadeTransitionPage(
-            key: state.pageKey,
-            child: FormPenawaranPageProvider(args: args),
-          );
-        },
+        pageBuilder: (context, state) => buildFadeTransitionPage(
+          key: state.pageKey,
+          child: const FormPenawaranPageProvider(),
+        ),
       ),
 
       GoRoute(

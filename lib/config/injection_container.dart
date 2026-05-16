@@ -82,15 +82,9 @@ Future<void> init() async {
 
 void initContractorDashboard() {
   sl.registerFactory(() => ContractorDashboardBloc(getDashboardUseCase: sl()));
-  sl.registerLazySingleton(
-    () => GetContractorDashboardUseCase(repository: sl()),
-  );
-  sl.registerLazySingleton<ContractorDashboardRepository>(
-    () => ContractorDashboardRepositoryImpl(remoteDataSource: sl()),
-  );
-  sl.registerLazySingleton<ContractorDashboardRemoteDataSource>(
-    () => ContractorDashboardRemoteDataSourceImpl(),
-  );
+  sl.registerLazySingleton(() => GetContractorDashboardUseCase(repository: sl()));
+  sl.registerLazySingleton<ContractorDashboardRepository>(() => ContractorDashboardRepositoryImpl(remoteDataSource: sl()));
+  sl.registerLazySingleton<ContractorDashboardRemoteDataSource>(() => ContractorDashboardRemoteDataSourceImpl());
 }
 
 void initContractorProjectDetail() {
@@ -113,17 +107,8 @@ void initContractorProject() {
   sl.registerLazySingleton<ProjectLocalDataSource>(
     () => ProjectLocalDataSourceImpl(),
   );
-  
-  initContractorDashboard();
 
   initPenawaran();
-}
-
-void initContractorDashboard() {
-  sl.registerFactory(() => ContractorDashboardBloc(getDashboardUseCase: sl()));
-  sl.registerLazySingleton(() => GetContractorDashboardUseCase(repository: sl()));
-  sl.registerLazySingleton<ContractorDashboardRepository>(() => ContractorDashboardRepositoryImpl(remoteDataSource: sl()));
-  sl.registerLazySingleton<ContractorDashboardRemoteDataSource>(() => ContractorDashboardRemoteDataSourceImpl());
 }
 
 void initPenawaran() {
