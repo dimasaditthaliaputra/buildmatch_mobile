@@ -14,11 +14,13 @@ import '../../features/contractor/presentation/bloc/contractor_dashboard_bloc.da
 
 import '../../features/contractor/presentation/pages/proyek_page.dart';
 
+import '../../features/contractor/presentation/pages/formpenawaran_page.dart';
+
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/contractor-dashboard',
+    initialLocation: '/form-penawaran',
     routes: [
       GoRoute(
         path: '/splash',
@@ -78,6 +80,24 @@ class AppRouter {
           key: state.pageKey,
           child: const ProyekPage(),
         ),
+      ),
+      GoRoute(
+        path: '/form-penawaran',
+        name: 'form-penawaran',
+        pageBuilder: (context, state) {
+          final args = state.extra as FormPenawaranArgs? ?? FormPenawaranArgs(
+          proyekId: 'TEST-123',
+          namaProyek: 'Proyek Dummy (Testing)',
+          budgetKlienMin: 100000000.0,
+          budgetKlienMax: 200000000.0,
+          batasWaktuKlien: DateTime.now(),
+          deskripsiProyek: 'Ini adalah deskripsi dummy karena halaman dibuka langsung tanpa membawa data extra.',
+        );
+          return buildFadeTransitionPage(
+            key: state.pageKey,
+            child: FormPenawaranPageProvider(args: args),
+          );
+        },
       ),
     ],
   );

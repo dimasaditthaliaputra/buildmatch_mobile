@@ -28,6 +28,12 @@ import '../features/contractor/domain/usecases/get_contractor_dashboard_usecase.
 import '../features/contractor/presentation/bloc/contractor_dashboard_bloc.dart';
 import '../features/contractor/data/datasources/contractor_dashboard_remote_datasource.dart';
 
+import '../features/contractor/domain/usecases/get_penawaran_usecase.dart';
+import '../features/contractor/domain/repositories/penawaran_repository.dart';
+import '../features/contractor/data/repositories/penawaran_repository_impl.dart';
+import '../features/contractor/presentation/bloc/penawaran_bloc.dart';
+import '../features/contractor/data/datasources/penawaran_remote_datasource.dart';
+
 
 final sl = GetIt.instance;
 
@@ -74,6 +80,8 @@ Future<void> init() async {
   );
   
   initContractorDashboard();
+
+  initPenawaran();
 }
 
 void initContractorDashboard() {
@@ -81,4 +89,11 @@ void initContractorDashboard() {
   sl.registerLazySingleton(() => GetContractorDashboardUseCase(repository: sl()));
   sl.registerLazySingleton<ContractorDashboardRepository>(() => ContractorDashboardRepositoryImpl(remoteDataSource: sl()));
   sl.registerLazySingleton<ContractorDashboardRemoteDataSource>(() => ContractorDashboardRemoteDataSourceImpl());
+}
+
+void initPenawaran() {
+  sl.registerFactory(() => PenawaranBloc(getPenawaranUseCase: sl()));
+  sl.registerLazySingleton(() => GetPenawaranUsecase(sl()));
+  sl.registerLazySingleton<PenawaranRepository>(() => PenawaranRepositoryImpl(remoteDataSource: sl(),networkInfo: sl()));
+  sl.registerLazySingleton<PenawaranRemoteDataSource>(() => PenawaranRemoteDataSourceImpl());
 }
