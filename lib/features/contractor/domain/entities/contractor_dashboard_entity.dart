@@ -101,14 +101,14 @@ class FinancialDataEntity {
 class ProjectStatsEntity {
   final int total;
   final int active;
-  final int review;
+  final int done;
   final int pending;
   final double averageRating;
 
   const ProjectStatsEntity({
     required this.total,
     required this.active,
-    required this.review,
+    required this.done,
     required this.pending,
     required this.averageRating,
   });

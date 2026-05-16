@@ -13,73 +13,30 @@ import '../widgets/budget_range_input.dart';
 import '../widgets/estimasi_waktu_picker.dart';
 import '../widgets/proyek_info_card.dart';
 
-class FormPenawaranArgs {
-  final String proyekId;
-  final String namaProyek;
-  final double budgetKlienMin;
-  final double budgetKlienMax;
-  final DateTime batasWaktuKlien;
-  final String deskripsiProyek;
-
-  const FormPenawaranArgs({
-    required this.proyekId,
-    required this.namaProyek,
-    required this.budgetKlienMin,
-    required this.budgetKlienMax,
-    required this.batasWaktuKlien,
-    required this.deskripsiProyek,
-  });
-}
 
 class FormPenawaranPageProvider extends StatelessWidget {
-  final FormPenawaranArgs args;
-
-  const FormPenawaranPageProvider({Key? key, required this.args})
-    : super(key: key);
+  const FormPenawaranPageProvider({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => sl<PenawaranBloc>(),
-      child: FormPenawaranPage(args: args),
+      child: FormPenawaranPage(),
     );
   }
 }
 
 class FormPenawaranPage extends StatelessWidget {
-  final FormPenawaranArgs args;
-
-  const FormPenawaranPage({super.key, required this.args});
+  const FormPenawaranPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return _AjukanPenawaranView(
-      proyekId: args.proyekId,
-      namaProyek: args.namaProyek,
-      budgetKlienMin: args.budgetKlienMin,
-      budgetKlienMax: args.budgetKlienMax,
-      batasWaktuKlien: args.batasWaktuKlien,
-      deskripsiProyek: args.deskripsiProyek,
-    );
+    return const _AjukanPenawaranView();
   }
 }
 
 class _AjukanPenawaranView extends StatefulWidget {
-  final String proyekId;
-  final String namaProyek;
-  final double budgetKlienMin;
-  final double budgetKlienMax;
-  final DateTime batasWaktuKlien;
-  final String deskripsiProyek;
-
-  const _AjukanPenawaranView({
-    required this.proyekId,
-    required this.namaProyek,
-    required this.budgetKlienMin,
-    required this.budgetKlienMax,
-    required this.batasWaktuKlien,
-    required this.deskripsiProyek,
-  });
+  const _AjukanPenawaranView();
 
   @override
   State<_AjukanPenawaranView> createState() => _AjukanPenawaranViewState();
@@ -113,7 +70,7 @@ class _AjukanPenawaranViewState extends State<_AjukanPenawaranView> {
     }
 
     context.read<PenawaranBloc>().add(
-      PenawaranSubmitted(projectId: widget.proyekId),
+      PenawaranSubmitted(projectId: 'TEST-123'),
     );
   }
 
@@ -193,12 +150,6 @@ class _AjukanPenawaranViewState extends State<_AjukanPenawaranView> {
                         Padding(
                           padding: const EdgeInsets.fromLTRB(20, 24, 20, 0),
                           child: ProyekInfoCard(
-                            // namaProyek: widget.namaProyek,
-                            // budgetMin: widget.budgetKlienMin,
-                            // budgetMax: widget.budgetKlienMax,
-                            // batasWaktu: widget.batasWaktuKlien,
-                            // deskripsi: widget.deskripsiProyek,
-                            // isAktif: true,
                             namaProyek: 'Modern Zen Villa - Pejaten Terrace',
                             budgetMin: 450000000.0,
                             budgetMax: 500000000.0,

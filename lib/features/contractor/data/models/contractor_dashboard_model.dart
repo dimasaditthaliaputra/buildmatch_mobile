@@ -143,7 +143,7 @@ class ProjectStatsModel extends ProjectStatsEntity {
   const ProjectStatsModel({
     required super.total,
     required super.active,
-    required super.review,
+    required super.done,
     required super.pending,
     required super.averageRating,
   });
@@ -152,7 +152,7 @@ class ProjectStatsModel extends ProjectStatsEntity {
     return ProjectStatsModel(
       total: json['total'] ?? 0,
       active: json['active'] ?? 0,
-      review: json['review'] ?? 0,
+      done: json['done'] ?? 0,
       pending: json['pending'] ?? 0,
       averageRating: (json['average_rating'] ?? 0).toDouble(),
     );

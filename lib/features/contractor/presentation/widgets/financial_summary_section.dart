@@ -8,6 +8,8 @@ import '../../domain/entities/contractor_dashboard_entity.dart';
 
 import '../../../../core/widgets/carousel_dot_indicator.dart';
 
+import '../../../../core/widgets/global_card.dart'; 
+
 class FinancialSummarySection extends StatefulWidget {
   final FinancialSummaryEntity summary;
 
@@ -19,6 +21,7 @@ class FinancialSummarySection extends StatefulWidget {
 
 class _FinancialSummarySectionState extends State<FinancialSummarySection> {
   final PageController _pageController = PageController(viewportFraction: 0.88);
+  int _currentPage = 0;
 
   @override
   void dispose() {
@@ -29,42 +32,61 @@ class _FinancialSummarySectionState extends State<FinancialSummarySection> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: math.max(context.heightPct(0.14), 125.0), 
-      child: PageView(
-        controller: _pageController,
-        physics: const BouncingScrollPhysics(),
+      height: math.max(context.heightPct(0.14), 125.0),
+      child: Stack(
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            child: _FinancialSummaryCard(
-              title: 'TOTAL PENDAPATAN',
-              amount: widget.summary.totalIncome,
-              subtitle: widget.summary.period,
-              icon: Icons.monetization_on_outlined,
-              themeColor: AppColors.primary,
-              pageIndex: 0,
-            ),
+          PageView(
+            controller: _pageController,
+            physics: const BouncingScrollPhysics(),
+            onPageChanged: (int index) {
+              setState(() {
+                _currentPage = index;
+              });
+            },
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: _FinancialSummaryCard(
+                  title: 'TOTAL PENDAPATAN',
+                  amount: widget.summary.totalIncome,
+                  subtitle: widget.summary.period,
+                  icon: Icons.monetization_on_outlined,
+                  themeColor: AppColors.primary,
+                  pageIndex: 0,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: _FinancialSummaryCard(
+                  title: 'SUDAH CAIR',
+                  amount: widget.summary.disbursed,
+                  subtitle: '${widget.summary.disbursedTransactions} transaksi bulan ini',
+                  icon: Icons.check_circle_outline,
+                  themeColor: AppColors.success,
+                  pageIndex: 1,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                child: _FinancialSummaryCard(
+                  title: 'BELUM CAIR',
+                  amount: widget.summary.notDisbursed,
+                  subtitle: '${widget.summary.pendingTransactions} transaksi menunggu',
+                  icon: Icons.hourglass_bottom_rounded,
+                  themeColor: AppColors.primaryDark,
+                  pageIndex: 2,
+                ),
+              ),
+            ],
           ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            child: _FinancialSummaryCard(
-              title: 'SUDAH CAIR',
-              amount: widget.summary.disbursed,
-              subtitle: '${widget.summary.disbursedTransactions} transaksi bulan ini',
-              icon: Icons.check_circle_outline,
-              themeColor: AppColors.success,
-              pageIndex: 1,
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            child: _FinancialSummaryCard(
-              title: 'BELUM CAIR',
-              amount: widget.summary.notDisbursed,
-              subtitle: '${widget.summary.pendingTransactions} transaksi menunggu',
-              icon: Icons.hourglass_bottom_rounded,
-              themeColor: AppColors.primaryDark,
-              pageIndex: 2,
+
+          Positioned(
+            bottom: 16,
+            left: 0,
+            right: 0,
+            child: CarouselDotIndicator(
+              itemCount: 3,
+              currentIndex: _currentPage,
             ),
           ),
         ],
@@ -99,21 +121,19 @@ class _FinancialSummaryCardState extends State<_FinancialSummaryCard> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GlobalCard(
       height: math.max(context.heightPct(0.18), 150.0),
+      margin: EdgeInsets.zero, 
       padding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 8),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.border, width: 1),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadowDark.withOpacity(0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
+      backgroundColor: AppColors.surface,
+      borderRadius: 16.0,
+      boxShadow: [
+        BoxShadow(
+          color: AppColors.shadowDark.withOpacity(0.06),
+          blurRadius: 8,
+          offset: const Offset(0, 4),
+        ),
+      ],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -146,8 +166,8 @@ class _FinancialSummaryCardState extends State<_FinancialSummaryCard> {
                 ...List.generate(
                   6,
                   (index) => Padding(
-                    padding: const EdgeInsets.only(right: 6),
-                    child: Icon(Icons.circle, color: widget.themeColor, size: 12),
+                    padding: const EdgeInsets.only(right: 2),
+                    child: Icon(Icons.circle, color: widget.themeColor, size: 16),
                   ),
                 )
               else
@@ -173,7 +193,7 @@ class _FinancialSummaryCardState extends State<_FinancialSummaryCard> {
                   child: Icon(
                     _isObscured ? Icons.visibility_outlined : Icons.visibility_off_outlined, 
                     color: AppColors.textPrimary,
-                    size: 15,
+                    size: 20,
                   ),
                 ),
               ),
@@ -190,13 +210,7 @@ class _FinancialSummaryCardState extends State<_FinancialSummaryCard> {
               fontWeight: FontWeight.w600,
             ),
           ),
-          
           const Spacer(),
-
-          const CarouselDotIndicator(
-            itemCount: 3, 
-            currentIndex: 0
-          ),
         ],
       ),
     );

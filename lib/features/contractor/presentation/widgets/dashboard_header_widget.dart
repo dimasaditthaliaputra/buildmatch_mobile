@@ -67,7 +67,7 @@ class DashboardHeaderWidget extends StatelessWidget {
               fontSize: 22,
             ),
           ),
-          const SizedBox(height: 4),
+          const SizedBox(height: 2),
           Text(
             contractorName,
             style: AppTextStyles.heading2.copyWith(
@@ -123,7 +123,7 @@ class DashboardHeaderWidget extends StatelessWidget {
         child: Icon(
           Icons.notifications_none_rounded, 
           color: AppColors.textLight,
-          size: 24,
+          size: 28,
         ),
       ),
     );

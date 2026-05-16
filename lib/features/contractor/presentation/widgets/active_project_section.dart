@@ -7,6 +7,7 @@ import '../../domain/entities/contractor_dashboard_entity.dart';
 import '../../../../core/widgets/app_badge.dart';
 import '../../../../core/widgets/custom_progress_bar.dart';
 import '../../../../core/widgets/section_header.dart';
+import '../../../../core/widgets/global_card.dart';
 
 class ActiveProjectSection extends StatelessWidget {
   final List<ActiveProjectEntity> projects;
@@ -24,24 +25,25 @@ class ActiveProjectSection extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SectionHeader(
-          title: 'Proyek Aktif', 
+          title: 'Proyek Aktif',
           actionText: 'LIHAT SEMUA',
-          onActionTap: onSeeAll
+          onActionTap: onSeeAll,
         ),
 
         const SizedBox(height: 16),
 
-        ...projects.map(
-          (project) => Padding(
-            padding: const EdgeInsets.only(bottom: 16),
-            child: ActiveProjectCard(project: project),
-          ),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: projects.length,
+          itemBuilder: (context, index) {
+            return ActiveProjectCard(project: projects[index]);
+          },
         ),
       ],
     );
   }
 }
-
 
 class ActiveProjectCard extends StatelessWidget {
   final ActiveProjectEntity project;
@@ -50,19 +52,18 @@ class ActiveProjectCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return GlobalCard(
       padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: AppColors.surface,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.03),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          )
-        ],
-      ),
+      margin: const EdgeInsets.only(bottom: 16),
+      backgroundColor: AppColors.surface,
+      borderRadius: 16,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black.withOpacity(0.03),
+          blurRadius: 10,
+          offset: const Offset(0, 4),
+        ),
+      ],
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -87,21 +88,19 @@ class ActiveProjectCard extends StatelessWidget {
                     Text(
                       project.phase,
                       style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.primary,
+                        color: AppColors.textMid,
                         fontSize: 13,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
                 ),
               ),
               const SizedBox(width: 8),
-              StatusBadge(
-                status: project.status,
-              ),
+              StatusBadge(status: project.status),
             ],
           ),
-          const SizedBox(height: 24),
+          const SizedBox(height: 16),
 
           Text(
             '${(project.progressPercent * 100).toStringAsFixed(0)}%',
@@ -113,9 +112,7 @@ class ActiveProjectCard extends StatelessWidget {
           ),
           const SizedBox(height: 8),
 
-          CustomProgressBar(
-            percent: project.progressPercent,
-          ),
+          CustomProgressBar(percent: project.progressPercent),
 
           const SizedBox(height: 12),
 
@@ -152,18 +149,43 @@ class ActiveProjectCard extends StatelessWidget {
       width: context.widthPct(0.18),
       height: context.widthPct(0.18),
       decoration: BoxDecoration(
-        color: Colors.grey.shade300,
-        borderRadius: BorderRadius.circular(8),
-        image: project.imageUrl != null
-            ? DecorationImage(
-                image: NetworkImage(project.imageUrl!),
-                fit: BoxFit.cover,
-              )
-            : null,
+        color: AppColors.primaryLightGrey,
+        borderRadius: BorderRadius.circular(4),
       ),
-      child: project.imageUrl == null
-          ? null 
-          : null,
+      clipBehavior: Clip.antiAlias,
+      child: (project.imageUrl != null && project.imageUrl!.isNotEmpty)
+          ? Image.network(
+              project.imageUrl!,
+              fit: BoxFit.cover,
+              loadingBuilder: (context, child, loadingProgress) {
+                if (loadingProgress == null) return child;
+                return Center(
+                  child: SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 2,
+                      value: loadingProgress.expectedTotalBytes != null
+                          ? loadingProgress.cumulativeBytesLoaded /
+                                (loadingProgress.expectedTotalBytes ?? 1)
+                          : null,
+                    ),
+                  ),
+                );
+              },
+              errorBuilder: (context, error, stackTrace) {
+                return const Icon(
+                  Icons.image_not_supported_outlined,
+                  color: AppColors.primaryDarkGrey,
+                  size: 24,
+                );
+              },
+            )
+          : const Icon(
+              Icons.domain_disabled,
+              color: AppColors.primaryDarkGrey,
+              size: 24,
+            ),
     );
   }
 }
