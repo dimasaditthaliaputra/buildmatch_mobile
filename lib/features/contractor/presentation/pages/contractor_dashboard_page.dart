@@ -4,12 +4,25 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/screen_size.dart';
+import '../../../../config/injection_container.dart';
 import '../bloc/contractor_dashboard_bloc.dart';
 import '../widgets/dashboard_header_widget.dart';
 import '../widgets/financial_summary_section.dart';
 import '../widgets/active_project_section.dart';
 import '../widgets/project_listing_section.dart';
 import '../widgets/chart_widgets.dart';
+
+class ContractorDashboardProvider extends StatelessWidget {
+  const ContractorDashboardProvider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => sl<ContractorDashboardBloc>(),
+      child: const ContractorDashboardPage(),
+    );
+  }
+}
 
 class ContractorDashboardPage extends StatefulWidget {
   const ContractorDashboardPage({super.key});

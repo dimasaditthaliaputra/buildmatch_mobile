@@ -84,9 +84,9 @@ class ContractorDashboardRemoteDataSourceImpl
     ],
     'project_stats': {
       'total': 24,
-      'active': 5,
-      'review': 2,
-      'pending': 1,
+      'active': 10,
+      'done': 6,
+      'pending': 8,
       'average_rating': 4.9,
     },
   };
