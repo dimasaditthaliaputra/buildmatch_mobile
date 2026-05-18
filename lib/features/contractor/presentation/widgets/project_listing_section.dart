@@ -8,7 +8,7 @@ import '../../domain/entities/contractor_dashboard_entity.dart';
 
 import '../../../../core/widgets/main_button.dart';
 import '../../../../core/widgets/section_header.dart';
-import '../../../../core/widgets/app_badge.dart';
+import '../../../../core/widgets/badge_widget.dart';
 import '../../../../core/widgets/info_column_text.dart';
 
 class ProjectListingSection extends StatelessWidget {
@@ -100,7 +100,7 @@ class ProjectListingCard extends StatelessWidget {
                 ),
               ),
               if (listing.isNew)
-                CustomBadge(
+                BadgeWidget(
                   text: 'New', 
                   textColor: AppColors.primary, 
                   backgroundColor: AppColors.primary.withOpacity(0.12), 

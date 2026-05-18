@@ -4,7 +4,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/screen_size.dart';
 import '../../domain/entities/contractor_dashboard_entity.dart';
 
-import '../../../../core/widgets/app_badge.dart';
+import '../../../../core/widgets/badge_widget.dart';
 import '../../../../core/widgets/custom_progress_bar.dart';
 import '../../../../core/widgets/section_header.dart';
 import '../../../../core/widgets/global_card.dart';
@@ -97,7 +97,12 @@ class ActiveProjectCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-              StatusBadge(status: project.status),
+              BadgeWidget(
+                  text: 'AKtif', 
+                  textColor: AppColors.success, 
+                  backgroundColor: AppColors.success.withOpacity(0.12), 
+                  borderColor: AppColors.success.withOpacity(0.4)
+              ),
             ],
           ),
           const SizedBox(height: 16),
