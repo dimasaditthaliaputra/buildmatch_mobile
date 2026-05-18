@@ -231,23 +231,35 @@ class _ProjectDetailContent extends StatelessWidget {
     }
 
     final stats = [
-      _StatItem(value: project.buildingArea, label: 'Luas', isHighlight: true),
-      _StatItem(value: tinggiStr, label: 'Tinggi', isHighlight: false),
-      _StatItem(value: project.startDate, label: 'Mulai', isHighlight: true),
-      _StatItem(value: project.endDate, label: 'Selesai', isHighlight: false),
+      (value: project.buildingArea, label: 'Luas', isHighlight: true),
+      (value: tinggiStr, label: 'Tinggi', isHighlight: false),
+      (value: project.startDate, label: 'Mulai', isHighlight: true),
+      (value: project.endDate, label: 'Selesai', isHighlight: false),
     ];
 
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: context.widthPct(0.04)),
       child: Row(
         children: stats
-            .map((s) => Expanded(child: _buildStatChip(context, s)))
+            .map((s) => Expanded(
+                  child: _buildStatChip(
+                    context,
+                    value: s.value,
+                    label: s.label,
+                    isHighlight: s.isHighlight,
+                  ),
+                ))
             .toList(),
       ),
     );
   }
 
-  Widget _buildStatChip(BuildContext context, _StatItem stat) {
+  Widget _buildStatChip(
+    BuildContext context, {
+    required String value,
+    required String label,
+    required bool isHighlight,
+  }) {
     final double valueFontSize = context.widthPct(0.035).clamp(12.0, 16.0);
     final double labelFontSize = context.widthPct(0.028).clamp(10.0, 12.0);
     final double chipPadV = context.heightPct(0.015).clamp(10.0, 16.0);
@@ -256,7 +268,7 @@ class _ProjectDetailContent extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.01)),
       padding: EdgeInsets.symmetric(vertical: chipPadV),
       decoration: BoxDecoration(
-        color: stat.isHighlight
+        color: isHighlight
             ? AppColors.textOrangeDark
             : AppColors.surfaceCream,
         borderRadius: BorderRadius.circular(10),
@@ -265,11 +277,11 @@ class _ProjectDetailContent extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            stat.value,
+            value,
             style: GoogleFonts.inter(
               fontSize: valueFontSize,
               fontWeight: FontWeight.w700,
-              color: stat.isHighlight
+              color: isHighlight
                   ? AppColors.textLight
                   : AppColors.textOrangeDark,
             ),
@@ -277,11 +289,11 @@ class _ProjectDetailContent extends StatelessWidget {
           ),
           SizedBox(height: context.heightPct(0.003)),
           Text(
-            stat.label,
+            label,
             style: GoogleFonts.inter(
               fontSize: labelFontSize,
               fontWeight: FontWeight.w500,
-              color: stat.isHighlight
+              color: isHighlight
                   ? AppColors.textLight.withValues(alpha: 0.9)
                   : AppColors.textDark,
             ),
@@ -630,16 +642,4 @@ class _ProjectDetailContent extends StatelessWidget {
       ),
     );
   }
-}
-
-class _StatItem {
-  final String value;
-  final String label;
-  final bool isHighlight;
-
-  const _StatItem({
-    required this.value,
-    required this.label,
-    required this.isHighlight,
-  });
 }
