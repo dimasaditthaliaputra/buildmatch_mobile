@@ -4,6 +4,7 @@ import '../widgets/dashboard/dashboard_header.dart';
 import '../widgets/dashboard/active_project_card.dart';
 import '../widgets/dashboard/request_card.dart';
 import '../widgets/dashboard/financial_chart.dart';
+import 'package:go_router/go_router.dart';
 
 class ArchitectDashboardPage extends StatelessWidget {
   const ArchitectDashboardPage({super.key});
@@ -50,6 +51,7 @@ class ArchitectDashboardPage extends StatelessWidget {
                       onTap: () {
                         context.push('/architect-proyek');
                       },
+
                       child: const Text(
                         "LIHAT SEMUA",
                         style: TextStyle(
@@ -60,7 +62,7 @@ class ArchitectDashboardPage extends StatelessWidget {
                     ),
                   ],
                 ),
-            ),
+              ),
 
             const SizedBox(height: 14),
 

@@ -1,3 +1,6 @@
+import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
+import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
+import 'package:buildmatch_mobile/features/contractor/presentation/pages/rating_client_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -26,6 +29,7 @@ import '../../features/contractor/presentation/bloc/contractor_dashboard_bloc.da
 import '../../features/contractor/presentation/pages/proyek_page.dart';
 import '../../features/contractor/presentation/pages/project_detail_page.dart';
 import '../../features/contractor/presentation/pages/formpenawaran_page.dart';
+import '../../features/contractor/presentation/pages/detail_portofolio_page.dart';
 
 // Features - Architect Role
 import '../../features/architect/presentation/pages/architect_dashboard_page.dart';
@@ -71,10 +75,8 @@ class AppRouter {
       GoRoute(
         path: '/otp',
         name: 'otp',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const OtpPage(),
-        ),
+        pageBuilder: (context, state) =>
+            buildFadeTransitionPage(key: state.pageKey, child: const OtpPage()),
       ),
       GoRoute(
         path: '/choose-roles',
@@ -143,6 +145,20 @@ class AppRouter {
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
           child: const ArchitectDashboardPage(),
+      GoRoute(
+        path: '/rating-client',
+        name: 'rating-client',
+        pageBuilder: (context, state) => buildFadeTransitionPage(
+          key: state.pageKey,
+          child: const RatingClientPage(clientId: '', clientName: ''),
+        ),
+      ),
+      GoRoute(
+        path: '/detail-portofolio',
+        name: 'detail-portofolio',
+        pageBuilder: (context, state) => buildFadeTransitionPage(
+          key: state.pageKey,
+          child: const DetailPortofolioPageProvider(),
         ),
       ),
     ],

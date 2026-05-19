@@ -9,6 +9,7 @@ class AppColors {
   static const Color primaryMedium = Color(0xFFFF9A45);
   static const Color primaryLight = Color(0xFFFFB570);
   static const Color primaryBlack = Color(0xFF000000);
+  static const Color primaryOrange = Color(0xFFFB8C00); 
   static const Color primaryWhite = Color(0xFFFFFFFF);
   static const Color primaryGrey = Color(0xFFBBBBBB);
   static const Color primaryDarkGrey = Color(0xFF78909C);
@@ -26,6 +27,7 @@ class AppColors {
   static const Color surfaceCream = Color(0xFFFDE8CC);
   static const Color surfacePale = Color(0xFFFFF5EC);
   static const Color border = Color(0xFFF0E8E0);
+  static const Color surfaceBeige = Color(0xFFDEC1AF);
 
   // Text
   static const Color textPrimary = Color(0xFF111111);
@@ -38,6 +40,7 @@ class AppColors {
   static const Color textOrangeLight = Color(0xFFFB8C00);
   static const Color textOrangeSecondary = Color(0xFFFF6B00);
   static const Color textSuccess = Color(0xFF006E2C);
+  static const Color textBrown = Color(0xFF964900);
 
   // Status
   static const Color success = Color(0xFF3B6D11);
