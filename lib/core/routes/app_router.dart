@@ -30,6 +30,7 @@ import '../../features/contractor/presentation/pages/proyek_page.dart';
 import '../../features/contractor/presentation/pages/project_detail_page.dart';
 import '../../features/contractor/presentation/pages/formpenawaran_page.dart';
 import '../../features/contractor/presentation/pages/detail_portofolio_page.dart';
+import '../../features/contractor/presentation/pages/project_contractor_list.dart';
 
 // Features - Architect Role
 import '../../features/architect/presentation/pages/architect_dashboard_page.dart';
@@ -136,6 +137,14 @@ class AppRouter {
             child: ProjectDetailPage(projectId: id),
           );
         },
+      ),
+      GoRoute(
+        path: '/project-contractor-list',
+        name: 'project-contractor-list',
+        pageBuilder: (context, state) => buildFadeTransitionPage(
+          key: state.pageKey,
+          child: const ProjectContractorListPageWrapper(),
+        )
       ),
 
       // 5. ARCHITECT ROLE ROUTES

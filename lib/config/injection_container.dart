@@ -59,6 +59,13 @@ import '../features/contractor/domain/repositories/portofolio_repository.dart';
 import '../features/contractor/domain/usecases/get_portofolio_usecase.dart';
 import '../features/contractor/presentation/bloc/portofolio_bloc.dart';
 
+import '../features/contractor/data/datasources/project_contractor_list_datasource.dart';
+import '../features/contractor/data/repositories/project_contractor_list_impl.dart';
+import '../features/contractor/domain/repositories/project_contractor_list_repository.dart';
+import '../features/contractor/domain/usecases/get_all_project.dart';
+import '../features/contractor/domain/usecases/get_project_by_status.dart';
+import '../features/contractor/presentation/bloc/project_contractor_list_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -109,6 +116,7 @@ Future<void> init() async {
   initContractorProject();
   initRatingClient();
   initDetailPortofolio();
+  initProjectContractorList();
 }
 
 void initContractorDashboard() {
@@ -178,5 +186,17 @@ void initDetailPortofolio() {
   );
   sl.registerLazySingleton<PortofolioLocalDataSource>(
     () => PortofolioLocalDataSourceImpl(),
+  );
+}
+
+void initProjectContractorList() {
+  sl.registerFactory(() => ProjectContractorListBloc(getAllProjects: sl(), getProjectsByStatus: sl()));
+  sl.registerLazySingleton(() => GetAllProjects(sl()));
+  sl.registerLazySingleton(() => GetProjectsByStatus(sl()));
+  sl.registerLazySingleton<ProjectContractorListRepository>(
+    () => ContractorProjectRepositoryImpl(remoteDataSource: sl()),
+  );
+  sl.registerLazySingleton<ContractorProjectRemoteDataSource>(
+    () => ContractorProjectRemoteDataSourceImpl(), 
   );
 }
