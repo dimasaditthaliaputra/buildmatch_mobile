@@ -216,7 +216,7 @@ class _ContractorDashboardPageState extends State<ContractorDashboardPage> {
                     ),
                   ),
 
-                  const SizedBox(height: 32),
+                  const SizedBox(height: 16),
                 ],
               ),
             ),
