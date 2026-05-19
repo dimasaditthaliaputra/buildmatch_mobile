@@ -19,6 +19,7 @@ import '../widgets/no_connection_page.dart';
 import '../../features/contractor/presentation/pages/project_detail_page.dart';
 
 import '../../features/contractor/presentation/pages/formpenawaran_page.dart';
+import '../../features/contractor/presentation/pages/detail_portofolio_page.dart';
 
 class AppRouter {
   AppRouter._();
@@ -58,10 +59,8 @@ class AppRouter {
       GoRoute(
         path: '/otp',
         name: 'otp',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const OtpPage(),
-        ),
+        pageBuilder: (context, state) =>
+            buildFadeTransitionPage(key: state.pageKey, child: const OtpPage()),
       ),
       GoRoute(
         path: '/choose-roles',
@@ -123,7 +122,15 @@ class AppRouter {
         name: 'rating-client',
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
-          child: const RatingClientPage(clientId: '', clientName: '',),
+          child: const RatingClientPage(clientId: '', clientName: ''),
+        ),
+      ),
+      GoRoute(
+        path: '/detail-portofolio',
+        name: 'detail-portofolio',
+        pageBuilder: (context, state) => buildFadeTransitionPage(
+          key: state.pageKey,
+          child: const DetailPortofolioPageProvider(),
         ),
       ),
     ],
@@ -141,10 +148,7 @@ CustomTransitionPage<void> buildFadeTransitionPage({
     transitionDuration: duration,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       return FadeTransition(
-        opacity: CurvedAnimation(
-          parent: animation,
-          curve: Curves.easeInOut, 
-        ),
+        opacity: CurvedAnimation(parent: animation, curve: Curves.easeInOut),
         child: child,
       );
     },
