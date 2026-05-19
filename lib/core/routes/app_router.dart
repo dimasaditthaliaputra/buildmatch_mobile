@@ -17,8 +17,6 @@ import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 
 // Features - Auth
 import '../../features/auth/presentation/pages/auth_page.dart';
-import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
-import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
 import '../../features/profile/presentation/pages/profile_user_page.dart';
 
 // Features - Client & Home
@@ -36,11 +34,18 @@ import '../../features/contractor/presentation/pages/project_contractor_list.dar
 // Features - Architect Role
 import '../../features/architect/presentation/pages/architect_dashboard_page.dart';
 
+// Features - Waiting Approval (Contractor Verification)
+import '../../features/waiting_approval/presentation/pages/verifikasi_perusahaan_page.dart';
+import '../../features/waiting_approval/presentation/bloc/waiting_approval_bloc.dart';
+import '../../features/auth/presentation/bloc/auth_bloc.dart';
+
+
+
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/choose-roles',
+    initialLocation: '/verifikasi-perusahaan',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -95,6 +100,21 @@ class AppRouter {
           final String role = state.extra as String? ?? 'client';
           return SetupProfilePage(role: role);
         },
+      ),
+      GoRoute(
+        path: '/verifikasi-perusahaan',
+        name: 'verifikasi-perusahaan',
+        builder: (context, state) => MultiBlocProvider(
+          providers: [
+            BlocProvider(
+              create: (context) => sl<WaitingApprovalBloc>(),
+            ),
+            BlocProvider(
+              create: (context) => sl<AuthBloc>(),
+            ),
+          ],
+          child: const VerifikasiPerusahaanPage(),
+        ),
       ),
 
       // 3. CLIENT / HOME ROUTES

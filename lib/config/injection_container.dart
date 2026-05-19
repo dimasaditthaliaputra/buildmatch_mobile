@@ -73,6 +73,12 @@ import '../features/contractor/domain/usecases/get_all_project.dart';
 import '../features/contractor/domain/usecases/get_project_by_status.dart';
 import '../features/contractor/presentation/bloc/project_contractor_list_bloc.dart';
 
+import '../features/waiting_approval/data/datasources/waiting_approval_local_data_source.dart';
+import '../features/waiting_approval/data/repositories/waiting_approval_repository_impl.dart';
+import '../features/waiting_approval/domain/repositories/waiting_approval_repository.dart';
+import '../features/waiting_approval/domain/usecases/get_verification_status_usecase.dart';
+import '../features/waiting_approval/presentation/bloc/waiting_approval_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -125,6 +131,7 @@ Future<void> init() async {
   initDetailPortofolio();
   initProjectContractorList();
   initProfileSetup();
+  initWaitingApproval();
 }
 
 void initContractorDashboard() {
@@ -219,3 +226,19 @@ void initProfileSetup() {
     () => ProfileLocalDataSourceImpl(),
   );
 }
+
+void initWaitingApproval() {
+  sl.registerFactory(
+    () => WaitingApprovalBloc(
+      getVerificationStatus: sl(),
+    ),
+  );
+  sl.registerLazySingleton(() => GetVerificationStatusUseCase(sl()));
+  sl.registerLazySingleton<WaitingApprovalRepository>(
+    () => WaitingApprovalRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<WaitingApprovalLocalDataSource>(
+    () => WaitingApprovalLocalDataSourceImpl(),
+  );
+}
+
