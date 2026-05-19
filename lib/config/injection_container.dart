@@ -40,6 +40,12 @@ import '../features/contractor/domain/repositories/project_detail_repository.dar
 import '../features/contractor/domain/usecases/get_project_detail.dart';
 import '../features/contractor/presentation/bloc/project_detail_bloc.dart';
 
+import '../features/contractor/data/datasources/rating_client_local_data_source.dart';
+import '../features/contractor/data/repositories/rating_client_repository_impl.dart';
+import '../features/contractor/domain/repositories/rating_client_repository.dart';
+import '../features/contractor/domain/usecases/get_submit_rating_client.dart';
+import '../features/contractor/presentation/bloc/rating_client_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -78,6 +84,7 @@ Future<void> init() async {
   initContractorDashboard();
   initContractorProjectDetail();
   initContractorProject();
+  initRatingClient();
 }
 
 void initContractorDashboard() {
@@ -116,4 +123,11 @@ void initPenawaran() {
   sl.registerLazySingleton(() => GetPenawaranUsecase(sl()));
   sl.registerLazySingleton<PenawaranRepository>(() => PenawaranRepositoryImpl(remoteDataSource: sl(),networkInfo: sl()));
   sl.registerLazySingleton<PenawaranRemoteDataSource>(() => PenawaranRemoteDataSourceImpl());
+}
+
+void initRatingClient() {
+  sl.registerFactory(() => RatingClientBloc(submitRatingClient: sl()));
+  sl.registerLazySingleton(() => SubmitRatingClient(sl()));
+  sl.registerLazySingleton<RatingClientRepository>(() => RatingClientRepositoryImpl(sl()));
+  sl.registerLazySingleton<RatingClientLocalDataSource>(() => RatingClientLocalDataSourceImpl());
 }
