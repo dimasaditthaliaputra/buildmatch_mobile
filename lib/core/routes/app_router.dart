@@ -19,6 +19,7 @@ import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/auth/presentation/pages/auth_page.dart';
 import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
 import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
+import '../../features/profile/presentation/pages/profile_user_page.dart';
 
 // Features - Client & Home
 import '../../features/home/presentation/pages/home_page.dart';
@@ -38,7 +39,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/',
+    initialLocation: '/choose-roles',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -85,6 +86,14 @@ class AppRouter {
           key: state.pageKey,
           child: const ChooseRolesPage(),
         ),
+      ),
+      GoRoute(
+        path: '/setup-profile',
+        name: 'setup-profile',
+        builder: (context, state) {
+          final String role = state.extra as String? ?? 'client';
+          return SetupProfilePage(role: role);
+        },
       ),
 
       // 3. CLIENT / HOME ROUTES
