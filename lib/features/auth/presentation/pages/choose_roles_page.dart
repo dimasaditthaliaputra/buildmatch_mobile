@@ -67,7 +67,7 @@ class _ChooseRolesViewState extends State<ChooseRolesView> {
       body: BlocConsumer<RolesBloc, RolesState>(
         listener: (context, state) {
           if (state is RolesSubmitSuccess) {
-            context.go('/home');
+            context.go('/setup-profile', extra: state.chosenRole.rolesName.toLowerCase());
           } else if (state is RolesFailure) {
             SnackbarUtils.showError(state.errorMessage);
           }
