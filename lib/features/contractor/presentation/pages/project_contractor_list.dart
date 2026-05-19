@@ -5,10 +5,11 @@ import '../../../../../config/injection_container.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_text_styles.dart';
 import '../../../../../core/utils/screen_size.dart';
+import '../../../../../core/widgets/search_bar_widget.dart';
+import '../../../../../core/widgets/filter_bar_widget.dart';
 import '../bloc/project_contractor_list_bloc.dart';
 import '../widgets/empty_project_list_state.dart';
 import '../widgets/project_contractor_card.dart';
-import '../widgets/project_tab_bar.dart';
 
 import '../../../../../core/widgets/global_app_bar.dart';
 import '../../../../../core/widgets/error_state_view.dart';
@@ -103,57 +104,72 @@ class _ProjectContractorListPageState extends State<ProjectContractorListPage> {
     final double padVertical = context.heightPct(0.01).clamp(8.0, 12.0);
 
     return Container(
+      color: AppColors.surface, 
       padding: EdgeInsets.fromLTRB(padHorizontal, padVertical, padHorizontal, padVertical * 1.5),
-      color: AppColors.surface,
-      child: TextField(
+      
+      child: SearchBarWidget(
         controller: _searchController,
+        hintText: 'Cari proyek...',
+        hintStyle: AppTextStyles.bodyMedium.copyWith(
+          color: AppColors.textSecondary,
+        ),
+        
+        borderRadius: 12.0,
+        contentPadding: EdgeInsets.symmetric(
+          horizontal: padHorizontal, 
+          vertical: padVertical * 1.5,
+        ),
+        
+        fillColor: AppColors.surface,
+        borderSide: BorderSide(
+          color: AppColors.primaryUltraGrey,
+          width: 1.0,
+        ),
+
         onChanged: (query) {
           context.read<ProjectContractorListBloc>().add(SearchProjects(query));
         },
-        style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
-        decoration: InputDecoration(
-          hintText: 'Cari proyek...',
-          hintStyle: AppTextStyles.bodyMedium.copyWith(
-            color: AppColors.textSecondary,
-          ),
-          prefixIcon: const Icon(
-            Icons.search_rounded,
-            color: AppColors.textSecondary,
-            size: 22,
-          ),
-          suffixIcon: _searchController.text.isNotEmpty
-              ? IconButton(
-                  icon: const Icon(Icons.close, size: 20),
-                  color: AppColors.textSecondary,
-                  onPressed: () {
-                    _searchController.clear();
-                    context.read<ProjectContractorListBloc>().add(
-                          const SearchProjects(''),
-                        );
-                  },
-                )
-              : null,
-          filled: true,
-          fillColor: AppColors.primaryUltraLightGrey.withOpacity(0.5),
-          contentPadding: EdgeInsets.symmetric(
-            horizontal: padHorizontal, 
-            vertical: padVertical * 1.5
-          ),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-            borderSide: BorderSide.none,
-          ),
-        ),
+        onClear: () {
+          context.read<ProjectContractorListBloc>().add(const SearchProjects(''));
+        },
       ),
     );
   }
 
   Widget _buildTabBar(BuildContext context) {
+    final tabs = [
+      ProjectFilterTab.semua,
+      ProjectFilterTab.berjalan,
+      ProjectFilterTab.selesai,
+    ];
+
+    final labels = {
+      ProjectFilterTab.semua: 'Semua',
+      ProjectFilterTab.berjalan: 'Sedang Berjalan',
+      ProjectFilterTab.selesai: 'Selesai',
+    };
+
+    final double marginHorizontal = context.widthPct(0.04).clamp(16.0, 24.0);
+    final double paddingInner = context.widthPct(0.01).clamp(4.0, 8.0);
+    final double tabVerticalPadding = context.heightPct(0.012).clamp(8.0, 14.0);
+    final double fontSize = context.widthPct(0.033).clamp(11.0, 14.0);
+    final double dividerHeight = context.heightPct(0.025).clamp(16.0, 24.0);
+
     return Container(
       color: AppColors.surface,
       padding: EdgeInsets.only(bottom: context.heightPct(0.015).clamp(12.0, 20.0)),
-      child: ProjectTabBar(
-        activeTab: _selectedTab, 
+      
+      child: FilterBarWidget<ProjectFilterTab>(
+        tabs: tabs,
+        activeTab: _selectedTab,
+        labelBuilder: (tab) => labels[tab] ?? '',
+        
+        margin: EdgeInsets.symmetric(horizontal: marginHorizontal),
+        padding: EdgeInsets.all(paddingInner),
+        tabPadding: EdgeInsets.symmetric(vertical: tabVerticalPadding),
+        fontSize: fontSize,
+        dividerHeight: dividerHeight,
+        
         onTabChanged: (tab) {
           setState(() {
             _selectedTab = tab; 
@@ -163,6 +179,7 @@ class _ProjectContractorListPageState extends State<ProjectContractorListPage> {
       ),
     );
   }
+
 
   Widget _buildProjectList(BuildContext context, ProjectContractorListLoaded state) {
     final double padHorizontal = context.widthPct(0.04).clamp(16.0, 24.0);
