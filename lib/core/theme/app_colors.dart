@@ -49,6 +49,13 @@ class AppColors {
   static const Color error = Color(0xFFE53935);
   static const Color pending = Color(0xFFBBBBBB);
 
+  // Role Selection Colors
+  static const Color clientBg = Color(0xFFFFF3E0);
+  static const Color architectPrimary = Color(0xFF2E7D32);
+  static const Color architectBg = Color(0xFFE8F5E9);
+  static const Color contractorPrimary = Color(0xFFD84315);
+  static const Color contractorBg = Color(0xFFFBEBE1);
+
   // Shadow
   static const Color shadowDark = Color(0xFF000000);
 }

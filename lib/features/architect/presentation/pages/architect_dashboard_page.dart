@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../widgets/dashboard/dashboard_header.dart';
 import '../widgets/dashboard/active_project_card.dart';
 import '../widgets/dashboard/request_card.dart';
@@ -48,7 +49,7 @@ class ArchitectDashboardPage extends StatelessWidget {
 
                     GestureDetector(
                       onTap: () {
-                        context.go('/architect-project');
+                        context.push('/architect-proyek');
                       },
 
                       child: const Text(
