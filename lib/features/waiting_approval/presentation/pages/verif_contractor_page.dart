@@ -16,15 +16,15 @@ import '../bloc/waiting_approval_bloc.dart';
 import '../bloc/waiting_approval_event.dart';
 import '../bloc/waiting_approval_state.dart';
 
-class VerifikasiPerusahaanPage extends StatefulWidget {
-  const VerifikasiPerusahaanPage({super.key});
+class VerifContractorPage extends StatefulWidget {
+  const VerifContractorPage({super.key});
 
   @override
-  State<VerifikasiPerusahaanPage> createState() =>
-      _VerifikasiPerusahaanPageState();
+  State<VerifContractorPage> createState() =>
+      _VerifContractorPageState();
 }
 
-class _VerifikasiPerusahaanPageState extends State<VerifikasiPerusahaanPage>
+class _VerifContractorPageState extends State<VerifContractorPage>
     with SingleTickerProviderStateMixin {
   late AnimationController _animationController;
   late Animation<double> _fadeAnimation;

@@ -35,7 +35,7 @@ import '../../features/contractor/presentation/pages/project_contractor_list.dar
 import '../../features/architect/presentation/pages/architect_dashboard_page.dart';
 
 // Features - Waiting Approval (Contractor Verification)
-import '../../features/waiting_approval/presentation/pages/verifikasi_perusahaan_page.dart';
+import '../../features/waiting_approval/presentation/pages/verif_contractor_page.dart';
 import '../../features/waiting_approval/presentation/bloc/waiting_approval_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 
@@ -45,7 +45,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/verifikasi-perusahaan',
+    initialLocation: '/splash',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -82,8 +82,7 @@ class AppRouter {
       GoRoute(
         path: '/otp',
         name: 'otp',
-        pageBuilder: (context, state) =>
-            buildFadeTransitionPage(key: state.pageKey, child: const OtpPage()),
+        builder: (context, state) => const OtpPage(),
       ),
       GoRoute(
         path: '/choose-roles',
@@ -102,8 +101,8 @@ class AppRouter {
         },
       ),
       GoRoute(
-        path: '/verifikasi-perusahaan',
-        name: 'verifikasi-perusahaan',
+        path: '/verif-contractor',
+        name: 'verif-contractor',
         builder: (context, state) => MultiBlocProvider(
           providers: [
             BlocProvider(
@@ -113,7 +112,7 @@ class AppRouter {
               create: (context) => sl<AuthBloc>(),
             ),
           ],
-          child: const VerifikasiPerusahaanPage(),
+          child: const VerifContractorPage(),
         ),
       ),
 
