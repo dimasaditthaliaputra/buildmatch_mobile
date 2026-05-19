@@ -148,7 +148,7 @@ class _SetupProfileViewState extends State<SetupProfileView> {
             
             final roleLower = widget.role.toLowerCase();
             if (roleLower == 'contractor') {
-              context.go('/contractor-dashboard');
+              context.go('/verif-contractor');
             } else if (roleLower == 'architect') {
               context.go('/architect-dashboard');
             } else {
