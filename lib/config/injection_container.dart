@@ -1,6 +1,13 @@
 import 'package:get_it/get_it.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
+// Profile Feature Clean Architecture Imports
+import '../features/profile/data/datasources/profile_local_data_source.dart';
+import '../features/profile/data/repositories/profile_repository_impl.dart';
+import '../features/profile/domain/repositories/profile_repository.dart';
+import '../features/profile/domain/usecases/setup_profile_usecase.dart';
+import '../features/profile/presentation/bloc/profile_bloc.dart';
+
 import '../core/network/network_info.dart';
 
 import '../features/auth/data/datasources/auth_remote_data_source.dart';
@@ -117,6 +124,7 @@ Future<void> init() async {
   initRatingClient();
   initDetailPortofolio();
   initProjectContractorList();
+  initProfileSetup();
 }
 
 void initContractorDashboard() {
@@ -198,5 +206,16 @@ void initProjectContractorList() {
   );
   sl.registerLazySingleton<ContractorProjectRemoteDataSource>(
     () => ContractorProjectRemoteDataSourceImpl(), 
+  );
+}
+
+void initProfileSetup() {
+  sl.registerFactory(() => ProfileBloc(setupProfileUseCase: sl()));
+  sl.registerLazySingleton(() => SetupProfileUseCase(sl()));
+  sl.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<ProfileLocalDataSource>(
+    () => ProfileLocalDataSourceImpl(),
   );
 }
