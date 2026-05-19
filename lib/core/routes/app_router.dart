@@ -145,6 +145,10 @@ class AppRouter {
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
           child: const ArchitectDashboardPage(),
+        )
+      ),
+
+      // 6. GLOBAL FUNCTION
       GoRoute(
         path: '/rating-client',
         name: 'rating-client',
