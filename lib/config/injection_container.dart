@@ -11,6 +11,13 @@ import '../features/auth/domain/usecases/register_usecase.dart';
 import '../features/auth/domain/usecases/logout_usecase.dart';
 import '../features/auth/presentation/bloc/auth_bloc.dart';
 
+// Roles Feature Clean Architecture Imports
+import '../features/auth/data/datasources/roles_local_data_source.dart';
+import '../features/auth/data/repositories/roles_repository_impl.dart';
+import '../features/auth/domain/repositories/roles_repository.dart';
+import '../features/auth/domain/usecases/getdata_roles_usecase.dart';
+import '../features/auth/presentation/bloc/roles_bloc.dart';
+
 import '../features/onboarding/data/datasources/onboarding_local_data_source.dart';
 import '../features/onboarding/data/repositories/onboarding_repository_impl.dart';
 import '../features/onboarding/domain/repositories/onboarding_repository.dart';
@@ -49,6 +56,16 @@ Future<void> init() async {
       registerUseCase: sl(),
       logoutUseCase: sl(),
     ),
+  );
+
+  // Roles Feature
+  sl.registerFactory(() => RolesBloc(getRolesDataUseCase: sl()));
+  sl.registerLazySingleton(() => GetRolesDataUseCase(sl()));
+  sl.registerLazySingleton<RolesRepository>(
+    () => RolesRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<RolesLocalDataSource>(
+    () => RolesLocalDataSourceImpl(),
   );
 
   sl.registerFactory(() => OnboardingBloc(sl()));

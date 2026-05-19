@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../widgets/dashboard/dashboard_header.dart';
 import '../widgets/dashboard/active_project_card.dart';
 import '../widgets/dashboard/request_card.dart';
 import '../widgets/dashboard/financial_chart.dart';
-import 'architect_project_page.dart';
 
 class ArchitectDashboardPage extends StatelessWidget {
   const ArchitectDashboardPage({super.key});
@@ -48,12 +48,7 @@ class ArchitectDashboardPage extends StatelessWidget {
 
                     GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => const ArchitectProjectPage(),
-                          ),
-                        );
+                        context.push('/architect-proyek');
                       },
                       child: const Text(
                         "LIHAT SEMUA",

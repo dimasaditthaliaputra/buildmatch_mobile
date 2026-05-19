@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:buildmatch_mobile/core/utils/snackbar_utils.dart';
+import 'package:buildmatch_mobile/core/widgets/global_app_bar.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -101,20 +102,11 @@ class _OtpPageState extends State<OtpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      appBar: const GlobalAppBar(
+        title: 'Verifikasi',
         centerTitle: true,
-        title: Text('Verifikasi', style: AppTextStyles.heading3),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: AppColors.textPrimary),
-          onPressed: () {
-            if (context.canPop()) {
-              context.pop();
-            }
-          },
-        ),
+        backgroundColor: Colors.transparent,
       ),
       body: SafeArea(
         child: LayoutBuilder(
@@ -226,6 +218,8 @@ class _OtpPageState extends State<OtpPage> {
                                   setState(() {
                                     _hasError = false;
                                   });
+
+                                  context.go('/choose-roles');
                                 }
                               }
                             : null,
