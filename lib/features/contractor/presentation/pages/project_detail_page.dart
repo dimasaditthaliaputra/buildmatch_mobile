@@ -633,7 +633,7 @@ class _ProjectDetailContent extends StatelessWidget {
           width: double.infinity,
           child: MainButton(
             text: 'Buat Milestone',
-            borderRadius: 20,
+            borderRadius: 24,
             fontSize: btnFontSize,
             padding: EdgeInsets.symmetric(vertical: btnVertPad),
             onPressed: () {},

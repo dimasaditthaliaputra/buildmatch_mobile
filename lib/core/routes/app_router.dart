@@ -1,5 +1,6 @@
 import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
 import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
+import 'package:buildmatch_mobile/features/contractor/presentation/pages/rating_client_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -105,7 +106,6 @@ class AppRouter {
           child: const FormPenawaranPageProvider(),
         ),
       ),
-
       GoRoute(
         path: '/proyek-detail/:id',
         name: 'proyek-detail',
@@ -117,6 +117,14 @@ class AppRouter {
             child: ProjectDetailPage(projectId: id),
           );
         },
+      ),
+      GoRoute(
+        path: '/rating-client',
+        name: 'rating-client',
+        pageBuilder: (context, state) => buildFadeTransitionPage(
+          key: state.pageKey,
+          child: const RatingClientPage(clientId: '', clientName: '',),
+        ),
       ),
     ],
   );
