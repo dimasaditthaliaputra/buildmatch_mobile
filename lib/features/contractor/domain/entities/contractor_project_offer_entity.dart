@@ -1,4 +1,4 @@
-class PenawaranEntity {
+class ContractorProjectOfferEntity {
   final String id;
   final String projectId;
   final String contractorId;
@@ -9,7 +9,7 @@ class PenawaranEntity {
   final PenawaranStatus status;
   final DateTime createdAt;
 
-  const PenawaranEntity({
+  const ContractorProjectOfferEntity({
     required this.id,
     required this.projectId,
     required this.contractorId,

@@ -1,17 +1,17 @@
-part of 'project_contractor_list_bloc.dart';
+part of 'contractor_project_list_bloc.dart';
 
-abstract class ProjectContractorListEvent extends Equatable {
-  const ProjectContractorListEvent();
+abstract class ContractorProjectListEvent extends Equatable {
+  const ContractorProjectListEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class LoadAllProjects extends ProjectContractorListEvent {
+class LoadAllProjects extends ContractorProjectListEvent {
   const LoadAllProjects();
 }
 
-class LoadProjectsByStatus extends ProjectContractorListEvent {
+class LoadProjectsByStatus extends ContractorProjectListEvent {
   final ProjectStatus status;
 
   const LoadProjectsByStatus(this.status);
@@ -20,7 +20,7 @@ class LoadProjectsByStatus extends ProjectContractorListEvent {
   List<Object?> get props => [status];
 }
 
-class SearchProjects extends ProjectContractorListEvent {
+class SearchProjects extends ContractorProjectListEvent {
   final String query;
 
   const SearchProjects(this.query);
@@ -29,7 +29,7 @@ class SearchProjects extends ProjectContractorListEvent {
   List<Object?> get props => [query];
 }
 
-class ChangeFilterTab extends ProjectContractorListEvent {
+class ChangeFilterTab extends ContractorProjectListEvent {
   final ProjectFilterTab tab;
 
   const ChangeFilterTab(this.tab);

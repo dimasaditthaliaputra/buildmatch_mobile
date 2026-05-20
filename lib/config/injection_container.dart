@@ -43,11 +43,11 @@ import '../features/contractor/domain/usecases/get_contractor_dashboard_usecase.
 import '../features/contractor/presentation/bloc/contractor_dashboard_bloc.dart';
 import '../features/contractor/data/datasources/contractor_dashboard_remote_datasource.dart';
 
-import '../features/contractor/domain/usecases/get_penawaran_usecase.dart';
-import '../features/contractor/domain/repositories/penawaran_repository.dart';
-import '../features/contractor/data/repositories/penawaran_repository_impl.dart';
-import '../features/contractor/presentation/bloc/penawaran_bloc.dart';
-import '../features/contractor/data/datasources/penawaran_remote_datasource.dart';
+import '../features/contractor/domain/usecases/get_contractor_project_offer_usecase.dart';
+import '../features/contractor/domain/repositories/contractor_project_offer_repository.dart';
+import '../features/contractor/data/repositories/contractor_project_offer_repository_impl.dart';
+import '../features/contractor/presentation/bloc/contractor_project_offer_bloc.dart';
+import '../features/contractor/data/datasources/contractor_project_offer_remote_datasource.dart';
 
 import '../features/contractor/data/datasources/project_detail_local_data_source.dart';
 import '../features/contractor/data/repositories/project_detail_repository_impl.dart';
@@ -55,12 +55,12 @@ import '../features/contractor/domain/repositories/project_detail_repository.dar
 import '../features/contractor/domain/usecases/get_project_detail.dart';
 import '../features/contractor/presentation/bloc/project_detail_bloc.dart';
 
-import '../features/contractor/data/datasources/project_contractor_list_datasource.dart';
-import '../features/contractor/data/repositories/project_contractor_list_impl.dart';
-import '../features/contractor/domain/repositories/project_contractor_list_repository.dart';
+import '../features/contractor/data/datasources/contractor_project_list_datasource.dart';
+import '../features/contractor/data/repositories/contractor_project_list_impl.dart';
+import '../features/contractor/domain/repositories/contractor_project_list_repository.dart';
 import '../features/contractor/domain/usecases/get_all_project.dart';
 import '../features/contractor/domain/usecases/get_project_by_status.dart';
-import '../features/contractor/presentation/bloc/project_contractor_list_bloc.dart';
+import '../features/contractor/presentation/bloc/contractor_project_list_bloc.dart';
 
 import '../features/rating/data/datasources/rating_client_local_data_source.dart';
 import '../features/rating/data/repositories/rating_client_repository_impl.dart';
@@ -194,12 +194,12 @@ void initContractorProjectRequest() {
 }
 
 void initPenawaran() {
-  sl.registerFactory(() => PenawaranBloc(getPenawaranUseCase: sl()));
-  sl.registerLazySingleton(() => GetPenawaranUsecase(sl()));
-  sl.registerLazySingleton<PenawaranRepository>(
-    () => PenawaranRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()),
+  sl.registerFactory(() => ContractorProjectOfferBloc(getPenawaranUseCase: sl()));
+  sl.registerLazySingleton(() => GetContractorProjectOfferUsecase(sl()));
+  sl.registerLazySingleton<ContractorProjectOfferRepository>(
+    () => ContractorProjectOfferRepositoryImpl(remoteDataSource: sl(), networkInfo: sl()),
   );
-  sl.registerLazySingleton<PenawaranRemoteDataSource>(
+  sl.registerLazySingleton<ContractorProjectOfferRemoteDataSource>(
     () => PenawaranRemoteDataSourceImpl(),
   );
 }
@@ -228,17 +228,17 @@ void initDetailPortofolio() {
 
 void initProjectContractorList() {
   sl.registerFactory(
-    () => ProjectContractorListBloc(
+    () => ContractorProjectListBloc(
       getAllProjects: sl(),
       getProjectsByStatus: sl(),
     ),
   );
   sl.registerLazySingleton(() => GetAllProjects(sl()));
   sl.registerLazySingleton(() => GetProjectsByStatus(sl()));
-  sl.registerLazySingleton<ProjectContractorListRepository>(
-    () => ContractorProjectRepositoryImpl(remoteDataSource: sl()),
+  sl.registerLazySingleton<ContractorProjectListRepository>(
+    () => ContractorProjectListRepositoryImpl(remoteDataSource: sl()),
   );
-  sl.registerLazySingleton<ContractorProjectRemoteDataSource>(
+  sl.registerLazySingleton<ContractorProjectListRemoteDataSource>(
     () => ContractorProjectRemoteDataSourceImpl(),
   );
 }

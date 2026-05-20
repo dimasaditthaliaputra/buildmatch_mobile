@@ -3,13 +3,13 @@ import '../../../../../core/utils/date_formatter.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_text_styles.dart';
 import '../../../../../core/utils/screen_size.dart';
-import '../../domain/entities/project_contractor_list_entity.dart';
+import '../../domain/entities/contractor_project_list_entity.dart';
 import '../../../../../core/widgets/global_card.dart';
 import '../../../../../core/widgets/badge_widget.dart';
 import '../../../../../core/widgets/main_button.dart';
 
 class ProjectContractorCard extends StatelessWidget {
-  final ProjectContractorListEntity project; 
+  final ContractorProjectListEntity project; 
   final VoidCallback onTap;
 
   const ProjectContractorCard({

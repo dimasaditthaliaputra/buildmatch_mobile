@@ -1,19 +1,19 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/entities/project_contractor_list_entity.dart';
+import '../../domain/entities/contractor_project_list_entity.dart';
 import '../../domain/usecases/get_all_project.dart';
 import '../../domain/usecases/get_project_by_status.dart';
 
-part 'project_contractor_list_event.dart';
-part 'project_contractor_list_state.dart';
+part 'contractor_project_list_event.dart';
+part 'contractor_project_list_state.dart';
 
-class ProjectContractorListBloc
-    extends Bloc<ProjectContractorListEvent, ProjectContractorListState> {
+class ContractorProjectListBloc
+    extends Bloc<ContractorProjectListEvent, ContractorProjectListState> {
   final GetAllProjects getAllProjects;
   final GetProjectsByStatus getProjectsByStatus;
 
-  ProjectContractorListBloc({
+  ContractorProjectListBloc({
     required this.getAllProjects,
     required this.getProjectsByStatus,
   }) : super(const ProjectContractorListInitial()) {
@@ -25,7 +25,7 @@ class ProjectContractorListBloc
 
   Future<void> _onLoadAllProjects(
     LoadAllProjects event,
-    Emitter<ProjectContractorListState> emit,
+    Emitter<ContractorProjectListState> emit,
   ) async {
     emit(const ProjectContractorListLoading());
     final result = await getAllProjects();
@@ -43,7 +43,7 @@ class ProjectContractorListBloc
 
   Future<void> _onLoadProjectsByStatus(
     LoadProjectsByStatus event,
-    Emitter<ProjectContractorListState> emit,
+    Emitter<ContractorProjectListState> emit,
   ) async {
     emit(const ProjectContractorListLoading());
     final result = await getProjectsByStatus(event.status);
@@ -66,7 +66,7 @@ class ProjectContractorListBloc
 
   void _onSearchProjects(
     SearchProjects event,
-    Emitter<ProjectContractorListState> emit,
+    Emitter<ContractorProjectListState> emit,
   ) {
     if (state is ProjectContractorListLoaded) {
       final currentState = state as ProjectContractorListLoaded;
@@ -93,7 +93,7 @@ class ProjectContractorListBloc
 
   void _onChangeFilterTab(
     ChangeFilterTab event,
-    Emitter<ProjectContractorListState> emit,
+    Emitter<ContractorProjectListState> emit,
   ) {
     if (state is ProjectContractorListLoaded) {
       final currentState = state as ProjectContractorListLoaded;

@@ -35,8 +35,8 @@ import '../../features/contractor/presentation/pages/contractor_dashboard_page.d
 import '../../features/contractor/presentation/bloc/contractor_dashboard_bloc.dart';
 import '../../features/contractor/presentation/pages/contractor_project_requests_page.dart';
 import '../../features/contractor/presentation/pages/project_detail_page.dart';
-import '../../features/contractor/presentation/pages/formpenawaran_page.dart';
-import '../../features/contractor/presentation/pages/project_contractor_list.dart';
+import '../../features/contractor/presentation/pages/contractor_project_offer_page.dart';
+import '../../features/contractor/presentation/pages/contractor_project_list.dart';
 import '../../features/contractor/presentation/pages/contractor_add_progres_page.dart';
 
 
@@ -52,7 +52,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/contractor-proyek-requests',
+    initialLocation: '/splash',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -156,7 +156,7 @@ class AppRouter {
       GoRoute(
         path: '/form-penawaran',
         name: 'form-penawaran',
-        builder: (context, state) => const FormPenawaranPageProvider(),
+        builder: (context, state) => const ContractorProjectOfferPageProvider(),
       ),
       GoRoute(
         path: '/proyek-detail/:id',

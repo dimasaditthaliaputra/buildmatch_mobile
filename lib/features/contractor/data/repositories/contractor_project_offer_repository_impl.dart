@@ -3,21 +3,21 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/network/network_info.dart';
-import '../../domain/entities/penawaran_entity.dart';
-import '../../domain/repositories/penawaran_repository.dart';
-import '../datasources/penawaran_remote_datasource.dart';
+import '../../domain/entities/contractor_project_offer_entity.dart';
+import '../../domain/repositories/contractor_project_offer_repository.dart';
+import '../datasources/contractor_project_offer_remote_datasource.dart';
 
-class PenawaranRepositoryImpl implements PenawaranRepository {
-  final PenawaranRemoteDataSource remoteDataSource;
+class ContractorProjectOfferRepositoryImpl implements ContractorProjectOfferRepository {
+  final ContractorProjectOfferRemoteDataSource remoteDataSource;
   final NetworkInfo networkInfo;
 
-  const PenawaranRepositoryImpl({
+  const ContractorProjectOfferRepositoryImpl({
     required this.remoteDataSource,
     required this.networkInfo,
   });
 
   @override
-  Future<Either<Failure, PenawaranEntity>> ajukanPenawaran({
+  Future<Either<Failure, ContractorProjectOfferEntity>> ajukanPenawaran({
     required String projectId,
     required int budgetMin,
     required int budgetMax,

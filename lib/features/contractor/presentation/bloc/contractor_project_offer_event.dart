@@ -1,13 +1,13 @@
-part of 'penawaran_bloc.dart';
+part of 'contractor_project_offer_bloc.dart';
 
-abstract class PenawaranEvent extends Equatable {
-  const PenawaranEvent();
+abstract class ContractorProjectOfferEvent extends Equatable {
+  const ContractorProjectOfferEvent();
 
   @override
   List<Object?> get props => [];
 }
 
-class BudgetMinChanged extends PenawaranEvent {
+class BudgetMinChanged extends ContractorProjectOfferEvent {
   final int value;
   const BudgetMinChanged(this.value);
 
@@ -15,7 +15,7 @@ class BudgetMinChanged extends PenawaranEvent {
   List<Object?> get props => [value];
 }
 
-class BudgetMaxChanged extends PenawaranEvent {
+class BudgetMaxChanged extends ContractorProjectOfferEvent {
   final int value;
   const BudgetMaxChanged(this.value);
 
@@ -23,7 +23,7 @@ class BudgetMaxChanged extends PenawaranEvent {
   List<Object?> get props => [value];
 }
 
-class PesanChanged extends PenawaranEvent {
+class PesanChanged extends ContractorProjectOfferEvent {
   final String value;
   const PesanChanged(this.value);
 
@@ -31,7 +31,7 @@ class PesanChanged extends PenawaranEvent {
   List<Object?> get props => [value];
 }
 
-class EstimasiWaktuChanged extends PenawaranEvent {
+class EstimasiWaktuChanged extends ContractorProjectOfferEvent {
   final DateTime value;
   const EstimasiWaktuChanged(this.value);
 
@@ -39,7 +39,7 @@ class EstimasiWaktuChanged extends PenawaranEvent {
   List<Object?> get props => [value];
 }
 
-class PenawaranSubmitted extends PenawaranEvent {
+class PenawaranSubmitted extends ContractorProjectOfferEvent {
   final String projectId;
   const PenawaranSubmitted({required this.projectId});
 
@@ -47,6 +47,6 @@ class PenawaranSubmitted extends PenawaranEvent {
   List<Object?> get props => [projectId];
 }
 
-class PenawaranReset extends PenawaranEvent {
+class PenawaranReset extends ContractorProjectOfferEvent {
   const PenawaranReset();
 }

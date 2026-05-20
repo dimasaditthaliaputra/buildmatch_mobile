@@ -1,23 +1,23 @@
 // import 'package:supabase_flutter/supabase_flutter.dart';
 // import '../../../../core/error/exceptions.dart';
-import '../../domain/entities/project_contractor_list_entity.dart';
-import '../models/project_contractor_list_model.dart';
+import '../../domain/entities/contractor_project_list_entity.dart';
+import '../models/contractor_project_list_model.dart';
 
-abstract class ContractorProjectRemoteDataSource {
-  Future<List<ProjectContractorListEntity>> getProjects();
-  Future<List<ProjectContractorListEntity>> getProjectsByStatus(ProjectStatus status);
+abstract class ContractorProjectListRemoteDataSource {
+  Future<List<ContractorProjectListEntity>> getProjects();
+  Future<List<ContractorProjectListEntity>> getProjectsByStatus(ProjectStatus status);
 }
 
 class ContractorProjectRemoteDataSourceImpl
-    implements ContractorProjectRemoteDataSource {
+    implements ContractorProjectListRemoteDataSource {
   // final SupabaseClient supabaseClient;
 
   // ContractorProjectRemoteDataSourceImpl({required this.supabaseClient});
 
   ContractorProjectRemoteDataSourceImpl();
 
-  final List<ProjectContractorListModel> _dummyProjects = [
-    ProjectContractorListModel(
+  final List<ContractorProjectListModel> _dummyProjects = [
+    ContractorProjectListModel(
       id: '1',
       name: 'Renovasi Ruang LPY 4',
       location: 'Polinema, Malang',
@@ -25,7 +25,7 @@ class ContractorProjectRemoteDataSourceImpl
       clientName: 'Billie Eilish',
       status: ProjectStatus.berjalan,
     ),
-    ProjectContractorListModel(
+    ContractorProjectListModel(
       id: '2',
       name: 'Proyek Pembangunan PT. Indah',
       location: 'Lowokwaru, Malang',
@@ -34,7 +34,7 @@ class ContractorProjectRemoteDataSourceImpl
       status: ProjectStatus.berjalan,
     ),
     
-    ProjectContractorListModel(
+    ContractorProjectListModel(
       id: '3',
       name: 'Ruang Tidur Anak Kecil',
       location: 'Polinema, Malang',
@@ -42,7 +42,7 @@ class ContractorProjectRemoteDataSourceImpl
       clientName: 'Ramon Simon',
       status: ProjectStatus.selesai,
     ),
-    ProjectContractorListModel(
+    ContractorProjectListModel(
       id: '4',
       name: 'Rumah Grand Heaven',
       location: 'Lowokwaru, Malang',
@@ -53,7 +53,7 @@ class ContractorProjectRemoteDataSourceImpl
   ];
 
   @override
-  Future<List<ProjectContractorListModel>> getProjects() async {
+  Future<List<ContractorProjectListModel>> getProjects() async {
     // try {
     //   final response = await supabaseClient
     //       .from('projects')
@@ -73,7 +73,7 @@ class ContractorProjectRemoteDataSourceImpl
   }
 
   @override
-  Future<List<ProjectContractorListModel>> getProjectsByStatus(
+  Future<List<ContractorProjectListModel>> getProjectsByStatus(
     ProjectStatus status,
   ) async {
     // try {

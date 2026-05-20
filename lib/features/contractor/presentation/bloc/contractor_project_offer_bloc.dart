@@ -1,14 +1,14 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../domain/usecases/get_penawaran_usecase.dart';
-part 'penawaran_event.dart';
-part 'penawaran_state.dart';
+import '../../domain/usecases/get_contractor_project_offer_usecase.dart';
+part 'contractor_project_offer_event.dart';
+part 'contractor_project_offer_state.dart';
 
-class PenawaranBloc extends Bloc<PenawaranEvent, PenawaranState> {
-  final GetPenawaranUsecase getPenawaranUseCase;
+class ContractorProjectOfferBloc extends Bloc<ContractorProjectOfferEvent, ContractorProjectOfferState> {
+  final GetContractorProjectOfferUsecase getPenawaranUseCase;
 
-  PenawaranBloc({required this.getPenawaranUseCase})
-      : super(PenawaranState.initial()) {
+  ContractorProjectOfferBloc({required this.getPenawaranUseCase})
+      : super(ContractorProjectOfferState.initial()) {
     on<BudgetMinChanged>(_onBudgetMinChanged);
     on<BudgetMaxChanged>(_onBudgetMaxChanged);
     on<PesanChanged>(_onPesanChanged);
@@ -19,7 +19,7 @@ class PenawaranBloc extends Bloc<PenawaranEvent, PenawaranState> {
 
   void _onBudgetMinChanged(
     BudgetMinChanged event,
-    Emitter<PenawaranState> emit,
+    Emitter<ContractorProjectOfferState> emit,
   ) {
     emit(state.copyWith(
       budgetMin: event.value,
@@ -29,7 +29,7 @@ class PenawaranBloc extends Bloc<PenawaranEvent, PenawaranState> {
 
   void _onBudgetMaxChanged(
     BudgetMaxChanged event,
-    Emitter<PenawaranState> emit,
+    Emitter<ContractorProjectOfferState> emit,
   ) {
     emit(state.copyWith(
       budgetMax: event.value,
@@ -39,14 +39,14 @@ class PenawaranBloc extends Bloc<PenawaranEvent, PenawaranState> {
 
   void _onPesanChanged(
     PesanChanged event,
-    Emitter<PenawaranState> emit,
+    Emitter<ContractorProjectOfferState> emit,
   ) {
     emit(state.copyWith(pesan: event.value));
   }
 
   void _onEstimasiWaktuChanged(
     EstimasiWaktuChanged event,
-    Emitter<PenawaranState> emit,
+    Emitter<ContractorProjectOfferState> emit,
   ) {
     emit(state.copyWith(
       estimasiWaktu: event.value,
@@ -56,11 +56,11 @@ class PenawaranBloc extends Bloc<PenawaranEvent, PenawaranState> {
 
   Future<void> _onPenawaranSubmitted(
     PenawaranSubmitted event,
-    Emitter<PenawaranState> emit,
+    Emitter<ContractorProjectOfferState> emit,
   ) async {
     if (!state.isFormValid || state.isLoading) return;
 
-    emit(state.copyWith(submitStatus: PenawaranSubmitStatus.loading));
+    emit(state.copyWith(submitStatus: ProjectOfferSubmitStatus.loading));
 
     final result = await getPenawaranUseCase(
       GetPenawaranParams(
@@ -74,11 +74,11 @@ class PenawaranBloc extends Bloc<PenawaranEvent, PenawaranState> {
 
     result.fold(
       (failure) => emit(state.copyWith(
-        submitStatus: PenawaranSubmitStatus.failure,
+        submitStatus: ProjectOfferSubmitStatus.failure,
         errorMessage: failure.message,
       )),
       (_) => emit(state.copyWith(
-        submitStatus: PenawaranSubmitStatus.success,
+        submitStatus: ProjectOfferSubmitStatus.success,
         clearError: true,
       )),
     );
@@ -86,8 +86,8 @@ class PenawaranBloc extends Bloc<PenawaranEvent, PenawaranState> {
 
   void _onPenawaranReset(
     PenawaranReset event,
-    Emitter<PenawaranState> emit,
+    Emitter<ContractorProjectOfferState> emit,
   ) {
-    emit(PenawaranState.initial());
+    emit(ContractorProjectOfferState.initial());
   }
 }
