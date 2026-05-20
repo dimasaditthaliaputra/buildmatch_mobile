@@ -49,11 +49,11 @@ import '../features/contractor/data/repositories/contractor_project_offer_reposi
 import '../features/contractor/presentation/bloc/contractor_project_offer_bloc.dart';
 import '../features/contractor/data/datasources/contractor_project_offer_remote_datasource.dart';
 
-import '../features/contractor/data/datasources/project_detail_local_data_source.dart';
-import '../features/contractor/data/repositories/project_detail_repository_impl.dart';
-import '../features/contractor/domain/repositories/project_detail_repository.dart';
-import '../features/contractor/domain/usecases/get_project_detail.dart';
-import '../features/contractor/presentation/bloc/project_detail_bloc.dart';
+import '../features/contractor/data/datasources/contractor_project_detail_data_source.dart';
+import '../features/contractor/data/repositories/contractor_project_detail_repository_impl.dart';
+import '../features/contractor/domain/repositories/contractor_project_detail_repository.dart';
+import '../features/contractor/domain/usecases/get_contractor_project_detail.dart';
+import '../features/contractor/presentation/bloc/contractor_project_detail_bloc.dart';
 
 import '../features/contractor/data/datasources/contractor_project_list_datasource.dart';
 import '../features/contractor/data/repositories/contractor_project_list_impl.dart';
@@ -172,10 +172,10 @@ void initContractorDashboard() {
 }
 
 void initContractorProjectDetail() {
-  sl.registerFactory(() => ProjectDetailBloc(sl()));
-  sl.registerLazySingleton(() => GetProjectDetail(sl()));
-  sl.registerLazySingleton<ProjectDetailRepository>(
-    () => ProjectDetailRepositoryImpl(sl()),
+  sl.registerFactory(() => ContractorProjectDetailBloc(sl()));
+  sl.registerLazySingleton(() => GetContractorProjectDetail(sl()));
+  sl.registerLazySingleton<ContractorProjectDetailRepository>(
+    () => ContractorProjectDetailRepositoryImpl(sl()),
   );
   sl.registerLazySingleton<ContractorProjectRequestDetailLocalDataSource>(
     () => ContractorProjectRequestDetailLocalDataSourceImpl(),

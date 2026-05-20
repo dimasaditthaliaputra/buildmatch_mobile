@@ -1,15 +1,15 @@
 import '../../domain/entities/contractor_project_request_entity.dart'; // Untuk status
-import '../../domain/entities/project_detail_entity.dart';
+import '../../domain/entities/contractor_project_detail_entity.dart';
 
 abstract class ContractorProjectRequestDetailLocalDataSource {
-  ProjectDetailEntity getProjectRequestDetail(String id);
+  ContractorProjectDetailEntity getProjectRequestDetail(String id);
 }
 
 class ContractorProjectRequestDetailLocalDataSourceImpl implements ContractorProjectRequestDetailLocalDataSource {
   @override
-  ProjectDetailEntity getProjectRequestDetail(String id) {
-    final Map<String, ProjectDetailEntity> details = {
-      '1': const ProjectDetailEntity(
+  ContractorProjectDetailEntity getProjectRequestDetail(String id) {
+    final Map<String, ContractorProjectDetailEntity> details = {
+      '1': const ContractorProjectDetailEntity(
         id: '1',
         title: 'Modern Zen Villa – Pejaten Terrace',
         category: 'RESIDENSIAL',
@@ -29,20 +29,20 @@ class ContractorProjectRequestDetailLocalDataSourceImpl implements ContractorPro
         description:
             'Mencari kontraktor untuk villa 3 kamar tidur dengan konsep industrial-tropical. Fokus pada sirkulasi udara alami, pencahayaan natural, dan material lokal Bali. Diutamakan yang berpengalaman di area taman',
         files: [
-          ProjectFile(name: 'Blueprint', type: 'PDF', size: '2.4 MB'),
-          ProjectFile(name: 'Exterior_side', type: 'PNG', size: '1.1 MB'),
+          ContractorProjectFile(name: 'Blueprint', type: 'PDF', size: '2.4 MB'),
+          ContractorProjectFile(name: 'Exterior_side', type: 'PNG', size: '1.1 MB'),
         ],
         bidCount: 12,
         avgBid: '490jt',
         avgWorkDays: '300 Hari',
-        client: ProjectClient(
+        client: ContractorProjectClient(
           name: 'Marcus Chen',
           avatarColor: 'orange',
           isVerified: true,
           location: 'Jakarta',
         ),
       ),
-      '2': const ProjectDetailEntity(
+      '2': const ContractorProjectDetailEntity(
         id: '2',
         title: 'Creative Hub Office Expansion',
         category: 'KOMERSIAL',
@@ -62,20 +62,20 @@ class ContractorProjectRequestDetailLocalDataSourceImpl implements ContractorPro
         description:
             'Ekspansi kantor kreatif dengan konsep open space dan coworking area. Butuh kontraktor berpengalaman di proyek komersial skala menengah.',
         files: [
-          ProjectFile(name: 'Blueprint_Office', type: 'PDF', size: '3.1 MB'),
-          ProjectFile(name: 'Layout_3D', type: 'PNG', size: '2.4 MB'),
+          ContractorProjectFile(name: 'Blueprint_Office', type: 'PDF', size: '3.1 MB'),
+          ContractorProjectFile(name: 'Layout_3D', type: 'PNG', size: '2.4 MB'),
         ],
         bidCount: 8,
         avgBid: '700jt',
         avgWorkDays: '250 Hari',
-        client: ProjectClient(
+        client: ContractorProjectClient(
           name: 'Rina Dewi',
           avatarColor: 'blue',
           isVerified: true,
           location: 'Tangerang',
         ),
       ),
-      '3': const ProjectDetailEntity(
+      '3': const ContractorProjectDetailEntity(
         id: '3',
         title: 'Creative Hub Office Expansion',
         category: 'RESIDENSIAL',
@@ -95,12 +95,12 @@ class ContractorProjectRequestDetailLocalDataSourceImpl implements ContractorPro
         description:
             'Pembangunan rumah tinggal 2 lantai dengan konsep minimalis modern. Material premium dengan finishing berkualitas tinggi.',
         files: [
-          ProjectFile(name: 'Denah_Rumah', type: 'PDF', size: '1.8 MB'),
+          ContractorProjectFile(name: 'Denah_Rumah', type: 'PDF', size: '1.8 MB'),
         ],
         bidCount: 5,
         avgBid: '375jt',
         avgWorkDays: '180 Hari',
-        client: ProjectClient(
+        client: ContractorProjectClient(
           name: 'Budi Santoso',
           avatarColor: 'green',
           isVerified: false,
@@ -109,9 +109,8 @@ class ContractorProjectRequestDetailLocalDataSourceImpl implements ContractorPro
       ),
     };
 
-    // Menggunakan ID yang diminta, atau default ke dummy object jika tidak ditemukan
     return details[id] ??
-        const ProjectDetailEntity(
+        const ContractorProjectDetailEntity(
           id: '0',
           title: 'Unknown Project',
           category: 'RESIDENSIAL',
@@ -127,7 +126,7 @@ class ContractorProjectRequestDetailLocalDataSourceImpl implements ContractorPro
           budgetMin: '',
           budgetMax: '',
           description: '',
-          client: ProjectClient(name: '', avatarColor: '', location: ''),
+          client: ContractorProjectClient(name: '', avatarColor: '', location: ''),
         );
   }
 }
