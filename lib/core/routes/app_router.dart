@@ -37,6 +37,8 @@ import '../../features/contractor/presentation/pages/proyek_page.dart';
 import '../../features/contractor/presentation/pages/project_detail_page.dart';
 import '../../features/contractor/presentation/pages/formpenawaran_page.dart';
 import '../../features/contractor/presentation/pages/project_contractor_list.dart';
+import '../../features/contractor/presentation/pages/contractor_add_progres_page.dart';
+
 
 // Features - Architect Role
 import '../../features/architect/presentation/pages/architect_dashboard_page.dart';
@@ -170,12 +172,20 @@ class AppRouter {
           );
         },
       ),
-      GoRoute(
+      GoRoute( 
         path: '/project-contractor-list',
         name: 'project-contractor-list',
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
           child: const MainLayoutShell(role: UserRole.contractor, initialTab: 1),
+        )
+      ),
+      GoRoute(
+        path: '/contractor-add-progres',
+        name: 'contractor-add-progres',
+        pageBuilder: (context, state) => buildFadeTransitionPage(
+          key: state.pageKey,
+          child: const ContractorAddProgresPageWrapper(),
         )
       ),
 

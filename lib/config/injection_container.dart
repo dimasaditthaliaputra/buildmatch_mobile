@@ -79,6 +79,12 @@ import '../features/detail_portofolio/domain/repositories/portofolio_repository.
 import '../features/detail_portofolio/domain/usecases/get_portofolio_usecase.dart';
 import '../features/detail_portofolio/presentation/bloc/portofolio_bloc.dart';
 
+import '../features/contractor/data/datasources/contractor_progres_local_data_source.dart';
+import '../features/contractor/data/repositories/contractor_progres_repository_impl.dart';
+import '../features/contractor/domain/repositories/contractor_progres_repository.dart';
+import '../features/contractor/domain/usecases/get_contractor_progres_usecases.dart';
+import '../features/contractor/presentation/bloc/contractor_add_progres_bloc.dart';
+
 // Client Dashboard Feature
 import '../features/client/data/datasources/client_dashboard_local_data_source.dart';
 import '../features/client/data/repositories/client_dashboard_repository_impl.dart';
@@ -148,6 +154,7 @@ Future<void> init() async {
   initWaitingApproval();
   initClientDashboard();
   initClientProject();
+  initContractorProgres();
 }
 
 void initContractorDashboard() {
@@ -291,3 +298,15 @@ void initClientProject() {
   );
 }
 
+void initContractorProgres() {
+  sl.registerFactory(() => ContractorAddProgresBloc(getJenisPekerjaanUseCase: sl(),
+      simpanProgresUseCase: sl(),));
+  sl.registerLazySingleton(() => GetJenisPekerjaanUseCase(sl()));
+  sl.registerLazySingleton(() => SimpanProgresUseCase(sl()));
+  sl.registerLazySingleton<ContractorProgressRepository>(
+    () => ContractorProgresRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<ContractorProgresLocalDataSource>(
+    () => ProgresLocalDataSourceImpl(),
+  );
+}
