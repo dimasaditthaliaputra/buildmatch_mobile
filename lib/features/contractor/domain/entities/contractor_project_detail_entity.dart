@@ -1,19 +1,19 @@
 import 'package:buildmatch_mobile/features/contractor/domain/entities/contractor_project_request_entity.dart';
 
-class ProjectDetailEntity extends ContractorProjectRequestEntity {
+class ContractorProjectDetailEntity extends ContractorProjectRequestEntity {
   final String buildingHeight;
   final String startDate;
   final String endDate;
   final String budgetMin;
   final String budgetMax;
   final String description;
-  final List<ProjectFile> files;
+  final List<ContractorProjectFile> files;
   final int bidCount;
   final String avgBid;
   final String avgWorkDays;
-  final ProjectClient client;
+  final ContractorProjectClient client;
 
-  const ProjectDetailEntity({
+  const ContractorProjectDetailEntity({
     required super.id,
     required super.title,
     required super.category,
@@ -39,25 +39,25 @@ class ProjectDetailEntity extends ContractorProjectRequestEntity {
   });
 }
 
-class ProjectFile {
+class ContractorProjectFile {
   final String name;
   final String type;
   final String size;
 
-  const ProjectFile({
+  const ContractorProjectFile({
     required this.name,
     required this.type,
     required this.size,
   });
 }
 
-class ProjectClient {
+class ContractorProjectClient {
   final String name;
   final String avatarColor;
   final bool isVerified;
   final String location;
 
-  const ProjectClient({
+  const ContractorProjectClient({
     required this.name,
     required this.avatarColor,
     this.isVerified = false,
