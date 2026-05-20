@@ -39,7 +39,6 @@ import '../../features/contractor/presentation/pages/contractor_project_offer_pa
 import '../../features/contractor/presentation/pages/contractor_project_list.dart';
 import '../../features/contractor/presentation/pages/contractor_add_progres_page.dart';
 
-
 // Features - Architect Role
 import '../../features/architect/presentation/pages/architect_dashboard_page.dart';
 
@@ -52,7 +51,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/contractor-proyek-offer',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -154,8 +153,8 @@ class AppRouter {
         builder: (context, state) => const ContractorProjectRequestsPage(),
       ),
       GoRoute(
-        path: '/form-penawaran',
-        name: 'form-penawaran',
+        path: '/contractor-proyek-offer',
+        name: 'contractor-proyek-offer',
         builder: (context, state) => const ContractorProjectOfferPageProvider(),
       ),
       GoRoute(
@@ -170,24 +169,16 @@ class AppRouter {
           );
         },
       ),
-      GoRoute( 
-        path: '/project-contractor-list',
-        name: 'project-contractor-list',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const MainLayoutShell(
-            role: UserRole.contractor,
-            initialTab: 1,
-          ),
-        ),
+      GoRoute(
+        path: '/contractor-project-list',
+        name: 'contractor-project-list',
+        builder: (context, state) =>
+            const MainLayoutShell(role: UserRole.contractor, initialTab: 1),
       ),
       GoRoute(
         path: '/contractor-add-progres',
         name: 'contractor-add-progres',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const ContractorAddProgresPageWrapper(),
-        )
+        builder: (context, state) => const ContractorAddProgresPageWrapper(),
       ),
 
       // 5. ARCHITECT ROLE ROUTES
@@ -204,18 +195,13 @@ class AppRouter {
       GoRoute(
         path: '/rating-client',
         name: 'rating-client',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const RatingClientPage(clientId: '', clientName: ''),
-        ),
+        builder: (context, state) =>
+            const RatingClientPage(clientId: '', clientName: ''),
       ),
       GoRoute(
         path: '/detail-portofolio',
         name: 'detail-portofolio',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const DetailPortofolioPageProvider(),
-        ),
+        builder: (context, state) => const DetailPortofolioPageProvider(),
       ),
     ],
   );

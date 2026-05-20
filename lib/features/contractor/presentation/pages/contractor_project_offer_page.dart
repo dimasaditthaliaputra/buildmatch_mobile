@@ -8,11 +8,11 @@ import '../../../../core/widgets/main_button.dart';
 import '../../../../core/widgets/global_text_field.dart';
 import '../../../../core/utils/screen_size.dart';
 import '../../../../core/widgets/global_card.dart';
+import '../../../../core/widgets/global_app_bar.dart';
 import '../bloc/contractor_project_offer_bloc.dart';
 import '../widgets/budget_range_input.dart';
 import '../widgets/estimasi_waktu_picker.dart';
 import '../widgets/proyek_info_card.dart';
-
 
 class ContractorProjectOfferPageProvider extends StatelessWidget {
   const ContractorProjectOfferPageProvider({super.key});
@@ -39,10 +39,12 @@ class ContractorProjectOfferView extends StatefulWidget {
   const ContractorProjectOfferView();
 
   @override
-  State<ContractorProjectOfferView> createState() => _ContractorProjectOfferViewState();
+  State<ContractorProjectOfferView> createState() =>
+      _ContractorProjectOfferViewState();
 }
 
-class _ContractorProjectOfferViewState extends State<ContractorProjectOfferView> {
+class _ContractorProjectOfferViewState
+    extends State<ContractorProjectOfferView> {
   final _pesanController = TextEditingController();
   final _scrollController = ScrollController();
 
@@ -78,28 +80,13 @@ class _ContractorProjectOfferViewState extends State<ContractorProjectOfferView>
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: AppBar(
+      appBar: const GlobalAppBar(
+        title: 'Ajukan Penawaran',
         backgroundColor: AppColors.surface,
-        elevation: 0,
-        leading: GestureDetector(
-          onTap: () => context.pop(),
-          child: Container(
-            margin: const EdgeInsets.all(8),
-            child: const Icon(
-              Icons.arrow_back,
-              color: AppColors.primaryBlack,
-              size: 24,
-            ),
-          ),
-        ),
-        title: Text(
-          'Ajukan Penawaran',
-          style: AppTextStyles.heading3.copyWith(
-            color: AppColors.primary,
-            fontWeight: FontWeight.w700,
-            fontSize: 20,
-          ),
-        ),
+        titleColor: AppColors.primary,
+        titleFontSize: 20,
+        titleFontWeight: FontWeight.w700,
+        showBackButton: true,
         centerTitle: false,
       ),
       body: BlocConsumer<ContractorProjectOfferBloc, ContractorProjectOfferState>(
@@ -169,6 +156,7 @@ class _ContractorProjectOfferViewState extends State<ContractorProjectOfferView>
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           BudgetRangeInput(
+                            title: 'Pilih Rentang Budget',
                             onMinChanged: (value) => context
                                 .read<ContractorProjectOfferBloc>()
                                 .add(BudgetMinChanged(value)),
@@ -258,16 +246,21 @@ class _ContractorProjectOfferViewState extends State<ContractorProjectOfferView>
                       ),
                     ],
                   ),
-                  child: MainButton(
-                    text: isLoading ? 'Mengirim...' : 'Kirim Penawaran',
-                    icon: isLoading ? null : Icons.send_rounded,
-                    backgroundColor: (isLoading || !state.isFormValid)
-                        ? AppColors.primaryUltraGrey
-                        : AppColors.primary,
-                    onPressed: (isLoading || !state.isFormValid)
-                        ? null
-                        : () => _onSubmit(context, state),
-                  ),
+                  child: isLoading
+                      ? const MainButton(
+                          text: 'Mengirim...',
+                          backgroundColor: AppColors.primary, 
+                          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+                        )
+                      : MainButton(
+                          text: 'Kirim Penawaran',
+                          icon: Icons.send_rounded,
+                          backgroundColor: state.isFormValid
+                              ? AppColors.primary
+                              : AppColors.primary.withOpacity(0.4),
+                          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+                          onPressed: () => _onSubmit(context, state),
+                        ),
                 ),
               ),
             ],
