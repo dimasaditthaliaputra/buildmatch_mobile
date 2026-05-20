@@ -9,6 +9,8 @@ import '../../../../core/widgets/custom_progress_bar.dart';
 import '../../../../core/widgets/section_header.dart';
 import '../../../../core/widgets/global_card.dart';
 
+import 'package:go_router/go_router.dart';
+
 class ActiveProjectSection extends StatelessWidget {
   final List<ActiveProjectEntity> projects;
   final VoidCallback? onSeeAll;
@@ -27,7 +29,9 @@ class ActiveProjectSection extends StatelessWidget {
         SectionHeader(
           title: 'Proyek Aktif',
           actionText: 'LIHAT SEMUA',
-          onActionTap: onSeeAll,
+          onActionTap: () {
+            context.push('/contractor/project_contractor_list');
+          },
         ),
 
         const SizedBox(height: 16),

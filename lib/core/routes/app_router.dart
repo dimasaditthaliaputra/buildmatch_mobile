@@ -149,18 +149,12 @@ class AppRouter {
       GoRoute(
         path: '/contractor-proyek',
         name: 'contractor-proyek',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const MainLayoutShell(role: UserRole.contractor, initialTab: 1),
-        ),
+        builder: (context, state) => const ProyekPage(),
       ),
       GoRoute(
         path: '/form-penawaran',
         name: 'form-penawaran',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const FormPenawaranPageProvider(),
-        ),
+        builder: (context, state) => const FormPenawaranPageProvider(),
       ),
       GoRoute(
         path: '/proyek-detail/:id',
@@ -179,7 +173,7 @@ class AppRouter {
         name: 'project-contractor-list',
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
-          child: const ProjectContractorListPageWrapper(),
+          child: const MainLayoutShell(role: UserRole.contractor, initialTab: 1),
         )
       ),
 
