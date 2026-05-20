@@ -13,6 +13,7 @@ class BudgetRangeInput extends StatefulWidget {
   final int? initialMax;
   final ValueChanged<int> onMinChanged;
   final ValueChanged<int> onMaxChanged;
+  final String? title;
 
   const BudgetRangeInput({
     super.key,
@@ -20,6 +21,7 @@ class BudgetRangeInput extends StatefulWidget {
     this.initialMax,
     required this.onMinChanged,
     required this.onMaxChanged,
+    this.title, 
   });
 
   @override
@@ -64,15 +66,17 @@ class _BudgetRangeInputState extends State<BudgetRangeInput> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          'Pilih Rentang Budget',
-          style: AppTextStyles.bodyMedium.copyWith(
-            fontWeight: FontWeight.w600,
-            color: AppColors.textSecondaryDark,
-            fontSize: 14,
+        if (widget.title != null) ...[
+          Text(
+            widget.title!,
+            style: AppTextStyles.bodyMedium.copyWith(
+              fontWeight: FontWeight.w600,
+              color: AppColors.textSecondaryDark,
+              fontSize: 14,
+            ),
           ),
-        ),
-        const SizedBox(height: 12),
+          const SizedBox(height: 12),
+        ],
         Row(
           children: [
             Expanded(
@@ -130,8 +134,8 @@ class _BudgetTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return GlobalCard(
       width: null,
-      height: math.max(context.heightPct(0.065), 52.0), 
-      
+      height: math.max(context.heightPct(0.065), 52.0),
+
       margin: EdgeInsets.zero,
       padding: EdgeInsets.zero,
       backgroundColor: AppColors.surface,

@@ -1,6 +1,6 @@
-import 'project_entity.dart';
+import 'package:buildmatch_mobile/features/contractor/domain/entities/contractor_project_request_entity.dart';
 
-class ProjectDetailEntity extends ProjectEntity {
+class ProjectDetailEntity extends ContractorProjectRequestEntity {
   final String buildingHeight;
   final String startDate;
   final String endDate;
@@ -19,8 +19,8 @@ class ProjectDetailEntity extends ProjectEntity {
     required super.category,
     required super.location,
     required super.city,
-    required super.rentPriceMin,
-    required super.rentPriceMax,
+    required super.priceMin,
+    required super.priceMax,
     required super.buildingArea,
     required super.imageUrl,
     super.isNew,

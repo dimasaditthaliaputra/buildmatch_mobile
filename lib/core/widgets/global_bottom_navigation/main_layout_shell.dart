@@ -6,7 +6,7 @@ import '../../../features/client/presentation/pages/client_dashboard_page.dart';
 import '../../../features/client/presentation/pages/project_page.dart';
 import '../../../features/contractor/presentation/pages/contractor_dashboard_page.dart';
 import '../../../features/contractor/presentation/bloc/contractor_dashboard_bloc.dart';
-import '../../../features/contractor/presentation/pages/proyek_page.dart';
+import '../../../features/contractor/presentation/pages/contractor_project_requests_page.dart';
 import '../../../features/architect/presentation/pages/architect_dashboard_page.dart';
 import '../../../features/profile/presentation/pages/profile_placeholder_page.dart';
 import '../../theme/app_colors.dart';
@@ -73,7 +73,7 @@ class _MainLayoutShellState extends State<MainLayoutShell> {
             create: (context) => sl<ContractorDashboardBloc>(),
             child: const ContractorDashboardPage(),
           ),
-          const ProyekPage(),
+          const ContractorProjectRequestsPage(),
           _InboxPlaceholderView(role: widget.role),
           const ProfilePlaceholderPage(role: 'contractor'),
         ];
