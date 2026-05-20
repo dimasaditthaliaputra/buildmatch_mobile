@@ -54,18 +54,18 @@ import '../features/contractor/domain/repositories/project_detail_repository.dar
 import '../features/contractor/domain/usecases/get_project_detail.dart';
 import '../features/contractor/presentation/bloc/project_detail_bloc.dart';
 
-import '../features/contractor/data/datasources/rating_client_local_data_source.dart';
-import '../features/contractor/data/repositories/rating_client_repository_impl.dart';
-import '../features/contractor/domain/repositories/rating_client_repository.dart';
-import '../features/contractor/domain/usecases/get_submit_rating_client.dart';
-import '../features/contractor/presentation/bloc/rating_client_bloc.dart';
-
 import '../features/contractor/data/datasources/project_contractor_list_datasource.dart';
 import '../features/contractor/data/repositories/project_contractor_list_impl.dart';
 import '../features/contractor/domain/repositories/project_contractor_list_repository.dart';
 import '../features/contractor/domain/usecases/get_all_project.dart';
 import '../features/contractor/domain/usecases/get_project_by_status.dart';
 import '../features/contractor/presentation/bloc/project_contractor_list_bloc.dart';
+
+import '../features/rating/data/datasources/rating_client_local_data_source.dart';
+import '../features/rating/data/repositories/rating_client_repository_impl.dart';
+import '../features/rating/domain/repositories/rating_client_repository.dart';
+import '../features/rating/domain/usecases/get_submit_rating_client.dart';
+import '../features/rating/presentation/bloc/rating_client_bloc.dart';
 
 import '../features/waiting_approval/data/datasources/waiting_approval_local_data_source.dart';
 import '../features/waiting_approval/data/repositories/waiting_approval_repository_impl.dart';
