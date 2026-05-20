@@ -7,6 +7,7 @@ import '../../../../core/utils/screen_size.dart';
 
 class PersentaseManualCard extends StatelessWidget {
   final double persentase;
+  final double progresSebelumnya;
   final VoidCallback onTambah;
   final VoidCallback onKurangi;
   final ValueChanged<double> onChanged;
@@ -14,6 +15,7 @@ class PersentaseManualCard extends StatelessWidget {
   const PersentaseManualCard({
     super.key,
     required this.persentase,
+    required this.progresSebelumnya,
     required this.onTambah,
     required this.onKurangi,
     required this.onChanged,
@@ -55,7 +57,7 @@ class PersentaseManualCard extends StatelessWidget {
               _PlusMinusControl(
                 onTambah: onTambah,
                 onKurangi: onKurangi,
-                canKurangi: persentase > 0,
+                canKurangi: persentase > progresSebelumnya,
                 canTambah: persentase < 1,
               ),
             ],
@@ -92,13 +94,42 @@ class PersentaseManualCard extends StatelessWidget {
               Text('100%', style: AppTextStyles.labelSmall.copyWith(color: AppColors.textSecondary)),
             ],
           ),
+          
+          const SizedBox(height: 20),
+          Container(
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: AppColors.primary.withOpacity(0.08),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Icon(
+                  Icons.info_outline,
+                  color: AppColors.primary,
+                  size: 20,
+                ),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    'Persentase akan melanjutkan progres pekerjaan sebelumnya. Anda hanya dapat menambahkan persentase.',
+                    style: AppTextStyles.bodySmall.copyWith(
+                      color: AppColors.primary,
+                      height: 1.4,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
   }
 
   void _handleGesture(Offset localPosition, double maxWidth) {
-    double newPercent = (localPosition.dx / maxWidth).clamp(0.0, 1.0);
+    double newPercent = (localPosition.dx / maxWidth).clamp(progresSebelumnya, 1.0);
     double snappedPercent = (newPercent * 100).round() / 100;
     onChanged(snappedPercent);
   }

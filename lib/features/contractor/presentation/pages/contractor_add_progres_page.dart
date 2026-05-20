@@ -15,7 +15,6 @@ import '../widgets/jenis_pekerjaan_dropdown.dart';
 import '../widgets/jenis_pekerjaan_manual_field.dart';
 import '../widgets/persentase_dari_sistem_card.dart';
 import '../widgets/persentase_manual_card.dart';
-import '../widgets/total_alokasi_widget.dart';
 
 class ContractorAddProgresPageWrapper extends StatelessWidget {
   const ContractorAddProgresPageWrapper({super.key});
@@ -106,14 +105,6 @@ class _ContractorAddProgresPageState extends State<ContractorAddProgresPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _buildTabSelector(context, state),
-                        
-                        if (state.inputMode == InputMode.manual) ...[
-                          SizedBox(height: gapMedium),
-                          TotalAlokasiWidget(
-                            percentage: state.totalAlokasi ?? 0.0, 
-                          ),
-                        ],
-                        
                         SizedBox(height: gapLarge),
 
                         state.inputMode == InputMode.dariSistem
@@ -149,6 +140,7 @@ class _ContractorAddProgresPageState extends State<ContractorAddProgresPage> {
                             : PersentaseManualCard(
                                 key: const ValueKey('manual_card'),
                                 persentase: state.persentaseAktif,
+                                progresSebelumnya: state.progresSebelumnya,
                                 onTambah: () =>
                                     context.read<ContractorAddProgresBloc>().add(
                                           const TambahProgresPersentaseDitambah(),
