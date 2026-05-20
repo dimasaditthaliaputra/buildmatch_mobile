@@ -2,6 +2,8 @@ import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_
 import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
 import 'package:buildmatch_mobile/features/client/presentation/pages/client_dashboard_page.dart';
 import 'package:buildmatch_mobile/features/contractor/presentation/pages/rating_client_page.dart';
+import 'package:buildmatch_mobile/features/detail_portofolio/presentation/pages/detail_portofolio_page.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -33,7 +35,6 @@ import '../../features/contractor/presentation/bloc/contractor_dashboard_bloc.da
 import '../../features/contractor/presentation/pages/proyek_page.dart';
 import '../../features/contractor/presentation/pages/project_detail_page.dart';
 import '../../features/contractor/presentation/pages/formpenawaran_page.dart';
-import '../../features/contractor/presentation/pages/detail_portofolio_page.dart';
 import '../../features/contractor/presentation/pages/project_contractor_list.dart';
 
 // Features - Architect Role
@@ -50,7 +51,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/detail-portofolio',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -207,7 +208,7 @@ class AppRouter {
         name: 'detail-portofolio',
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
-          child: const DetailPortofolioPageProvider(),
+          child: const DetailPortofolioPage(),
         ),
       ),
     ],
