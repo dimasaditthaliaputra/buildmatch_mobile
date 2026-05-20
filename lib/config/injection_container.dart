@@ -156,6 +156,7 @@ Future<void> init() async {
   initClientDashboard();
   initClientProject();
   initContractorProgres();
+  initContractorProjectOffer();
 }
 
 void initContractorDashboard() {
@@ -193,7 +194,7 @@ void initContractorProjectRequest() {
   );
 }
 
-void initPenawaran() {
+void initContractorProjectOffer() {
   sl.registerFactory(() => ContractorProjectOfferBloc(getPenawaranUseCase: sl()));
   sl.registerLazySingleton(() => GetContractorProjectOfferUsecase(sl()));
   sl.registerLazySingleton<ContractorProjectOfferRepository>(

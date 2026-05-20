@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/screen_size.dart';
 import '../../../../core/widgets/global_card.dart';
+import '../../../../core/utils/date_formatter.dart'; 
 
 class EstimasiWaktuPicker extends StatelessWidget {
   final DateTime? selectedDate;
@@ -27,7 +27,7 @@ class EstimasiWaktuPicker extends StatelessWidget {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            colorScheme: ColorScheme.light(
+            colorScheme: const ColorScheme.light(
               primary: AppColors.primary,
               onPrimary: AppColors.surface,
               surface: AppColors.surface,
@@ -85,8 +85,8 @@ class EstimasiWaktuPicker extends StatelessWidget {
               const SizedBox(width: 10),
               Text(
                 hasDate
-                    ? DateFormat('dd/MM/yyyy').format(selectedDate!)
-                    : 'mm/dd/yyyy',
+                    ? DateFormatter.formatDate(selectedDate!)
+                    : 'dd/mm/yyyy',
                 style: AppTextStyles.bodyMedium.copyWith(
                   color: hasDate
                       ? AppColors.textPrimary
