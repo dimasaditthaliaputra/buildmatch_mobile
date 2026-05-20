@@ -60,12 +60,6 @@ import '../features/contractor/domain/repositories/rating_client_repository.dart
 import '../features/contractor/domain/usecases/get_submit_rating_client.dart';
 import '../features/contractor/presentation/bloc/rating_client_bloc.dart';
 
-import '../features/contractor/data/datasources/portofolio_local_data_source.dart';
-import '../features/contractor/data/repositories/portofolio_repository_impl.dart';
-import '../features/contractor/domain/repositories/portofolio_repository.dart';
-import '../features/contractor/domain/usecases/get_portofolio_usecase.dart';
-import '../features/contractor/presentation/bloc/portofolio_bloc.dart';
-
 import '../features/contractor/data/datasources/project_contractor_list_datasource.dart';
 import '../features/contractor/data/repositories/project_contractor_list_impl.dart';
 import '../features/contractor/domain/repositories/project_contractor_list_repository.dart';
@@ -78,6 +72,12 @@ import '../features/waiting_approval/data/repositories/waiting_approval_reposito
 import '../features/waiting_approval/domain/repositories/waiting_approval_repository.dart';
 import '../features/waiting_approval/domain/usecases/get_verification_status_usecase.dart';
 import '../features/waiting_approval/presentation/bloc/waiting_approval_bloc.dart';
+
+import '../features/detail_portofolio/data/datasources/portofolio_local_data_source.dart';
+import '../features/detail_portofolio/data/repositories/portofolio_repository_impl.dart';
+import '../features/detail_portofolio/domain/repositories/portofolio_repository.dart';
+import '../features/detail_portofolio/domain/usecases/get_portofolio_usecase.dart';
+import '../features/detail_portofolio/presentation/bloc/portofolio_bloc.dart';
 
 // Client Dashboard Feature
 import '../features/client/data/datasources/client_dashboard_local_data_source.dart';
