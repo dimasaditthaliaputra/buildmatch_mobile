@@ -50,7 +50,7 @@ class NavigationMenuConfig {
             label: 'Proyek',
             icon: LucideIcons.fileText,
             activeIcon: LucideIcons.fileText,
-            routeName: '/contractor-proyek',
+            routeName: '/project-contractor-list',
           ),
           NavigationItem(
             label: 'Inbox',

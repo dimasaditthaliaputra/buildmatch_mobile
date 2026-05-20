@@ -28,7 +28,7 @@ class ProjectListingSection extends StatelessWidget {
           title: 'Daftar Proyek', 
           actionText: 'LIHAT SEMUA',
           onActionTap: () {
-            context.push('/contractor/proyek_page');
+            context.push('/proyek_page');
           },
         ),
         const SizedBox(height: 12),
