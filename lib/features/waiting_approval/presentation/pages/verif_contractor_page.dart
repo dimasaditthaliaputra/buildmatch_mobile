@@ -15,6 +15,27 @@ import '../../../auth/presentation/bloc/auth_state.dart';
 import '../bloc/waiting_approval_bloc.dart';
 import '../bloc/waiting_approval_event.dart';
 import '../bloc/waiting_approval_state.dart';
+import '../../../../config/injection_container.dart';
+
+// --- Provider Wrapper ---
+class VerifContractorProvider extends StatelessWidget {
+  const VerifContractorProvider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (_) => sl<WaitingApprovalBloc>(),
+        ),
+        BlocProvider(
+          create: (_) => sl<AuthBloc>(),
+        ),
+      ],
+      child: const VerifContractorPage(),
+    );
+  }
+}
 
 class VerifContractorPage extends StatefulWidget {
   const VerifContractorPage({super.key});

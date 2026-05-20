@@ -21,10 +21,7 @@ import '../widgets/profile_form_field_widget.dart';
 class SetupProfilePage extends StatelessWidget {
   final String role;
 
-  const SetupProfilePage({
-    super.key,
-    required this.role,
-  });
+  const SetupProfilePage({super.key, required this.role});
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +35,7 @@ class SetupProfilePage extends StatelessWidget {
 class SetupProfileView extends StatefulWidget {
   final String role;
 
-  const SetupProfileView({
-    super.key,
-    required this.role,
-  });
+  const SetupProfileView({super.key, required this.role});
 
   @override
   State<SetupProfileView> createState() => _SetupProfileViewState();
@@ -49,7 +43,7 @@ class SetupProfileView extends StatefulWidget {
 
 class _SetupProfileViewState extends State<SetupProfileView> {
   final _formKey = GlobalKey<FormState>();
-  
+
   // Controllers
   final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
@@ -66,7 +60,7 @@ class _SetupProfileViewState extends State<SetupProfileView> {
   @override
   void initState() {
     super.initState();
-    
+
     // Set up listeners for real-time validation / active button updates
     _nameController.addListener(_onFieldChanged);
     _phoneController.addListener(_onFieldChanged);
@@ -129,9 +123,15 @@ class _SetupProfileViewState extends State<SetupProfileView> {
   Widget build(BuildContext context) {
     final double paddingHorizontal = context.widthPct(0.06).clamp(16.0, 24.0);
     final double titleFontSize = (context.screenWidth * 0.08).clamp(24.0, 30.0);
-    final double subtitleFontSize = (context.screenWidth * 0.038).clamp(13.0, 16.0);
+    final double subtitleFontSize = (context.screenWidth * 0.038).clamp(
+      13.0,
+      16.0,
+    );
     final double buttonHeight = (context.screenHeight * 0.07).clamp(48.0, 56.0);
-    final double buttonFontSize = (context.screenWidth * 0.04).clamp(14.0, 17.0);
+    final double buttonFontSize = (context.screenWidth * 0.04).clamp(
+      14.0,
+      17.0,
+    );
 
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
@@ -145,14 +145,14 @@ class _SetupProfileViewState extends State<SetupProfileView> {
         listener: (context, state) {
           if (state is ProfileSubmitSuccess) {
             SnackbarUtils.showSuccess('Profil Anda berhasil dikonfigurasi!');
-            
+
             final roleLower = widget.role.toLowerCase();
             if (roleLower == 'contractor') {
-              context.go('/verif-contractor');
+              context.go('/contractor-dashboard');
             } else if (roleLower == 'architect') {
               context.go('/architect-dashboard');
             } else {
-              context.go('/home');
+              context.go('/dashboard-client');
             }
           } else if (state is ProfileSubmitFailure) {
             SnackbarUtils.showError(state.errorMessage);
@@ -169,7 +169,9 @@ class _SetupProfileViewState extends State<SetupProfileView> {
                   Expanded(
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
-                      padding: EdgeInsets.symmetric(horizontal: paddingHorizontal),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: paddingHorizontal,
+                      ),
                       child: Form(
                         key: _formKey,
                         child: Column(
@@ -216,8 +218,12 @@ class _SetupProfileViewState extends State<SetupProfileView> {
                                 controller: _nameController,
                                 label: 'Nama Lengkap',
                                 hintText: 'Masukkan nama lengkap Anda',
-                                prefixIcon: const Icon(LucideIcons.user, size: 20),
-                                validator: (val) => Validators.required(val, 'Nama lengkap'),
+                                prefixIcon: const Icon(
+                                  LucideIcons.user,
+                                  size: 20,
+                                ),
+                                validator: (val) =>
+                                    Validators.required(val, 'Nama lengkap'),
                               ),
                               const SizedBox(height: 20),
                               ProfileFormFieldWidget(
@@ -225,7 +231,10 @@ class _SetupProfileViewState extends State<SetupProfileView> {
                                 label: 'Nomor Telepon',
                                 hintText: 'Contoh: 081234567890',
                                 keyboardType: TextInputType.phone,
-                                prefixIcon: const Icon(LucideIcons.phone, size: 20),
+                                prefixIcon: const Icon(
+                                  LucideIcons.phone,
+                                  size: 20,
+                                ),
                                 validator: (val) {
                                   if (val != null && val.isNotEmpty) {
                                     return Validators.phone(val);
@@ -239,7 +248,10 @@ class _SetupProfileViewState extends State<SetupProfileView> {
                                 label: 'Alamat',
                                 hintText: 'Masukkan alamat lengkap Anda',
                                 maxLines: 3,
-                                prefixIcon: const Icon(LucideIcons.mapPin, size: 20),
+                                prefixIcon: const Icon(
+                                  LucideIcons.mapPin,
+                                  size: 20,
+                                ),
                               ),
                             ] else ...[
                               // CONTRACTOR FORM
@@ -247,8 +259,12 @@ class _SetupProfileViewState extends State<SetupProfileView> {
                                 controller: _nameController,
                                 label: 'Nama Perusahaan',
                                 hintText: 'Masukkan nama perusahaan kontraktor',
-                                prefixIcon: const Icon(LucideIcons.building, size: 20),
-                                validator: (val) => Validators.required(val, 'Nama perusahaan'),
+                                prefixIcon: const Icon(
+                                  LucideIcons.building,
+                                  size: 20,
+                                ),
+                                validator: (val) =>
+                                    Validators.required(val, 'Nama perusahaan'),
                               ),
                               const SizedBox(height: 20),
                               ProfileFormFieldWidget(
@@ -256,11 +272,15 @@ class _SetupProfileViewState extends State<SetupProfileView> {
                                 label: 'Nomor NPWP Perusahaa',
                                 hintText: 'Contoh: 12.345.678.9-012.345',
                                 keyboardType: TextInputType.number,
-                                prefixIcon: const Icon(LucideIcons.creditCard, size: 20),
-                                validator: (val) => Validators.required(val, 'Nomor NPWP'),
+                                prefixIcon: const Icon(
+                                  LucideIcons.creditCard,
+                                  size: 20,
+                                ),
+                                validator: (val) =>
+                                    Validators.required(val, 'Nomor NPWP'),
                               ),
                               const SizedBox(height: 20),
-                              
+
                               // Berkas NPWP Uploader
                               FileUploadWidget(
                                 label: 'Berkas NPWP',
@@ -273,14 +293,18 @@ class _SetupProfileViewState extends State<SetupProfileView> {
                                   });
                                 },
                               ),
-                              
+
                               ProfileFormFieldWidget(
                                 controller: _nibNumberController,
                                 label: 'Nomor NIB',
                                 hintText: 'Masukkan 13 digit nomor NIB Anda',
                                 keyboardType: TextInputType.number,
-                                prefixIcon: const Icon(LucideIcons.fileSpreadsheet, size: 20),
-                                validator: (val) => Validators.required(val, 'Nomor NIB'),
+                                prefixIcon: const Icon(
+                                  LucideIcons.fileSpreadsheet,
+                                  size: 20,
+                                ),
+                                validator: (val) =>
+                                    Validators.required(val, 'Nomor NIB'),
                               ),
                               const SizedBox(height: 20),
 
@@ -321,14 +345,23 @@ class _SetupProfileViewState extends State<SetupProfileView> {
                   Padding(
                     padding: EdgeInsets.all(paddingHorizontal),
                     child: ElevatedButton(
-                      onPressed: (!_isFormValid || isSubmitting) ? null : _submitProfile,
+                      onPressed: (!_isFormValid || isSubmitting)
+                          ? null
+                          : _submitProfile,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: _isContractor ? AppColors.contractorPrimary : AppColors.primary,
-                        disabledBackgroundColor: AppColors.primaryGrey.withOpacity(0.3),
+                        backgroundColor: _isContractor
+                            ? AppColors.contractorPrimary
+                            : AppColors.primary,
+                        disabledBackgroundColor: AppColors.primaryGrey
+                            .withOpacity(0.3),
                         foregroundColor: Colors.white,
                         disabledForegroundColor: Colors.white70,
                         elevation: _isFormValid ? 4 : 0,
-                        shadowColor: (_isContractor ? AppColors.contractorPrimary : AppColors.primary).withOpacity(0.4),
+                        shadowColor:
+                            (_isContractor
+                                    ? AppColors.contractorPrimary
+                                    : AppColors.primary)
+                                .withOpacity(0.4),
                         minimumSize: Size.fromHeight(buttonHeight),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(16),
@@ -340,7 +373,9 @@ class _SetupProfileViewState extends State<SetupProfileView> {
                               height: 24,
                               child: CircularProgressIndicator(
                                 strokeWidth: 2.5,
-                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
                               ),
                             )
                           : Text(

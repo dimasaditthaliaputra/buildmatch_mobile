@@ -58,7 +58,7 @@ class LoginOptionsView extends StatelessWidget {
                 // Google Login Button
                 ElevatedButton(
                   onPressed: () {
-                    context.go('/home');
+                    context.go('/dashboard-client');
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.white,

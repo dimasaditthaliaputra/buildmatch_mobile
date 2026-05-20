@@ -1,9 +1,14 @@
 import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
 import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
+import 'package:buildmatch_mobile/features/client/presentation/pages/client_dashboard_page.dart';
 import 'package:buildmatch_mobile/features/contractor/presentation/pages/rating_client_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+
+// Dynamic Bottom Navigation Shell
+import 'package:buildmatch_mobile/core/widgets/global_bottom_navigation/main_layout_shell.dart';
+import 'package:buildmatch_mobile/core/widgets/global_bottom_navigation/navigation_menu_config.dart';
 
 // Dependency Injection
 import '../../config/injection_container.dart';
@@ -103,26 +108,32 @@ class AppRouter {
       GoRoute(
         path: '/verif-contractor',
         name: 'verif-contractor',
-        builder: (context, state) => MultiBlocProvider(
-          providers: [
-            BlocProvider(
-              create: (context) => sl<WaitingApprovalBloc>(),
-            ),
-            BlocProvider(
-              create: (context) => sl<AuthBloc>(),
-            ),
-          ],
-          child: const VerifContractorPage(),
-        ),
+        builder: (context, state) => const VerifContractorProvider(),
       ),
 
       // 3. CLIENT / HOME ROUTES
       GoRoute(
-        path: '/home',
-        name: 'home',
+        path: '/client-dashboard',
+        name: 'client-dashboard',
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
-          child: const HomePage(),
+          child: const MainLayoutShell(role: UserRole.client),
+        ),
+      ),
+      GoRoute(
+        path: '/dashboard-client',
+        name: 'dashboard-client',
+        pageBuilder: (context, state) => buildFadeTransitionPage(
+          key: state.pageKey,
+          child: const MainLayoutShell(role: UserRole.client),
+        ),
+      ),
+      GoRoute(
+        path: '/client-proyek',
+        name: 'client-proyek',
+        pageBuilder: (context, state) => buildFadeTransitionPage(
+          key: state.pageKey,
+          child: const MainLayoutShell(role: UserRole.client, initialTab: 1),
         ),
       ),
 
@@ -132,10 +143,7 @@ class AppRouter {
         name: 'contractor-dashboard',
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
-          child: BlocProvider(
-            create: (context) => sl<ContractorDashboardBloc>(),
-            child: const ContractorDashboardPage(),
-          ),
+          child: const MainLayoutShell(role: UserRole.contractor),
         ),
       ),
       GoRoute(
@@ -143,7 +151,7 @@ class AppRouter {
         name: 'contractor-proyek',
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
-          child: const ProyekPage(),
+          child: const MainLayoutShell(role: UserRole.contractor, initialTab: 1),
         ),
       ),
       GoRoute(
@@ -181,8 +189,8 @@ class AppRouter {
         name: 'architect-dashboard',
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
-          child: const ArchitectDashboardPage(),
-        )
+          child: const MainLayoutShell(role: UserRole.architect),
+        ),
       ),
 
       // 6. GLOBAL FUNCTION
