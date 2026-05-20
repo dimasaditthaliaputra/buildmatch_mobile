@@ -1,6 +1,7 @@
 import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
 import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
 import 'package:buildmatch_mobile/features/contractor/presentation/pages/rating_client_page.dart';
+import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -34,12 +35,13 @@ import '../../features/contractor/presentation/pages/project_contractor_list.dar
 
 // Features - Architect Role
 import '../../features/architect/presentation/pages/architect_dashboard_page.dart';
+import '../../features/architect/presentation/pages/architect_project_detail_page.dart';
 
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/',
+    initialLocation: '/architect-project-detail/:id',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -155,6 +157,19 @@ class AppRouter {
           key: state.pageKey,
           child: const ArchitectDashboardPage(),
         )
+      ),
+
+      GoRoute(
+        path: '/architect-project-detail/:id',
+        name: 'architect-project-detail',
+        pageBuilder: (context, state) {
+          final String id = state.pathParameters['id'] ?? '0';
+
+          return buildFadeTransitionPage(
+            key: state.pageKey,
+            child: ArchitectProjectDetailPage(projectId: id),
+          );
+        },
       ),
 
       // 6. GLOBAL FUNCTION

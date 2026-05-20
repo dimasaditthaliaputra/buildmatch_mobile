@@ -1,3 +1,8 @@
+import 'package:buildmatch_mobile/features/architect/data/datasources/architect_project_detail_local_data_source.dart';
+import 'package:buildmatch_mobile/features/architect/data/repositories/Architect_project_detail_repository_impl.dart';
+import 'package:buildmatch_mobile/features/architect/domain/repositories/Architect_project_detail_repository.dart';
+import 'package:buildmatch_mobile/features/architect/domain/usecases/get_Architect_project_detail.dart';
+import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_project_detail_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
@@ -117,6 +122,7 @@ Future<void> init() async {
   initRatingClient();
   initDetailPortofolio();
   initProjectContractorList();
+  initArchitectProjectDetail();
 }
 
 void initContractorDashboard() {
@@ -198,5 +204,16 @@ void initProjectContractorList() {
   );
   sl.registerLazySingleton<ContractorProjectRemoteDataSource>(
     () => ContractorProjectRemoteDataSourceImpl(), 
+  );
+}
+
+void initArchitectProjectDetail() {
+  sl.registerFactory(() => ArchitectProjectDetailBloc(sl()));
+  sl.registerLazySingleton(() => GetArchitectProjectDetail(sl()));
+  sl.registerLazySingleton<ArchitectProjectDetailRepository>(
+    () => ArchitectProjectDetailRepositoryImpl(sl()),
+  );
+  sl.registerLazySingleton<ArchitectProjectDetailLocalDataSource>(
+    () => ArchitectProjectDetailLocalDataSourceImpl(),
   );
 }
