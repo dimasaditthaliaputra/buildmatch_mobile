@@ -8,41 +8,41 @@ import '../../../../core/widgets/main_button.dart';
 import '../../../../core/widgets/global_text_field.dart';
 import '../../../../core/utils/screen_size.dart';
 import '../../../../core/widgets/global_card.dart';
-import '../bloc/penawaran_bloc.dart';
+import '../bloc/contractor_project_offer_bloc.dart';
 import '../widgets/budget_range_input.dart';
 import '../widgets/estimasi_waktu_picker.dart';
 import '../widgets/proyek_info_card.dart';
 
 
-class FormPenawaranPageProvider extends StatelessWidget {
-  const FormPenawaranPageProvider({super.key});
+class ContractorProjectOfferPageProvider extends StatelessWidget {
+  const ContractorProjectOfferPageProvider({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => sl<PenawaranBloc>(),
-      child: FormPenawaranPage(),
+      create: (context) => sl<ContractorProjectOfferBloc>(),
+      child: ContractorProjectOfferPage(),
     );
   }
 }
 
-class FormPenawaranPage extends StatelessWidget {
-  const FormPenawaranPage({super.key});
+class ContractorProjectOfferPage extends StatelessWidget {
+  const ContractorProjectOfferPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const _AjukanPenawaranView();
+    return const ContractorProjectOfferView();
   }
 }
 
-class _AjukanPenawaranView extends StatefulWidget {
-  const _AjukanPenawaranView();
+class ContractorProjectOfferView extends StatefulWidget {
+  const ContractorProjectOfferView();
 
   @override
-  State<_AjukanPenawaranView> createState() => _AjukanPenawaranViewState();
+  State<ContractorProjectOfferView> createState() => _ContractorProjectOfferViewState();
 }
 
-class _AjukanPenawaranViewState extends State<_AjukanPenawaranView> {
+class _ContractorProjectOfferViewState extends State<ContractorProjectOfferView> {
   final _pesanController = TextEditingController();
   final _scrollController = ScrollController();
 
@@ -53,7 +53,7 @@ class _AjukanPenawaranViewState extends State<_AjukanPenawaranView> {
     super.dispose();
   }
 
-  void _onSubmit(BuildContext context, PenawaranState state) {
+  void _onSubmit(BuildContext context, ContractorProjectOfferState state) {
     if (!state.isFormValid) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -69,7 +69,7 @@ class _AjukanPenawaranViewState extends State<_AjukanPenawaranView> {
       return;
     }
 
-    context.read<PenawaranBloc>().add(
+    context.read<ContractorProjectOfferBloc>().add(
       PenawaranSubmitted(projectId: 'TEST-123'),
     );
   }
@@ -102,11 +102,11 @@ class _AjukanPenawaranViewState extends State<_AjukanPenawaranView> {
         ),
         centerTitle: false,
       ),
-      body: BlocConsumer<PenawaranBloc, PenawaranState>(
+      body: BlocConsumer<ContractorProjectOfferBloc, ContractorProjectOfferState>(
         listenWhen: (previous, current) =>
             previous.submitStatus != current.submitStatus,
         listener: (context, state) {
-          if (state.submitStatus == PenawaranSubmitStatus.success) {
+          if (state.submitStatus == ProjectOfferSubmitStatus.success) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
@@ -170,10 +170,10 @@ class _AjukanPenawaranViewState extends State<_AjukanPenawaranView> {
                         children: [
                           BudgetRangeInput(
                             onMinChanged: (value) => context
-                                .read<PenawaranBloc>()
+                                .read<ContractorProjectOfferBloc>()
                                 .add(BudgetMinChanged(value)),
                             onMaxChanged: (value) => context
-                                .read<PenawaranBloc>()
+                                .read<ContractorProjectOfferBloc>()
                                 .add(BudgetMaxChanged(value)),
                           ),
                           const SizedBox(height: 24),
@@ -211,7 +211,7 @@ class _AjukanPenawaranViewState extends State<_AjukanPenawaranView> {
                                 fontSize: 14,
                               ),
                               onChanged: (value) {
-                                context.read<PenawaranBloc>().add(
+                                context.read<ContractorProjectOfferBloc>().add(
                                   PesanChanged(value),
                                 );
                               },
@@ -223,7 +223,7 @@ class _AjukanPenawaranViewState extends State<_AjukanPenawaranView> {
                             selectedDate: state.estimasiWaktu,
                             onDateSelected: (date) {
                               if (date != null) {
-                                context.read<PenawaranBloc>().add(
+                                context.read<ContractorProjectOfferBloc>().add(
                                   EstimasiWaktuChanged(date),
                                 );
                               }

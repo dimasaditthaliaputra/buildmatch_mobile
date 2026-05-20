@@ -1,7 +1,7 @@
-import '../../domain/entities/project_contractor_list_entity.dart';
+import '../../domain/entities/contractor_project_list_entity.dart';
 
-class ProjectContractorListModel extends ProjectContractorListEntity {
-  const ProjectContractorListModel({
+class ContractorProjectListModel extends ContractorProjectListEntity {
+  const ContractorProjectListModel({
     required super.id,
     required super.name,
     required super.location,
@@ -10,8 +10,8 @@ class ProjectContractorListModel extends ProjectContractorListEntity {
     required super.status,
   });
 
-  factory ProjectContractorListModel.fromJson(Map<String, dynamic> json) {
-    return ProjectContractorListModel(
+  factory ContractorProjectListModel.fromJson(Map<String, dynamic> json) {
+    return ContractorProjectListModel(
       id: json['id'] as String,
       name: json['name'] as String,
       location: json['location'] as String,

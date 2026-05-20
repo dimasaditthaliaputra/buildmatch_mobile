@@ -1,6 +1,6 @@
 enum ProjectStatus { berjalan, selesai }
 
-class ProjectContractorListEntity{
+class ContractorProjectListEntity{
   final String id;
   final String name;
   final String location;
@@ -8,7 +8,7 @@ class ProjectContractorListEntity{
   final String clientName;
   final ProjectStatus status;
 
-  const ProjectContractorListEntity({
+  const ContractorProjectListEntity({
     required this.id,
     required this.name,
     required this.location,

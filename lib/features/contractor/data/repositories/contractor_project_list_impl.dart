@@ -1,21 +1,21 @@
 import 'package:dartz/dartz.dart';
 import '../../../../core/error/exceptions.dart';
 import '../../../../core/error/failures.dart';
-import '../../domain/entities/project_contractor_list_entity.dart';
-import '../../domain/repositories/project_contractor_list_repository.dart';
-import '../datasources/project_contractor_list_datasource.dart';
+import '../../domain/entities/contractor_project_list_entity.dart';
+import '../../domain/repositories/contractor_project_list_repository.dart';
+import '../datasources/contractor_project_list_datasource.dart';
 
-class ContractorProjectRepositoryImpl implements ProjectContractorListRepository {
-  final ContractorProjectRemoteDataSource remoteDataSource;
-  ContractorProjectRepositoryImpl({
+class ContractorProjectListRepositoryImpl implements ContractorProjectListRepository {
+  final ContractorProjectListRemoteDataSource remoteDataSource;
+  ContractorProjectListRepositoryImpl({
     required this.remoteDataSource,
   });
 
   @override
-  Future<Either<Failure, List<ProjectContractorListEntity>>> getProjects() async {
+  Future<Either<Failure, List<ContractorProjectListEntity>>> getProjects() async {
   try {
     final projects = await remoteDataSource.getProjects();
-    return Right<Failure, List<ProjectContractorListEntity>>(projects);
+    return Right<Failure, List<ContractorProjectListEntity>>(projects);
   } on ServerException catch (e) {
     return Left(ServerFailure(e.message));
   } catch (e) {
@@ -24,12 +24,12 @@ class ContractorProjectRepositoryImpl implements ProjectContractorListRepository
 }
 
   @override
-  Future<Either<Failure, List<ProjectContractorListEntity>>> getProjectsByStatus(
+  Future<Either<Failure, List<ContractorProjectListEntity>>> getProjectsByStatus(
     ProjectStatus status,
   ) async {
     try {
       final projects = await remoteDataSource.getProjectsByStatus(status);
-      return Right<Failure, List<ProjectContractorListEntity>>(projects);
+      return Right<Failure, List<ContractorProjectListEntity>>(projects);
     } on ServerException catch (e) {
       return Left(ServerFailure(e.message));
     } catch (e) {

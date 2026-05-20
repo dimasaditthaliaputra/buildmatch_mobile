@@ -7,7 +7,7 @@ import '../../../../../core/theme/app_text_styles.dart';
 import '../../../../../core/utils/screen_size.dart';
 import '../../../../../core/widgets/search_bar_widget.dart';
 import '../../../../../core/widgets/filter_bar_widget.dart';
-import '../bloc/project_contractor_list_bloc.dart';
+import '../bloc/contractor_project_list_bloc.dart';
 import '../widgets/empty_project_list_state.dart';
 import '../widgets/project_contractor_card.dart';
 
@@ -20,7 +20,7 @@ class ProjectContractorListPageWrapper extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<ProjectContractorListBloc>(),
+      create: (_) => sl<ContractorProjectListBloc>(),
       child: const ProjectContractorListPage(),
     );
   }
@@ -41,7 +41,7 @@ class _ProjectContractorListPageState extends State<ProjectContractorListPage> {
   @override
   void initState() {
     super.initState();
-    context.read<ProjectContractorListBloc>().add(const LoadAllProjects());
+    context.read<ContractorProjectListBloc>().add(const LoadAllProjects());
   }
 
   @override
@@ -67,7 +67,7 @@ class _ProjectContractorListPageState extends State<ProjectContractorListPage> {
           _buildTabBar(context),
 
           Expanded(
-            child: BlocBuilder<ProjectContractorListBloc, ProjectContractorListState>(
+            child: BlocBuilder<ContractorProjectListBloc, ContractorProjectListState>(
               builder: (context, state) {
                 if (state is ProjectContractorListLoading ||
                     state is ProjectContractorListInitial) {
@@ -127,10 +127,10 @@ class _ProjectContractorListPageState extends State<ProjectContractorListPage> {
         ),
 
         onChanged: (query) {
-          context.read<ProjectContractorListBloc>().add(SearchProjects(query));
+          context.read<ContractorProjectListBloc>().add(SearchProjects(query));
         },
         onClear: () {
-          context.read<ProjectContractorListBloc>().add(const SearchProjects(''));
+          context.read<ContractorProjectListBloc>().add(const SearchProjects(''));
         },
       ),
     );
@@ -174,7 +174,7 @@ class _ProjectContractorListPageState extends State<ProjectContractorListPage> {
           setState(() {
             _selectedTab = tab; 
           });
-          context.read<ProjectContractorListBloc>().add(ChangeFilterTab(tab));
+          context.read<ContractorProjectListBloc>().add(ChangeFilterTab(tab));
         },
       ),
     );
@@ -207,7 +207,7 @@ class _ProjectContractorListPageState extends State<ProjectContractorListPage> {
       buttonText: 'Coba Lagi',
       icon: Icons.cloud_off_rounded,
       onRetry: () {
-        context.read<ProjectContractorListBloc>().add(const LoadAllProjects());
+        context.read<ContractorProjectListBloc>().add(const LoadAllProjects());
       },
     );
   }

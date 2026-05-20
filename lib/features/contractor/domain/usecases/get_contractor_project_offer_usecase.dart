@@ -1,14 +1,14 @@
 import 'package:dartz/dartz.dart';
 
 import '../../../../core/error/failures.dart';
-import '../entities/penawaran_entity.dart';
-import '../repositories/penawaran_repository.dart';
+import '../entities/contractor_project_offer_entity.dart';
+import '../repositories/contractor_project_offer_repository.dart';
 
-class GetPenawaranUsecase {
-  final PenawaranRepository repository;
+class GetContractorProjectOfferUsecase {
+  final ContractorProjectOfferRepository repository;
 
-  const GetPenawaranUsecase(this.repository);
-  Future<Either<Failure, PenawaranEntity>> call(
+  const GetContractorProjectOfferUsecase(this.repository);
+  Future<Either<Failure, ContractorProjectOfferEntity>> call(
     GetPenawaranParams params,
   ) {
     return repository.ajukanPenawaran(

@@ -1,41 +1,41 @@
-part of 'penawaran_bloc.dart';
+part of 'contractor_project_offer_bloc.dart';
 
-enum PenawaranSubmitStatus {
+enum ProjectOfferSubmitStatus {
   initial,
   loading,
   success,
   failure,
 }
 
-class PenawaranState extends Equatable {
+class ContractorProjectOfferState extends Equatable {
   final int? budgetMin;
   final int? budgetMax;
   final String pesan;
   final DateTime? estimasiWaktu;
-  final PenawaranSubmitStatus submitStatus;
+  final ProjectOfferSubmitStatus submitStatus;
   final String? errorMessage;
 
-  const PenawaranState({
+  const ContractorProjectOfferState({
     this.budgetMin,
     this.budgetMax,
     this.pesan = '',
     this.estimasiWaktu,
-    this.submitStatus = PenawaranSubmitStatus.initial,
+    this.submitStatus = ProjectOfferSubmitStatus.initial,
     this.errorMessage,
   });
 
-  factory PenawaranState.initial() => const PenawaranState();
+  factory ContractorProjectOfferState.initial() => const ContractorProjectOfferState();
 
-  PenawaranState copyWith({
+  ContractorProjectOfferState copyWith({
     int? budgetMin,
     int? budgetMax,
     String? pesan,
     DateTime? estimasiWaktu,
-    PenawaranSubmitStatus? submitStatus,
+    ProjectOfferSubmitStatus? submitStatus,
     String? errorMessage,
     bool clearError = false,
   }) {
-    return PenawaranState(
+    return ContractorProjectOfferState(
       budgetMin: budgetMin ?? this.budgetMin,
       budgetMax: budgetMax ?? this.budgetMax,
       pesan: pesan ?? this.pesan,
@@ -55,7 +55,7 @@ class PenawaranState extends Equatable {
     return rangeOk && pesanOk && tanggalOk;
   }
 
-  bool get isLoading => submitStatus == PenawaranSubmitStatus.loading;
+  bool get isLoading => submitStatus == ProjectOfferSubmitStatus.loading;
 
   @override
   List<Object?> get props => [

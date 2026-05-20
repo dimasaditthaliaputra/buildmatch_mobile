@@ -1,7 +1,7 @@
-import '../../domain/entities/penawaran_entity.dart';
+import '../../domain/entities/contractor_project_offer_entity.dart';
 
-class PenawaranModel extends PenawaranEntity {
-  const PenawaranModel({
+class ContractorProjectOfferModel extends ContractorProjectOfferEntity {
+  const ContractorProjectOfferModel({
     required super.id,
     required super.projectId,
     required super.contractorId,
@@ -13,8 +13,8 @@ class PenawaranModel extends PenawaranEntity {
     required super.createdAt,
   });
 
-  factory PenawaranModel.fromJson(Map<String, dynamic> json) {
-    return PenawaranModel(
+  factory ContractorProjectOfferModel.fromJson(Map<String, dynamic> json) {
+    return ContractorProjectOfferModel(
       id: json['id'] as String,
       projectId: json['project_id'] as String,
       contractorId: json['contractor_id'] as String,
@@ -50,7 +50,7 @@ class PenawaranModel extends PenawaranEntity {
     }
   }
 
-  PenawaranModel copyWith({
+  ContractorProjectOfferModel copyWith({
     String? id,
     String? projectId,
     String? contractorId,
@@ -61,7 +61,7 @@ class PenawaranModel extends PenawaranEntity {
     PenawaranStatus? status,
     DateTime? createdAt,
   }) {
-    return PenawaranModel(
+    return ContractorProjectOfferModel(
       id: id ?? this.id,
       projectId: projectId ?? this.projectId,
       contractorId: contractorId ?? this.contractorId,
