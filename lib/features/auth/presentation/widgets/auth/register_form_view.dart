@@ -99,7 +99,8 @@ class _RegisterFormViewState extends State<RegisterFormView> {
                           label: 'Nama Pengguna',
                           hintText: '',
                           keyboardType: TextInputType.name,
-                          validator: (value) => Validators.required(value, 'Nama Pengguna'),
+                          validator: (value) =>
+                              Validators.required(value, 'Nama Pengguna'),
                         ),
                         const SizedBox(height: 16),
 
@@ -195,7 +196,7 @@ class _RegisterFormViewState extends State<RegisterFormView> {
 
                         ElevatedButton(
                           onPressed: () {
-                            context.go('/home');
+                            context.go('/dashboard-client');
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.white,

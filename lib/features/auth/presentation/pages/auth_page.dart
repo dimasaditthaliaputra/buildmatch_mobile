@@ -30,11 +30,11 @@ class _AuthPageState extends State<AuthPage> {
         body: BlocListener<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthSuccess) {
-              context.go('/home');
+              context.go('/dashboard-client');
             } else if (state is AuthError) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text(state.message)),
-              );
+              ScaffoldMessenger.of(
+                context,
+              ).showSnackBar(SnackBar(content: Text(state.message)));
             }
           },
           child: GlobalBackground(
@@ -66,22 +66,22 @@ class _AuthPageState extends State<AuthPage> {
                         }),
                       )
                     : _showEmailForm
-                        ? EmailLoginFormView(
-                            key: const ValueKey('email_form'),
-                            onBackPressed: () =>
-                                setState(() => _showEmailForm = false),
-                            onRegisterTapped: () => setState(() {
-                              _showEmailForm = false;
-                              _showRegisterForm = true;
-                            }),
-                          )
-                        : LoginOptionsView(
-                            key: const ValueKey('login_options'),
-                            onEmailLoginTapped: () =>
-                                setState(() => _showEmailForm = true),
-                            onRegisterTapped: () =>
-                                setState(() => _showRegisterForm = true),
-                          ),
+                    ? EmailLoginFormView(
+                        key: const ValueKey('email_form'),
+                        onBackPressed: () =>
+                            setState(() => _showEmailForm = false),
+                        onRegisterTapped: () => setState(() {
+                          _showEmailForm = false;
+                          _showRegisterForm = true;
+                        }),
+                      )
+                    : LoginOptionsView(
+                        key: const ValueKey('login_options'),
+                        onEmailLoginTapped: () =>
+                            setState(() => _showEmailForm = true),
+                        onRegisterTapped: () =>
+                            setState(() => _showRegisterForm = true),
+                      ),
               ),
             ),
           ),

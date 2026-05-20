@@ -79,6 +79,20 @@ import '../features/waiting_approval/domain/repositories/waiting_approval_reposi
 import '../features/waiting_approval/domain/usecases/get_verification_status_usecase.dart';
 import '../features/waiting_approval/presentation/bloc/waiting_approval_bloc.dart';
 
+// Client Dashboard Feature
+import '../features/client/data/datasources/client_dashboard_local_data_source.dart';
+import '../features/client/data/repositories/client_dashboard_repository_impl.dart';
+import '../features/client/domain/repositories/client_dashboard_repository.dart';
+import '../features/client/domain/usecases/get_client_dashboard_usecase.dart';
+import '../features/client/presentation/bloc/client_dashboard_bloc.dart';
+
+// Client Project Feature
+import '../features/client/data/datasources/client_project_local_data_source.dart';
+import '../features/client/data/repositories/client_project_repository_impl.dart';
+import '../features/client/domain/repositories/client_project_repository.dart';
+import '../features/client/domain/usecases/get_client_projects_usecase.dart';
+import '../features/client/presentation/bloc/client_project_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -132,6 +146,8 @@ Future<void> init() async {
   initProjectContractorList();
   initProfileSetup();
   initWaitingApproval();
+  initClientDashboard();
+  initClientProject();
 }
 
 void initContractorDashboard() {
@@ -239,6 +255,39 @@ void initWaitingApproval() {
   );
   sl.registerLazySingleton<WaitingApprovalLocalDataSource>(
     () => WaitingApprovalLocalDataSourceImpl(),
+  );
+}
+
+void initClientDashboard() {
+  sl.registerFactory(
+    () => ClientDashboardBloc(getDashboardUseCase: sl()),
+  );
+  sl.registerLazySingleton(
+    () => GetClientDashboardUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<ClientDashboardRepository>(
+    () => ClientDashboardRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<ClientDashboardLocalDataSource>(
+    () => ClientDashboardLocalDataSourceImpl(),
+  );
+}
+
+void initClientProject() {
+  sl.registerFactory(
+    () => ClientProjectBloc(
+      getPenawaranUseCase: sl(),
+      getAllProjectsUseCase: sl(),
+    ),
+  );
+  sl.registerLazySingleton(() => GetClientPenawaranUseCase(repository: sl()));
+  sl.registerLazySingleton(
+      () => GetClientAllProjectsUseCase(repository: sl()));
+  sl.registerLazySingleton<ClientProjectRepository>(
+    () => ClientProjectRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<ClientProjectLocalDataSource>(
+    () => ClientProjectLocalDataSourceImpl(),
   );
 }
 

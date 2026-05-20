@@ -136,7 +136,7 @@ class _EmailLoginFormViewState extends State<EmailLoginFormView> {
                                     ? null
                                     : () {
                                         if (_formKey.currentState!.validate()) {
-                                           context.go('/home');
+                                          context.go('/dashboard-client');
                                         }
                                       },
                                 style: ElevatedButton.styleFrom(
