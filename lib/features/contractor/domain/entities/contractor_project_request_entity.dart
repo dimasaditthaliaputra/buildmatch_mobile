@@ -1,29 +1,29 @@
-class ProjectEntity {
+enum ProjectRequestStatus { offering, ongoing }
+
+class ContractorProjectRequestEntity {
   final String id;
   final String title;
-  final String category; // e.g. 'RESIDENSIAL', 'KOMERSIAL'
+  final String category; 
   final String location;
   final String city;
-  final String rentPriceMin;
-  final String rentPriceMax;
+  final String priceMin;
+  final String priceMax;
   final String buildingArea;
   final String imageUrl;
   final bool isNew;
-  final ProjectStatus status;
+  final ProjectRequestStatus status;
 
-  const ProjectEntity({
+  const ContractorProjectRequestEntity({
     required this.id,
     required this.title,
     required this.category,
     required this.location,
     required this.city,
-    required this.rentPriceMin,
-    required this.rentPriceMax,
+    required this.priceMin,
+    required this.priceMax,
     required this.buildingArea,
     required this.imageUrl,
     this.isNew = false,
-    this.status = ProjectStatus.offering,
+    this.status = ProjectRequestStatus.offering,
   });
 }
-
-enum ProjectStatus { offering, ongoing }

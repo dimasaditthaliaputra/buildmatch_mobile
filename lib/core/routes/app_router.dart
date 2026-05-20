@@ -1,8 +1,8 @@
 import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
 import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
 import 'package:buildmatch_mobile/features/client/presentation/pages/client_dashboard_page.dart';
+import '../../features/detail_portofolio/presentation/pages/detail_portofolio_page.dart';
 import '../../features/rating/presentation/pages/rating_client_page.dart';
-import 'package:buildmatch_mobile/features/detail_portofolio/presentation/pages/detail_portofolio_page.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,7 +33,7 @@ import '../../features/home/presentation/pages/home_page.dart';
 // Features - Contractor Role
 import '../../features/contractor/presentation/pages/contractor_dashboard_page.dart';
 import '../../features/contractor/presentation/bloc/contractor_dashboard_bloc.dart';
-import '../../features/contractor/presentation/pages/proyek_page.dart';
+import '../../features/contractor/presentation/pages/contractor_project_requests_page.dart';
 import '../../features/contractor/presentation/pages/project_detail_page.dart';
 import '../../features/contractor/presentation/pages/formpenawaran_page.dart';
 import '../../features/contractor/presentation/pages/project_contractor_list.dart';
@@ -48,13 +48,11 @@ import '../../features/waiting_approval/presentation/pages/verif_contractor_page
 import '../../features/waiting_approval/presentation/bloc/waiting_approval_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 
-
-
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/contractor-proyek-requests',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -151,9 +149,9 @@ class AppRouter {
         ),
       ),
       GoRoute(
-        path: '/contractor-proyek',
-        name: 'contractor-proyek',
-        builder: (context, state) => const ProyekPage(),
+        path: '/contractor-proyek-requests',
+        name: 'contractor-proyek-requests',
+        builder: (context, state) => const ContractorProjectRequestsPage(),
       ),
       GoRoute(
         path: '/form-penawaran',
@@ -177,8 +175,11 @@ class AppRouter {
         name: 'project-contractor-list',
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
-          child: const MainLayoutShell(role: UserRole.contractor, initialTab: 1),
-        )
+          child: const MainLayoutShell(
+            role: UserRole.contractor,
+            initialTab: 1,
+          ),
+        ),
       ),
       GoRoute(
         path: '/contractor-add-progres',
@@ -213,7 +214,7 @@ class AppRouter {
         name: 'detail-portofolio',
         pageBuilder: (context, state) => buildFadeTransitionPage(
           key: state.pageKey,
-          child: const DetailPortofolioPage(),
+          child: const DetailPortofolioPageProvider(),
         ),
       ),
     ],
@@ -231,10 +232,7 @@ CustomTransitionPage<void> buildFadeTransitionPage({
     transitionDuration: duration,
     transitionsBuilder: (context, animation, secondaryAnimation, child) {
       return FadeTransition(
-        opacity: CurvedAnimation(
-          parent: animation,
-          curve: Curves.easeInOut,
-        ),
+        opacity: CurvedAnimation(parent: animation, curve: Curves.easeInOut),
         child: child,
       );
     },

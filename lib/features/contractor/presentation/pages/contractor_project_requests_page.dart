@@ -7,40 +7,66 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../config/injection_container.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/utils/screen_size.dart'; 
-import '../../../../core/widgets/global_app_bar.dart'; 
+import '../../../../core/utils/screen_size.dart';
+import '../../../../core/widgets/global_app_bar.dart';
+import '../../../../core/widgets/search_bar_widget.dart';
 
-import '../widgets/project_card.dart'; 
-import '../bloc/project_bloc.dart';
-import '../bloc/project_event.dart';
-import '../bloc/project_state.dart';
+import '../widgets/project_card.dart';
+import '../widgets/filter_bottom_sheet.dart';
+import '../bloc/contractor_project_request_bloc.dart';
+import '../bloc/contractor_project_request_event.dart';
+import '../bloc/contractor_project_request_state.dart';
 
-class ProyekPage extends StatelessWidget {
-  const ProyekPage({super.key});
+class ContractorProjectRequestsPage extends StatelessWidget {
+  const ContractorProjectRequestsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<ProjectBloc>()..add(LoadProjects()),
-      child: const _ProyekView(),
+      create: (_) =>
+          sl<ContractorProjectRequestBloc>()
+            ..add(LoadContractorProjectRequests()),
+      child: const _ContractorProjectRequestsView(),
     );
   }
 }
 
-class _ProyekView extends StatelessWidget {
-  const _ProyekView();
+class _ContractorProjectRequestsView extends StatefulWidget {
+  const _ContractorProjectRequestsView();
+
+  @override
+  State<_ContractorProjectRequestsView> createState() =>
+      _ContractorProjectRequestsViewState();
+}
+
+class _ContractorProjectRequestsViewState
+    extends State<_ContractorProjectRequestsView> {
+  late final TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+    _searchController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
       appBar: const GlobalAppBar(
-        title: 'Proyek',
+        title: 'Penawaran Proyek',
+        showBackButton: true,
       ),
       body: Column(
         children: [
           _buildSearchBar(context),
-          Expanded(child: _buildProjectList(context)),
+          Expanded(child: _buildRequestList(context)),
         ],
       ),
     );
@@ -53,34 +79,38 @@ class _ProyekView extends StatelessWidget {
 
     return Container(
       color: AppColors.background,
-      padding: EdgeInsets.fromLTRB(searchPadH, searchPadV, searchPadH, searchPadV * 1.5),
+      padding: EdgeInsets.fromLTRB(
+        searchPadH,
+        searchPadV,
+        searchPadH,
+        searchPadV * 1.5,
+      ),
       child: Row(
         children: [
           Expanded(
-            child: Container(
+            child: SizedBox(
               height: searchBarHeight,
-              decoration: BoxDecoration(
-                color: AppColors.surface,
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.border),
-              ),
-              child: TextField(
-                decoration: InputDecoration(
-                  hintText: 'Cari proyek...',
-                  hintStyle: AppTextStyles.bodySmall.copyWith(
-                    color: AppColors.textSecondary,
-                    fontSize: context.widthPct(0.035).clamp(13.0, 15.0),
-                  ),
-                  prefixIcon: Icon(
-                    LucideIcons.search,
-                    size: context.widthPct(0.05).clamp(18.0, 22.0),
-                    color: AppColors.textSecondary,
-                  ),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                    vertical: context.heightPct(0.015).clamp(13.0, 16.0),
-                  ),
+              child: SearchBarWidget(
+                controller: _searchController,
+                hintText: 'Cari proyek...',
+                hintStyle: AppTextStyles.bodySmall.copyWith(
+                  color: AppColors.textSecondary,
+                  fontSize: context.widthPct(0.035).clamp(13.0, 15.0),
                 ),
+                fillColor: AppColors.surface,
+                containerColor: Colors.transparent,
+                borderSide: const BorderSide(color: AppColors.border),
+                borderRadius: 12.0,
+                contentPadding: EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: context.heightPct(0.015).clamp(13.0, 16.0),
+                ),
+                onChanged: (value) {
+                  context.read<ContractorProjectRequestBloc>().add(
+                    SearchContractorProjectRequests(value),
+                  );
+                },
+                onClear: () {},
               ),
             ),
           ),
@@ -91,46 +121,59 @@ class _ProyekView extends StatelessWidget {
     );
   }
 
-  Widget _buildProjectList(BuildContext context) {
+  Widget _buildRequestList(BuildContext context) {
     final double listPadH = context.widthPct(0.04).clamp(16.0, 20.0);
     final double listPadV = context.heightPct(0.01).clamp(8.0, 12.0);
     final double locIconSize = context.widthPct(0.045).clamp(16.0, 20.0);
     final double locTextSize = context.widthPct(0.035).clamp(12.0, 14.0);
     final double titleSize = context.widthPct(0.045).clamp(16.0, 20.0);
 
-    return BlocBuilder<ProjectBloc, ProjectState>(
+    return BlocBuilder<
+      ContractorProjectRequestBloc,
+      ContractorProjectRequestState
+    >(
       builder: (context, state) {
         if (state.isLoading) {
+          //
           return const Center(
             child: CircularProgressIndicator(color: AppColors.primary),
           );
         }
 
-        if (state.filteredProjects.isEmpty) {
+        if (state.filteredRequests.isEmpty) {
+          //
           return _buildEmptyState();
         }
 
         return ScrollConfiguration(
           behavior: ScrollConfiguration.of(context).copyWith(overscroll: false),
           child: ListView.builder(
-            padding: EdgeInsets.fromLTRB(listPadH, listPadV, listPadH, listPadV * 3),
-            itemCount: state.filteredProjects.length,
+            padding: EdgeInsets.fromLTRB(
+              listPadH,
+              listPadV,
+              listPadH,
+              listPadV * 3,
+            ),
+            itemCount: state.filteredRequests.length, 
             itemBuilder: (context, index) {
-              final project = state.filteredProjects[index];
-              
+              final request = state.filteredRequests[index]; 
+
               return Padding(
-                padding: EdgeInsets.only(bottom: context.heightPct(0.03).clamp(24.0, 32.0)),
+                padding: EdgeInsets.only(
+                  bottom: context.heightPct(0.03).clamp(6.0, 12.0),
+                ),
                 child: ProjectCard(
-                  imageUrl: project.imageUrl,
-                  onTap: () => context.push('/project/${project.id}'),
+                  imageUrl: request.imageUrl,
+                  onTap: () =>
+                      context.push('/contractor-project-request/${request.id}'),
                   infoItems: [
                     AppCardInfo(
                       label: 'Rentang Harga',
-                      value: '${project.rentPriceMin} - ${project.rentPriceMax}',
+                      value: '${request.priceMin} - ${request.priceMax}',
                     ),
                     AppCardInfo(
                       label: 'Luas Bangunan',
-                      value: project.buildingArea,
+                      value: request.buildingArea,
                     ),
                   ],
                   child: Column(
@@ -139,8 +182,10 @@ class _ProyekView extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          _buildTag(context, project.category), 
-                          SizedBox(width: context.widthPct(0.015).clamp(6.0, 10.0)),
+                          _buildTag(context, request.category),
+                          SizedBox(
+                            width: context.widthPct(0.015).clamp(6.0, 10.0),
+                          ),
                           Icon(
                             LucideIcons.mapPin,
                             size: locIconSize,
@@ -149,7 +194,7 @@ class _ProyekView extends StatelessWidget {
                           const SizedBox(width: 4),
                           Expanded(
                             child: Text(
-                              project.city,
+                              request.city,
                               style: AppTextStyles.bodySmall.copyWith(
                                 color: AppColors.primaryDark,
                                 fontWeight: FontWeight.w600,
@@ -160,9 +205,11 @@ class _ProyekView extends StatelessWidget {
                           ),
                         ],
                       ),
-                      SizedBox(height: context.heightPct(0.01).clamp(8.0, 12.0)),
+                      SizedBox(
+                        height: context.heightPct(0.01).clamp(8.0, 12.0),
+                      ),
                       Text(
-                        project.title,
+                        request.title,
                         style: AppTextStyles.heading3.copyWith(
                           fontSize: titleSize,
                           fontWeight: FontWeight.w700,
@@ -171,7 +218,9 @@ class _ProyekView extends StatelessWidget {
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      SizedBox(height: context.heightPct(0.015).clamp(12.0, 16.0)),
+                      SizedBox(
+                        height: context.heightPct(0.015).clamp(12.0, 16.0),
+                      ),
                     ],
                   ),
                 ),
@@ -192,7 +241,7 @@ class _ProyekView extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: tagPadH, vertical: tagPadV),
       decoration: BoxDecoration(
         color: AppColors.surfaceCream,
-        borderRadius: BorderRadius.circular(16), 
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Text(
         label.toUpperCase(),
@@ -218,7 +267,7 @@ class _ProyekView extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            'Belum ada proyek',
+            'Belum ada penawaran proyek',
             style: AppTextStyles.bodyLarge.copyWith(
               color: AppColors.textSecondary,
               fontWeight: FontWeight.w500,
@@ -226,7 +275,7 @@ class _ProyekView extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            'Proyek akan muncul di sini',
+            'Penawaran proyek akan muncul di sini',
             style: AppTextStyles.bodySmall.copyWith(
               color: AppColors.textSecondary,
             ),
@@ -247,9 +296,18 @@ class _FilterButton extends StatelessWidget {
     final double iconSize = context.widthPct(0.05).clamp(18.0, 22.0);
 
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        final bloc = context.read<ContractorProjectRequestBloc>();
+        showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          backgroundColor: Colors.transparent,
+          builder: (_) =>
+              BlocProvider.value(value: bloc, child: const FilterBottomSheet()),
+        );
+      },
       child: Container(
-        width: height, 
+        width: height,
         height: height,
         decoration: BoxDecoration(
           color: AppColors.primaryDark,

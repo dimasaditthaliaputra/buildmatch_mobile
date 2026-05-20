@@ -1,13 +1,13 @@
+import '../../domain/entities/contractor_project_request_entity.dart'; // Untuk status
 import '../../domain/entities/project_detail_entity.dart';
-import '../../domain/entities/project_entity.dart';
 
-abstract class ProjectDetailLocalDataSource {
-  ProjectDetailEntity getProjectDetail(String id);
+abstract class ContractorProjectRequestDetailLocalDataSource {
+  ProjectDetailEntity getProjectRequestDetail(String id);
 }
 
-class ProjectDetailLocalDataSourceImpl implements ProjectDetailLocalDataSource {
+class ContractorProjectRequestDetailLocalDataSourceImpl implements ContractorProjectRequestDetailLocalDataSource {
   @override
-  ProjectDetailEntity getProjectDetail(String id) {
+  ProjectDetailEntity getProjectRequestDetail(String id) {
     final Map<String, ProjectDetailEntity> details = {
       '1': const ProjectDetailEntity(
         id: '1',
@@ -15,12 +15,12 @@ class ProjectDetailLocalDataSourceImpl implements ProjectDetailLocalDataSource {
         category: 'RESIDENSIAL',
         location: 'Pejaten Terrace',
         city: 'Jakarta Selatan',
-        rentPriceMin: 'Rp 450',
-        rentPriceMax: '500jt',
+        priceMin: 'Rp 450',     // Diubah dari rentPriceMin
+        priceMax: '500jt',      // Diubah dari rentPriceMax
         buildingArea: '120 m²',
         imageUrl: 'assets/images/project_villa.jpg',
         isNew: true,
-        status: ProjectStatus.offering,
+        status: ProjectRequestStatus.offering,
         buildingHeight: '2 Lantai (8 m²)',
         startDate: 'Jan 2025',
         endDate: 'Des 2025',
@@ -48,12 +48,12 @@ class ProjectDetailLocalDataSourceImpl implements ProjectDetailLocalDataSource {
         category: 'KOMERSIAL',
         location: 'BSD',
         city: 'BSD, Tangerang',
-        rentPriceMin: 'Rp 450',
-        rentPriceMax: '500jt',
+        priceMin: 'Rp 450',
+        priceMax: '500jt',
         buildingArea: '120 m²',
         imageUrl: 'assets/images/project_office.jpg',
         isNew: false,
-        status: ProjectStatus.offering,
+        status: ProjectRequestStatus.offering,
         buildingHeight: '3 Lantai (12 m²)',
         startDate: 'Feb 2025',
         endDate: 'Nov 2025',
@@ -81,12 +81,12 @@ class ProjectDetailLocalDataSourceImpl implements ProjectDetailLocalDataSource {
         category: 'RESIDENSIAL',
         location: 'BSD',
         city: 'BSD, Tangerang',
-        rentPriceMin: 'Rp 450',
-        rentPriceMax: '500jt',
+        priceMin: 'Rp 450',
+        priceMax: '500jt',
         buildingArea: '120 m²',
         imageUrl: 'assets/images/project_creative.jpg',
         isNew: false,
-        status: ProjectStatus.ongoing,
+        status: ProjectRequestStatus.ongoing,
         buildingHeight: '2 Lantai (9 m²)',
         startDate: 'Mar 2025',
         endDate: 'Oct 2025',
@@ -109,15 +109,16 @@ class ProjectDetailLocalDataSourceImpl implements ProjectDetailLocalDataSource {
       ),
     };
 
-    return details['1'] ??
+    // Menggunakan ID yang diminta, atau default ke dummy object jika tidak ditemukan
+    return details[id] ??
         const ProjectDetailEntity(
           id: '0',
           title: 'Unknown Project',
           category: 'RESIDENSIAL',
           location: '',
           city: '',
-          rentPriceMin: '',
-          rentPriceMax: '',
+          priceMin: '',
+          priceMax: '',
           buildingArea: '',
           imageUrl: '',
           buildingHeight: '',

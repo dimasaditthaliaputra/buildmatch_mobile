@@ -31,11 +31,12 @@ import '../features/onboarding/domain/repositories/onboarding_repository.dart';
 import '../features/onboarding/domain/usecases/get_onboarding_pages.dart';
 import '../features/onboarding/presentation/bloc/onboarding_bloc.dart';
 
-import '../features/contractor/data/datasources/project_datasource.dart';
-import '../features/contractor/data/repositories/project_repository_impl.dart';
-import '../features/contractor/domain/repositories/project_repository.dart';
-import '../features/contractor/domain/usecases/get_projects.dart';
-import '../features/contractor/presentation/bloc/project_bloc.dart';
+import '../features/contractor/data/datasources/contractor_project_request_local_datasource.dart';
+import '../features/contractor/domain/usecases/get_contractor_project_requests.dart';
+import '../features/contractor/data/repositories/contractor_project_request_repository_impl.dart.dart';
+import '../features/contractor/domain/repositories/contractor_project_request_repository.dart';
+import '../features/contractor/presentation/bloc/contractor_project_request_bloc.dart';
+
 import '../features/contractor/data/repositories/contractor_dashboard_repository_impl.dart';
 import '../features/contractor/domain/repositories/contractor_dashboard_repository.dart';
 import '../features/contractor/domain/usecases/get_contractor_dashboard_usecase.dart';
@@ -146,7 +147,7 @@ Future<void> init() async {
 
   initContractorDashboard();
   initContractorProjectDetail();
-  initContractorProject();
+  initContractorProjectRequest();
   initRatingClient();
   initDetailPortofolio();
   initProjectContractorList();
@@ -176,22 +177,20 @@ void initContractorProjectDetail() {
   sl.registerLazySingleton<ProjectDetailRepository>(
     () => ProjectDetailRepositoryImpl(sl()),
   );
-  sl.registerLazySingleton<ProjectDetailLocalDataSource>(
-    () => ProjectDetailLocalDataSourceImpl(),
+  sl.registerLazySingleton<ContractorProjectRequestDetailLocalDataSource>(
+    () => ContractorProjectRequestDetailLocalDataSourceImpl(),
   );
 }
 
-void initContractorProject() {
-  sl.registerFactory(() => ProjectBloc(sl()));
-  sl.registerLazySingleton(() => GetProjects(sl()));
-  sl.registerLazySingleton<ProjectRepository>(
-    () => ProjectRepositoryImpl(sl()),
+void initContractorProjectRequest() {
+  sl.registerFactory(() => ContractorProjectRequestBloc(sl()));
+  sl.registerLazySingleton(() => GetContractorProjectRequests(sl()));
+  sl.registerLazySingleton<ContractorProjectRequestRepository>(
+    () => ContractorProjectRequestRepositoryImpl(sl()),
   );
-  sl.registerLazySingleton<ProjectLocalDataSource>(
-    () => ProjectLocalDataSourceImpl(),
+  sl.registerLazySingleton<ContractorProjectRequestLocalDataSource>(
+    () => ContractorProjectRequestLocalDataSourceImpl(),
   );
-
-  initPenawaran();
 }
 
 void initPenawaran() {
@@ -228,14 +227,19 @@ void initDetailPortofolio() {
 }
 
 void initProjectContractorList() {
-  sl.registerFactory(() => ProjectContractorListBloc(getAllProjects: sl(), getProjectsByStatus: sl()));
+  sl.registerFactory(
+    () => ProjectContractorListBloc(
+      getAllProjects: sl(),
+      getProjectsByStatus: sl(),
+    ),
+  );
   sl.registerLazySingleton(() => GetAllProjects(sl()));
   sl.registerLazySingleton(() => GetProjectsByStatus(sl()));
   sl.registerLazySingleton<ProjectContractorListRepository>(
     () => ContractorProjectRepositoryImpl(remoteDataSource: sl()),
   );
   sl.registerLazySingleton<ContractorProjectRemoteDataSource>(
-    () => ContractorProjectRemoteDataSourceImpl(), 
+    () => ContractorProjectRemoteDataSourceImpl(),
   );
 }
 
@@ -251,11 +255,7 @@ void initProfileSetup() {
 }
 
 void initWaitingApproval() {
-  sl.registerFactory(
-    () => WaitingApprovalBloc(
-      getVerificationStatus: sl(),
-    ),
-  );
+  sl.registerFactory(() => WaitingApprovalBloc(getVerificationStatus: sl()));
   sl.registerLazySingleton(() => GetVerificationStatusUseCase(sl()));
   sl.registerLazySingleton<WaitingApprovalRepository>(
     () => WaitingApprovalRepositoryImpl(localDataSource: sl()),
@@ -266,12 +266,8 @@ void initWaitingApproval() {
 }
 
 void initClientDashboard() {
-  sl.registerFactory(
-    () => ClientDashboardBloc(getDashboardUseCase: sl()),
-  );
-  sl.registerLazySingleton(
-    () => GetClientDashboardUseCase(repository: sl()),
-  );
+  sl.registerFactory(() => ClientDashboardBloc(getDashboardUseCase: sl()));
+  sl.registerLazySingleton(() => GetClientDashboardUseCase(repository: sl()));
   sl.registerLazySingleton<ClientDashboardRepository>(
     () => ClientDashboardRepositoryImpl(localDataSource: sl()),
   );
@@ -288,8 +284,7 @@ void initClientProject() {
     ),
   );
   sl.registerLazySingleton(() => GetClientPenawaranUseCase(repository: sl()));
-  sl.registerLazySingleton(
-      () => GetClientAllProjectsUseCase(repository: sl()));
+  sl.registerLazySingleton(() => GetClientAllProjectsUseCase(repository: sl()));
   sl.registerLazySingleton<ClientProjectRepository>(
     () => ClientProjectRepositoryImpl(localDataSource: sl()),
   );
