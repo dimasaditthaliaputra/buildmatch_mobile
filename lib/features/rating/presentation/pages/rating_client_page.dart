@@ -61,19 +61,23 @@ class _RatingClientViewState extends State<_RatingClientView> {
 
   @override
   Widget build(BuildContext context) {
+    const bool showlowBody = true;
+
     return BlocListener<RatingClientBloc, RatingClientState>(
       listener: _blocListener,
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: const GlobalAppBar(title: 'Klien Rating'),
         body: BlocBuilder<RatingClientBloc, RatingClientState>(
-          builder: (context, state) => _buildBody(context, state),
+          builder: (context, state) {
+            return _buildBody(context, state, showlowBody: showlowBody);
+          },
         ),
       ),
     );
   }
 
-  Widget _buildBody(BuildContext context, RatingClientState state) {
+  Widget _buildBody(BuildContext context, RatingClientState state, {required bool showlowBody}) {
     final double padH = context.widthPct(0.05).clamp(16.0, 24.0);
     final double padV = context.heightPct(0.025).clamp(16.0, 24.0);
 
@@ -91,7 +95,7 @@ class _RatingClientViewState extends State<_RatingClientView> {
                 Row(
                   children: [
                     CircleAvatar(
-                      radius: avatarRadius,
+                      radius: avatarRadius * 1.5,
                       backgroundColor: AppColors.primaryLightGrey,
                       backgroundImage: state.clientImageUrl != null
                           ? NetworkImage(state.clientImageUrl!)

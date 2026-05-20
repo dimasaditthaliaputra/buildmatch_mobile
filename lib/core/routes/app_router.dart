@@ -1,7 +1,7 @@
 import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
 import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
 import 'package:buildmatch_mobile/features/client/presentation/pages/client_dashboard_page.dart';
-import 'package:buildmatch_mobile/features/contractor/presentation/pages/rating_client_page.dart';
+import '../../features/rating/presentation/pages/rating_client_page.dart';
 import 'package:buildmatch_mobile/features/detail_portofolio/presentation/pages/detail_portofolio_page.dart';
 
 import 'package:flutter/material.dart';
@@ -16,6 +16,7 @@ import 'package:buildmatch_mobile/core/widgets/global_bottom_navigation/navigati
 import '../../config/injection_container.dart';
 
 // Core Widgets / Common Pages
+import '../../features/rating/presentation/pages/rating_client_page.dart';
 import '../widgets/no_connection_page.dart';
 
 // Features - Splash & Onboarding
