@@ -29,6 +29,7 @@ class AppColors {
   static const Color surfacePale = Color(0xFFFFF5EC);
   static const Color border = Color(0xFFF0E8E0);
   static const Color surfaceBeige = Color(0xFFDEC1AF);
+  static const Color surfaceUltraLightBeige = Color(0xFFFDE4CB);
 
   // Text
   static const Color textPrimary = Color(0xFF111111);

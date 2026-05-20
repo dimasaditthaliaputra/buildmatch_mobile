@@ -11,10 +11,10 @@ import '../../../../core/utils/screen_size.dart';
 import '../../../../core/widgets/main_button.dart';
 import '../../../../core/widgets/file_row.dart';
 import '../../../../core/widgets/global_card.dart';
-import '../../domain/entities/project_detail_entity.dart';
-import '../bloc/project_detail_bloc.dart';
-import '../bloc/project_detail_event.dart';
-import '../bloc/project_detail_state.dart';
+import '../../domain/entities/contractor_project_detail_entity.dart';
+import '../bloc/contractor_project_detail_bloc.dart';
+import '../bloc/contractor_project_detail_event.dart';
+import '../bloc/contractor_project_detail_state.dart';
 
 import '../widgets/detail_row.dart';
 import '../widgets/insight_item.dart';
@@ -27,7 +27,7 @@ class ProjectDetailPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<ProjectDetailBloc>()..add(LoadProjectDetail(projectId)),
+      create: (_) => sl<ContractorProjectDetailBloc>()..add(LoadContractorProjectDetail(projectId)),
       child: const _ProjectDetailView(),
     );
   }
@@ -38,7 +38,7 @@ class _ProjectDetailView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ProjectDetailBloc, ProjectDetailState>(
+    return BlocBuilder<ContractorProjectDetailBloc, ContractorProjectDetailState>(
       builder: (context, state) {
         if (state.isLoading) {
           return const Scaffold(
@@ -63,7 +63,7 @@ class _ProjectDetailView extends StatelessWidget {
 }
 
 class _ProjectDetailContent extends StatelessWidget {
-  final ProjectDetailEntity project;
+  final ContractorProjectDetailEntity project;
 
   const _ProjectDetailContent({required this.project});
 

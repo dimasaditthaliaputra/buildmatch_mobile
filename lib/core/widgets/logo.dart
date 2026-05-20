@@ -7,7 +7,7 @@ class Logo extends StatelessWidget {
   final double? sizeContainer;
   final double? sizeLogo;
   final Color? color;
-  final LucideIcons? iconName;
+  final IconData? iconName;
 
   const Logo({
     super.key,

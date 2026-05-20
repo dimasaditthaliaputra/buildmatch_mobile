@@ -11,6 +11,7 @@ import '../widgets/financial_summary_section.dart';
 import '../widgets/active_project_section.dart';
 import '../widgets/project_listing_section.dart';
 import '../widgets/chart_widgets.dart';
+import '../../../../core/widgets/dashboard_background_global_widget.dart';
 
 class ContractorDashboardProvider extends StatelessWidget {
   const ContractorDashboardProvider({super.key});
@@ -129,15 +130,7 @@ class _ContractorDashboardPageState extends State<ContractorDashboardPage> {
         physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
         child: Stack(
           children: [
-            Container(
-              height: math.max(context.heightPct(0.32), 260.0),
-              decoration: const BoxDecoration(
-                color: AppColors.primary,
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(32),
-                ),
-              ),
-            ),
+            const DashboardBackgroundGlobalWidget(),
 
             SafeArea(
               bottom: false,
