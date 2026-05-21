@@ -56,11 +56,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-
-    initialLocation: '/architect-project-detail/:id',
-
-    initialLocation: '/contractor-proyek-offer',
-
+    initialLocation: '/splash',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(

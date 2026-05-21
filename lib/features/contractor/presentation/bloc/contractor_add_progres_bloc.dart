@@ -55,7 +55,7 @@ class ContractorAddProgresBloc
       inputMode: event.mode,
       clearSelected: true,
       jenisPekerjaanManual: '',
-      persentaseManual: 0.0,
+      persentaseManual: state.progresSebelumnya, 
       clearError: true,
     ));
   }
@@ -78,45 +78,24 @@ class ContractorAddProgresBloc
     TambahProgresPersentaseDitambah event,
     Emitter<ContractorAddProgresState> emit,
   ) {
-    final newVal = (state.persentaseManual + _stepPersentase).clamp(0.0, 1.0);
-    
-    final double progresLama = 0.00;
-    final double newTotalAlokasi = progresLama + newVal;
-
-    emit(state.copyWith(
-      persentaseManual: newVal,
-      totalAlokasi: newTotalAlokasi, 
-    ));
+    final newVal = (state.persentaseManual + _stepPersentase).clamp(state.progresSebelumnya, 1.0);
+    emit(state.copyWith(persentaseManual: newVal));
   }
 
   void _onPersentaseDikurangi(
     TambahProgresPersentaseDikurangi event,
     Emitter<ContractorAddProgresState> emit,
   ) {
-    final newVal = (state.persentaseManual - _stepPersentase).clamp(0.0, 1.0);
-    
-    final double progresLama = 0.00;
-    final double newTotalAlokasi = progresLama + newVal;
-
-    emit(state.copyWith(
-      persentaseManual: newVal,
-      totalAlokasi: newTotalAlokasi, 
-    ));
+    final newVal = (state.persentaseManual - _stepPersentase).clamp(state.progresSebelumnya, 1.0);
+    emit(state.copyWith(persentaseManual: newVal));
   }
 
   void _onPersentaseDiubah(
     TambahProgresPersentaseDiubah event,
     Emitter<ContractorAddProgresState> emit,
   ) {
-    final newVal = event.nilai.clamp(0.0, 1.0);
-    
-    final double progresLama = 0.00;
-    final double newTotalAlokasi = progresLama + newVal;
-
-    emit(state.copyWith(
-      persentaseManual: newVal,
-      totalAlokasi: newTotalAlokasi, 
-    ));
+    final newVal = event.nilai.clamp(state.progresSebelumnya, 1.0);
+    emit(state.copyWith(persentaseManual: newVal));
   }
 
   Future<void> _onDiSimpan(
