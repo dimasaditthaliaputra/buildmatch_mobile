@@ -69,10 +69,7 @@ class _MainLayoutShellState extends State<MainLayoutShell> {
         ];
       case UserRole.contractor:
         return [
-          BlocProvider(
-            create: (context) => sl<ContractorDashboardBloc>(),
-            child: const ContractorDashboardPage(),
-          ),
+          const ContractorDashboardProvider(),
           const ContractorProjectRequestsPage(),
           _InboxPlaceholderView(role: widget.role),
           const ProfilePlaceholderPage(role: 'contractor'),
@@ -96,11 +93,17 @@ class _MainLayoutShellState extends State<MainLayoutShell> {
       backgroundColor: AppColors.background,
       body: Stack(
         children: [
-          // Screen views using PageView with disabled swipe physics to avoid drag clashes
-          PageView(
-            controller: _pageController,
-            physics: const NeverScrollableScrollPhysics(),
-            children: pages,
+          MediaQuery(
+            data: MediaQuery.of(context).copyWith(
+              padding: MediaQuery.of(context).padding.copyWith(
+                bottom: 84.0 + MediaQuery.of(context).padding.bottom,
+              ),
+            ),
+            child: PageView(
+              controller: _pageController,
+              physics: const NeverScrollableScrollPhysics(),
+              children: pages,
+            ),
           ),
 
           // Custom global floating bottom navigation bar

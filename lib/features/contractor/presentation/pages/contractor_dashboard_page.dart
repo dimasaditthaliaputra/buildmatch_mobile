@@ -55,7 +55,7 @@ class _ContractorDashboardPageState extends State<ContractorDashboardPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: ThemeData().scaffoldBackgroundColor,
       body: BlocBuilder<ContractorDashboardBloc, ContractorDashboardState>(
         builder: (context, state) {
           if (state is ContractorDashboardLoading) {
@@ -187,29 +187,38 @@ class _ContractorDashboardPageState extends State<ContractorDashboardPage> {
 
                   const SizedBox(height: 12),
 
-                  SizedBox(
-                    height: math.max(context.heightPct(0.38), 290.0),
-                    child: PageView(
-                      controller: _chartPageController,
-                      physics: const BouncingScrollPhysics(),
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
-                          child: FinancialChartWidget(
-                            data: dashboard.financialChartData,
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    padding: EdgeInsets.symmetric(horizontal: context.widthPct(0.04)),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: context.widthPct(0.92),
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 6),
+                              child: FinancialChartWidget(
+                                data: dashboard.financialChartData,
+                              ),
+                            ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 6),
-                          child: ProjectDonutChart(
-                            stats: dashboard.projectStats,
+                          SizedBox(
+                            width: context.widthPct(0.92),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 6),
+                              child: ProjectDonutChart(
+                                stats: dashboard.projectStats,
+                              ),
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ),
 
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 24),
                 ],
               ),
             ),

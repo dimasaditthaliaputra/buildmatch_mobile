@@ -56,7 +56,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/contractor-milestone-form',
+    initialLocation: '/splash',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -121,17 +121,8 @@ class AppRouter {
       GoRoute(
         path: '/client-dashboard',
         name: 'client-dashboard',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const MainLayoutShell(role: UserRole.client),
-        ),
-      ),
-      GoRoute(
-        path: '/dashboard-client',
-        name: 'dashboard-client',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const MainLayoutShell(role: UserRole.client),
+        builder: (context, state) => const MainLayoutShell(
+          role: UserRole.client,
         ),
       ),
       GoRoute(
@@ -147,9 +138,8 @@ class AppRouter {
       GoRoute(
         path: '/contractor-dashboard',
         name: 'contractor-dashboard',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const MainLayoutShell(role: UserRole.contractor),
+        builder: (context, state) => const MainLayoutShell(
+          role: UserRole.contractor,
         ),
       ),
       GoRoute(
