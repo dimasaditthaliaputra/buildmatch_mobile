@@ -1,10 +1,10 @@
 import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
 import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
 
-import 'package:buildmatch_mobile/features/contractor/presentation/pages/rating_client_page.dart';
 import 'package:dartz/dartz.dart';
 
 import 'package:buildmatch_mobile/features/client/presentation/pages/client_dashboard_page.dart';
+import '../../features/contractor/presentation/pages/contractor_milestone_form_page.dart';
 import '../../features/detail_portofolio/presentation/pages/detail_portofolio_page.dart';
 import '../../features/rating/presentation/pages/rating_client_page.dart';
 
@@ -56,7 +56,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/contractor-milestone-form',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -184,6 +184,14 @@ class AppRouter {
         path: '/contractor-add-progres',
         name: 'contractor-add-progres',
         builder: (context, state) => const ContractorAddProgresPageWrapper(),
+      ),
+      GoRoute(
+        path: '/contractor-milestone-form',
+        name: 'contractor-milestone-form',
+        builder: (context, state) {
+          final double totalNilai = state.extra as double? ?? 150000000.0;
+          return ContractorMilestoneFormPage(totalNilaiKontrak: totalNilai);
+        },
       ),
 
       // 5. ARCHITECT ROLE ROUTES
