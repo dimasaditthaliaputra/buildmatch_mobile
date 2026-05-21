@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../domain/usecases/get_Architect_project_detail.dart';
+import '../../domain/usecases/get_architect_project_detail.dart';
 import 'architect_project_detail_event.dart';
 import 'architect_project_detail_state.dart';
 

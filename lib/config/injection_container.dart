@@ -1,8 +1,13 @@
 import 'package:buildmatch_mobile/features/architect/data/datasources/architect_project_detail_local_data_source.dart';
-import 'package:buildmatch_mobile/features/architect/data/repositories/Architect_project_detail_repository_impl.dart';
+import 'package:buildmatch_mobile/features/architect/data/datasources/architect_project_offer_remote_datasource.dart';
+import 'package:buildmatch_mobile/features/architect/data/repositories/architect_project_detail_repository_impl.dart';
+import 'package:buildmatch_mobile/features/architect/data/repositories/architect_project_offer_repository_impl.dart';
 import 'package:buildmatch_mobile/features/architect/domain/repositories/Architect_project_detail_repository.dart';
-import 'package:buildmatch_mobile/features/architect/domain/usecases/get_Architect_project_detail.dart';
+import 'package:buildmatch_mobile/features/architect/domain/repositories/architect_project_offer_repository.dart';
+import 'package:buildmatch_mobile/features/architect/domain/usecases/get_architect_project_detail.dart';
+import 'package:buildmatch_mobile/features/architect/domain/usecases/get_architect_project_offer_usecase.dart';
 import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_project_detail_bloc.dart';
+import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_project_offer_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
@@ -165,6 +170,7 @@ Future<void> init() async {
   initContractorMilestone();
 
   initArchitectProjectDetail();
+  initArchitectProjectOffer();
   initProfileSetup();
   initWaitingApproval();
   initClientDashboard();
@@ -285,17 +291,6 @@ void initWaitingApproval() {
   );
 }
 
-void initClientDashboard() {
-  sl.registerFactory(() => ClientDashboardBloc(getDashboardUseCase: sl()));
-  sl.registerLazySingleton(() => GetClientDashboardUseCase(repository: sl()));
-  sl.registerLazySingleton<ClientDashboardRepository>(
-    () => ClientDashboardRepositoryImpl(localDataSource: sl()),
-  );
-  sl.registerLazySingleton<ClientDashboardLocalDataSource>(
-    () => ClientDashboardLocalDataSourceImpl(),
-  );
-}
-
 void initArchitectProjectDetail() {
   sl.registerFactory(() => ArchitectProjectDetailBloc(sl()));
   sl.registerLazySingleton(() => GetArchitectProjectDetail(sl()));
@@ -304,6 +299,31 @@ void initArchitectProjectDetail() {
   );
   sl.registerLazySingleton<ArchitectProjectDetailLocalDataSource>(
     () => ArchitectProjectDetailLocalDataSourceImpl(),
+  );
+}
+
+void initArchitectProjectOffer() {
+  sl.registerFactory(() => ArchitectProjectOfferBloc(getPenawaranUseCase: sl()),);
+  sl.registerLazySingleton(() => GetArchitectProjectOfferUsecase(sl()));
+  sl.registerLazySingleton<ArchitectProjectOfferRepository>(
+    () => ArchitectProjectOfferRepositoryImpl(
+      remoteDataSource: sl(),
+      networkInfo: sl(),
+    ),
+  );
+  sl.registerLazySingleton<ArchitectProjectOfferRemoteDataSource>(
+    () => ArchitectPenawaranRemoteDataSourceImpl(),
+  );
+}
+
+void initClientDashboard() {
+  sl.registerFactory(() => ClientDashboardBloc(getDashboardUseCase: sl()));
+  sl.registerLazySingleton(() => GetClientDashboardUseCase(repository: sl()));
+  sl.registerLazySingleton<ClientDashboardRepository>(
+    () => ClientDashboardRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<ClientDashboardLocalDataSource>(
+    () => ClientDashboardLocalDataSourceImpl(),
   );
 }
 
