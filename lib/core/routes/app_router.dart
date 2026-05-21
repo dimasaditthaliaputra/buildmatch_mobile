@@ -1,5 +1,9 @@
 import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
 import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
+
+import 'package:buildmatch_mobile/features/contractor/presentation/pages/rating_client_page.dart';
+import 'package:dartz/dartz.dart';
+
 import 'package:buildmatch_mobile/features/client/presentation/pages/client_dashboard_page.dart';
 import '../../features/detail_portofolio/presentation/pages/detail_portofolio_page.dart';
 import '../../features/rating/presentation/pages/rating_client_page.dart';
@@ -41,6 +45,7 @@ import '../../features/contractor/presentation/pages/contractor_add_progres_page
 
 // Features - Architect Role
 import '../../features/architect/presentation/pages/architect_dashboard_page.dart';
+import '../../features/architect/presentation/pages/architect_project_detail_page.dart';
 
 // Features - Waiting Approval (Contractor Verification)
 import '../../features/waiting_approval/presentation/pages/verif_contractor_page.dart';
@@ -189,6 +194,19 @@ class AppRouter {
           key: state.pageKey,
           child: const MainLayoutShell(role: UserRole.architect),
         ),
+      ),
+
+      GoRoute(
+        path: '/architect-project-detail/:id',
+        name: 'architect-project-detail',
+        pageBuilder: (context, state) {
+          final String id = state.pathParameters['id'] ?? '0';
+
+          return buildFadeTransitionPage(
+            key: state.pageKey,
+            child: ArchitectProjectDetailPage(projectId: id),
+          );
+        },
       ),
 
       // 6. GLOBAL FUNCTION
