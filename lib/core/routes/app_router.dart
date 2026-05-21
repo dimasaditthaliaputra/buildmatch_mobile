@@ -1,7 +1,6 @@
 import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
 import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
 
-import 'package:buildmatch_mobile/features/contractor/presentation/pages/rating_client_page.dart';
 import 'package:dartz/dartz.dart';
 
 import 'package:buildmatch_mobile/features/client/presentation/pages/client_dashboard_page.dart';
@@ -46,6 +45,7 @@ import '../../features/contractor/presentation/pages/contractor_add_progres_page
 // Features - Architect Role
 import '../../features/architect/presentation/pages/architect_dashboard_page.dart';
 import '../../features/architect/presentation/pages/architect_project_detail_page.dart';
+import 'package:buildmatch_mobile/features/architect/presentation/pages/architect_project_offer.dart';
 
 // Features - Waiting Approval (Contractor Verification)
 import '../../features/waiting_approval/presentation/pages/verif_contractor_page.dart';
@@ -56,7 +56,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/architect-project-offer',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -207,6 +207,12 @@ class AppRouter {
             child: ArchitectProjectDetailPage(projectId: id),
           );
         },
+      ),
+
+       GoRoute(
+        path: '/architect-project-offer',
+        name: 'architect-project-offer',
+        builder: (context, state) => const ArchitectProjectOfferPageProvider(),
       ),
 
       // 6. GLOBAL FUNCTION

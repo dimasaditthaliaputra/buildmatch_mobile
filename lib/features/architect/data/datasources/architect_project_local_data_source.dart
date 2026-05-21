@@ -1,6 +1,6 @@
 
 
-import 'package:buildmatch_mobile/features/architect/domain/entities/Architect_project_entity.dart';
+import 'package:buildmatch_mobile/features/architect/domain/entities/architect_project_entity.dart';
 
 class ProjectModel extends ArchitectProjectEntity {
   const ProjectModel({
