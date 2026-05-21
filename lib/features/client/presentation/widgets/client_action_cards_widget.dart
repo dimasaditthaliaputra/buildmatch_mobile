@@ -164,7 +164,7 @@ class ClientActionCardsWidget extends StatelessWidget {
       height: 105,
       padding: const EdgeInsets.all(14),
       margin: EdgeInsets.zero,
-      backgroundColor: AppColors.surfacePale,
+      backgroundColor: AppColors.surfaceCream,
       borderRadius: 16,
       boxShadow: const [], // flat border style
       onTap: onTap,

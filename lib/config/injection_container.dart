@@ -12,6 +12,12 @@ import 'package:get_it/get_it.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 
 // Profile Feature Clean Architecture Imports
+import '../features/contractor/data/datasources/contractor_milestone_local_data_source.dart';
+import '../features/contractor/data/repositories/contractor_milestone_repository_impl.dart';
+import '../features/contractor/domain/repositories/contractor_milestone_repository.dart';
+import '../features/contractor/domain/usecases/contractor_get_system_milestones_usecase.dart';
+import '../features/contractor/domain/usecases/contractor_publikasi_milestone_usecase.dart';
+
 import '../features/profile/data/datasources/profile_local_data_source.dart';
 import '../features/profile/data/repositories/profile_repository_impl.dart';
 import '../features/profile/domain/repositories/profile_repository.dart';
@@ -161,6 +167,7 @@ Future<void> init() async {
   initRatingClient();
   initDetailPortofolio();
   initProjectContractorList();
+  initContractorMilestone();
 
   initArchitectProjectDetail();
   initArchitectProjectOffer();
@@ -351,5 +358,24 @@ void initContractorProgres() {
   );
   sl.registerLazySingleton<ContractorProgresLocalDataSource>(
     () => ProgresLocalDataSourceImpl(),
+  );
+}
+
+void initContractorMilestone() {
+  sl.registerLazySingleton<ContractorMilestoneLocalDataSource>(
+    () => ContractorMilestoneLocalDataSourceImpl(),
+  );
+  sl.registerLazySingleton<ContractorMilestoneRepository>(
+    () => ContractorMilestoneRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton(
+    () => ContractorGetSystemMilestonesUseCase(
+      sl<ContractorMilestoneRepository>(),
+    ),
+  );
+  sl.registerLazySingleton(
+    () => ContractorPublikasiMilestoneUseCase(
+      sl<ContractorMilestoneRepository>(),
+    ),
   );
 }

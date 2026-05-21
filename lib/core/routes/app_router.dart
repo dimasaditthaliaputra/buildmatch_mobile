@@ -4,6 +4,7 @@ import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart
 import 'package:dartz/dartz.dart';
 
 import 'package:buildmatch_mobile/features/client/presentation/pages/client_dashboard_page.dart';
+import '../../features/contractor/presentation/pages/contractor_milestone_form_page.dart';
 import '../../features/detail_portofolio/presentation/pages/detail_portofolio_page.dart';
 import '../../features/rating/presentation/pages/rating_client_page.dart';
 
@@ -121,17 +122,8 @@ class AppRouter {
       GoRoute(
         path: '/client-dashboard',
         name: 'client-dashboard',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const MainLayoutShell(role: UserRole.client),
-        ),
-      ),
-      GoRoute(
-        path: '/dashboard-client',
-        name: 'dashboard-client',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const MainLayoutShell(role: UserRole.client),
+        builder: (context, state) => const MainLayoutShell(
+          role: UserRole.client,
         ),
       ),
       GoRoute(
@@ -147,9 +139,8 @@ class AppRouter {
       GoRoute(
         path: '/contractor-dashboard',
         name: 'contractor-dashboard',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const MainLayoutShell(role: UserRole.contractor),
+        builder: (context, state) => const MainLayoutShell(
+          role: UserRole.contractor,
         ),
       ),
       GoRoute(
@@ -184,6 +175,14 @@ class AppRouter {
         path: '/contractor-add-progres',
         name: 'contractor-add-progres',
         builder: (context, state) => const ContractorAddProgresPageWrapper(),
+      ),
+      GoRoute(
+        path: '/contractor-milestone-form',
+        name: 'contractor-milestone-form',
+        builder: (context, state) {
+          final double totalNilai = state.extra as double? ?? 150000000.0;
+          return ContractorMilestoneFormPage(totalNilaiKontrak: totalNilai);
+        },
       ),
 
       // 5. ARCHITECT ROLE ROUTES

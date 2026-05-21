@@ -32,7 +32,7 @@ class _FinancialSummarySectionState extends State<FinancialSummarySection> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: math.max(context.heightPct(0.14), 125.0),
+      height: 125.0,
       child: Stack(
         children: [
           PageView(
@@ -122,7 +122,6 @@ class _FinancialSummaryCardState extends State<_FinancialSummaryCard> {
   @override
   Widget build(BuildContext context) {
     return GlobalCard(
-      height: math.max(context.heightPct(0.18), 150.0),
       margin: EdgeInsets.zero, 
       padding: const EdgeInsets.only(left: 16, right: 16, top: 12, bottom: 8),
       backgroundColor: AppColors.surface,
