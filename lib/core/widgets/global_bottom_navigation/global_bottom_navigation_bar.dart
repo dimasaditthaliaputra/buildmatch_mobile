@@ -80,6 +80,8 @@ class _GlobalBottomNavigationBarState extends State<GlobalBottomNavigationBar> {
                       activeX: activeX,
                       shadowColor: Colors.black.withOpacity(0.06),
                       borderColor: Colors.black.withOpacity(0.04),
+                      currentIndex: widget.currentIndex,
+                      itemCount: widget.items.length,
                     ),
                   );
                 },
@@ -177,11 +179,15 @@ class CurvedNavBarPainter extends CustomPainter {
   final double activeX;
   final Color shadowColor;
   final Color borderColor;
+  final int currentIndex;
+  final int itemCount;
 
   CurvedNavBarPainter({
     required this.activeX,
     required this.shadowColor,
     required this.borderColor,
+    required this.currentIndex,
+    required this.itemCount,
   });
 
   @override
@@ -200,12 +206,16 @@ class CurvedNavBarPainter extends CustomPainter {
     const double humpDepth = 26.0; // depth of the curve going up
     const double cornerRadius = 32.0;
 
+    // Corner radius: remove corner if active tab is at the edge
+    final bool isFirst = currentIndex == 0;
+    final bool isLast = currentIndex == itemCount - 1;
+
     // 1. Base nav bar shape (rounded rectangle)
     final Path baseRectPath = Path()
       ..addRRect(RRect.fromRectAndCorners(
         Rect.fromLTWH(0, 0, size.width, size.height),
-        topLeft: const Radius.circular(cornerRadius),
-        topRight: const Radius.circular(cornerRadius),
+        topLeft: isFirst ? Radius.zero : const Radius.circular(cornerRadius),
+        topRight: isLast ? Radius.zero : const Radius.circular(cornerRadius),
       ));
 
     // 2. The dynamic hump path
@@ -250,6 +260,8 @@ class CurvedNavBarPainter extends CustomPainter {
   bool shouldRepaint(covariant CurvedNavBarPainter oldDelegate) {
     return oldDelegate.activeX != activeX ||
         oldDelegate.shadowColor != shadowColor ||
-        oldDelegate.borderColor != borderColor;
+        oldDelegate.borderColor != borderColor ||
+        oldDelegate.currentIndex != currentIndex ||
+        oldDelegate.itemCount != itemCount;
   }
 }

@@ -22,7 +22,7 @@ class AppColors {
   static const Color primaryLightGreen = Color(0xFF4CAF50);
 
   // Surface — Krem
-  static const Color background = Color(0xFFFAFAFA);
+  static const Color background = Color(0xFFF5F5F5);
   static const Color surface = Color(0xFFFFFFFF);
   static const Color surfaceSoft = Color(0xFFFFD3A3);
   static const Color surfaceCream = Color(0xFFFDE8CC);
