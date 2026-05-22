@@ -76,7 +76,7 @@ class _MainLayoutShellState extends State<MainLayoutShell> {
         ];
       case UserRole.architect:
         return [
-          const ArchitectDashboardPage(),
+          const ArchitectDashboardProvider(),
           const _ArchitectProjectPlaceholderView(),
           _InboxPlaceholderView(role: widget.role),
           const ProfilePlaceholderPage(role: 'architect'),

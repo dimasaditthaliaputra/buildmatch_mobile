@@ -28,13 +28,13 @@ class ProjectListingSection extends StatelessWidget {
           title: 'Daftar Proyek', 
           actionText: 'LIHAT SEMUA',
           onActionTap: () {
-            context.push('/proyek_page');
+            context.push('/architect-project-list');
           },
         ),
-        const SizedBox(height: 12),
+        const SizedBox(height: 14),
         ...listings.map(
           (listing) => Padding(
-            padding: const EdgeInsets.only(bottom: 12),
+            padding: const EdgeInsets.only(bottom: 4),
             child: ProjectListingCard(
               listing: listing,
               onDetailTap: onDetailTap != null ? () => onDetailTap!(listing) : null,
@@ -116,7 +116,7 @@ class ProjectListingCard extends StatelessWidget {
                   )   
               ],
             ),
-            const SizedBox(height: 12), 
+            const SizedBox(height: 20), 
           ],
         ),
       ),

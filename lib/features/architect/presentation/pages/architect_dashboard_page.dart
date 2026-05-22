@@ -1,220 +1,230 @@
+import 'dart:math' as math;
+import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_dashboard_bloc.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import '../widgets/dashboard/dashboard_header.dart';
-import '../widgets/dashboard/active_project_card.dart';
-import '../widgets/dashboard/request_card.dart';
-import '../widgets/dashboard/financial_chart.dart';
-import 'package:go_router/go_router.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../../core/theme/app_colors.dart';
+import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/utils/screen_size.dart';
+import '../../../../config/injection_container.dart';
+import '../widgets/dashboard/dashboard_header_widget.dart';
+import '../widgets/dashboard/financial_summary_section.dart';
+import '../widgets/dashboard/active_project_section.dart';
+import '../widgets/dashboard/project_listing_section.dart';
+import '../widgets/dashboard/chart_widgets.dart';
+import '../../../../core/widgets/dashboard_background_global_widget.dart';
 
-class ArchitectDashboardPage extends StatelessWidget {
+class ArchitectDashboardProvider extends StatelessWidget {
+  const ArchitectDashboardProvider({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (_) => sl<ArchitectDashboardBloc>(),
+      child: const ArchitectDashboardPage(),
+    );
+  }
+}
+
+class ArchitectDashboardPage extends StatefulWidget {
   const ArchitectDashboardPage({super.key});
+
+  @override
+  State<ArchitectDashboardPage> createState() =>
+      _ArchitectDashboardPageState();
+}
+
+class _ArchitectDashboardPageState extends State<ArchitectDashboardPage> {
+  final ScrollController _scrollController = ScrollController();
+  final PageController _chartPageController = PageController(viewportFraction: 0.92);
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<ArchitectDashboardBloc>().add(
+      const LoadArchitectDashboard(architectId: 'current_user'),
+    );
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    _chartPageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F5F5),
-
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-
-            /// HEADER
-            const DashboardHeader(),
-
-            const SizedBox(height: 20),
-
-            /// ACTIVE PROJECT
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16),
-              child: ActiveProjectCard(),
-            ),
-
-            const SizedBox(height: 28),
-
-            /// TITLE REQUEST
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-
-                    const Text(
-                      "Permintaan Baru",
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-
-                    GestureDetector(
-                      onTap: () {
-                        context.push('/architect-proyek');
-                      },
-
-                      child: const Text(
-                        "LIHAT SEMUA",
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-
-            const SizedBox(height: 14),
-
-            /// REQUEST CARD
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                children: [
-
-                  const RequestCard(
-                    title: "Minimalis Studio Office",
-                    location: "Jakarta Selatan",
-                    price: "Rp 450 - 500jt",
-                    size: "120 m²",
-                  ),
-
-                  const SizedBox(height: 18),
-
-                  const RequestCard(
-                    title: "Tropical Retreat Villa",
-                    location: "Ubud, Bali",
-                    price: "Rp 2M - 3.5M",
-                    size: "350 m²",
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 28),
-
-            /// FINANCIAL CHART
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: const FinancialChart(),
-            ),
-
-            const SizedBox(height: 100),
-          ],
-        ),
+      backgroundColor: ThemeData().scaffoldBackgroundColor,
+      body: BlocBuilder<ArchitectDashboardBloc, ArchitectDashboardState>(
+        builder: (context, state) {
+          if (state is ArchitectDashboardLoading) {
+            return _buildLoadingState();
+          }
+          if (state is ArchitectDashboardError) {
+            return _buildErrorState(state.message);
+          }
+          if (state is ArchitectDashboardLoaded) {
+            return _buildLoadedState(state);
+          }
+          return _buildLoadingState();
+        },
       ),
-
-      /// BOTTOM NAVBAR
-bottomNavigationBar: Container(
-  height: 72,
-
-  decoration: const BoxDecoration(
-    color: Colors.white,
-    borderRadius: BorderRadius.only(
-      topLeft: Radius.circular(24),
-      topRight: Radius.circular(24),
-    ),
-  ),
-
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceAround,
-    children: [
-
-      _navItem(
-        icon: Icons.home_rounded,
-        label: "Beranda",
-        active: true,
-      ),
-
-      _navItem(
-        icon: Icons.description_outlined,
-        label: "Projek",
-      ),
-
-      _navItem(
-        icon: Icons.shopping_cart_outlined,
-        label: "Inbox",
-      ),
-
-      _navItem(
-        icon: Icons.person_outline,
-        label: "Pengaturan",
-      ),
-    ],
-  ),
-),
     );
   }
 
-Widget _navItem({
-  required IconData icon,
-  required String label,
-  bool active = false,
-}) {
-  return SizedBox(
-    width: 70,
-
-    child: Stack(
-      alignment: Alignment.topCenter,
-      clipBehavior: Clip.none,
-
+  Widget _buildLoadingState() {
+    return Column(
       children: [
-
-        /// ICON ACTIVE FLOATING
-        if (active)
-          Positioned(
-            top: -18,
-
-            child: Container(
-              width: 54,
-              height: 54,
-
-              decoration: BoxDecoration(
-                color: Colors.orange,
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.white,
-                  width: 4,
-                ),
-              ),
-
-              child: const Icon(
-                Icons.home_rounded,
-                color: Colors.white,
-                size: 28,
-              ),
-            ),
+        _buildOrangeHeader(),
+        Expanded(
+          child: Center(
+            child: CircularProgressIndicator(color: AppColors.primary, strokeWidth: 2.5),
           ),
+        ),
+      ],
+    );
+  }
 
-        /// ITEM NORMAL
-        Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+  Widget _buildErrorState(String message) {
+    return Column(
+      children: [
+        _buildOrangeHeader(),
+        Expanded(
+          child: Center(
+            child: Text('Error: $message', style: TextStyle(color: AppColors.primary)),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildOrangeHeader() {
+    return Container(
+      height: math.max(
+          context.heightPct(0.15) + MediaQuery.of(context).padding.top, 100.0),
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [AppColors.primaryMedium, AppColors.primaryDark],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLoadedState(ArchitectDashboardLoaded state) {
+    final dashboard = state.dashboard;
+
+    return RefreshIndicator(
+      color: AppColors.primary,
+      backgroundColor: AppColors.surface,
+      onRefresh: () async {
+        context.read<ArchitectDashboardBloc>().add(
+          const RefreshArchitectDashboard(architectId: 'current_user'),
+        );
+        await Future.delayed(const Duration(milliseconds: 600));
+      },
+      child: SingleChildScrollView(
+        controller: _scrollController,
+        physics: const AlwaysScrollableScrollPhysics(parent: BouncingScrollPhysics()),
+        child: Stack(
           children: [
+            const DashboardBackgroundGlobalWidget(),
 
-            SizedBox(height: active ? 18 : 0),
+            SafeArea(
+              bottom: false,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0),
+                    child: DashboardHeaderWidget(
+                      architectName: dashboard.architectName,
+                      architectRole: dashboard.architecRole,
+                      avatarUrl: dashboard.avatarUrl,
+                    ),
+                  ),
 
-            if (!active)
-              Icon(
-                icon,
-                color: Colors.black54,
-                size: 24,
-              ),
+                  const SizedBox(height: 16),
 
-            const SizedBox(height: 6),
+                  FinancialSummarySection(summary: dashboard.financialSummary),
 
-            Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                color: active
-                    ? Colors.orange
-                    : Colors.black54,
+                  const SizedBox(height: 24),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: ActiveProjectSection(
+                      projects: dashboard.activeProjects,
+                      onSeeAll: () {},
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: ProjectListingSection(
+                      listings: dashboard.projectListings,
+                      onSeeAll: () {},
+                      onDetailTap: (listing) {},
+                    ),
+                  ),
+
+                  const SizedBox(height: 16),
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Text(
+                      'Grafik',
+                      style: AppTextStyles.heading3.copyWith(
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w800,
+                        fontSize: 22,
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 12),
+
+                  SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    physics: const BouncingScrollPhysics(),
+                    padding: EdgeInsets.symmetric(horizontal: context.widthPct(0.04)),
+                    child: IntrinsicHeight(
+                      child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          SizedBox(
+                            width: context.widthPct(0.92),
+                            child: Padding(
+                              padding: const EdgeInsets.only(right: 6),
+                              child: FinancialChartWidget(
+                                data: dashboard.financialChartData,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: context.widthPct(0.92),
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 6),
+                              child: ProjectDonutChart(
+                                stats: dashboard.projectStats,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 24),
+                ],
               ),
             ),
           ],
         ),
-      ],
-    ),
-  );
-}
+      ),
+    );
+  }
 }
