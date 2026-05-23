@@ -47,6 +47,8 @@ import '../../features/contractor/presentation/pages/contractor_add_progres_page
 import '../../features/architect/presentation/pages/architect_dashboard_page.dart';
 import '../../features/architect/presentation/pages/architect_project_detail_page.dart';
 import 'package:buildmatch_mobile/features/architect/presentation/pages/architect_project_offer.dart';
+import '../../features/architect/presentation/pages/architect_project_list.dart';
+import '../../features/architect/presentation/bloc/architect_project_list_bloc.dart';
 
 // Features - Waiting Approval (Contractor Verification)
 import '../../features/waiting_approval/presentation/pages/verif_contractor_page.dart';
@@ -57,7 +59,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/architect-project-offer',
+    initialLocation: '/architect-dashboard',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -189,11 +191,16 @@ class AppRouter {
       GoRoute(
         path: '/architect-dashboard',
         name: 'architect-dashboard',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const MainLayoutShell(role: UserRole.architect),
+        builder: (context, state) => const MainLayoutShell(
+          role: UserRole.architect,
         ),
       ),
+      GoRoute(
+        path: '/architect-project-list',
+        name: 'architect-project-list',
+        builder: (context, state) => const ProjectArchitectListPageWrapper(),
+      ),
+      
 
       GoRoute(
         path: '/architect-project-detail/:id',
