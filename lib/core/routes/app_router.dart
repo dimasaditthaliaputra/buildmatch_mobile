@@ -49,7 +49,6 @@ import '../../features/architect/presentation/pages/architect_project_detail_pag
 import 'package:buildmatch_mobile/features/architect/presentation/pages/architect_project_offer.dart';
 import '../../features/architect/presentation/pages/architect_project_list.dart';
 
-
 // Features - Waiting Approval (Contractor Verification)
 import '../../features/waiting_approval/presentation/pages/verif_contractor_page.dart';
 import '../../features/waiting_approval/presentation/bloc/waiting_approval_bloc.dart';
@@ -191,11 +190,18 @@ class AppRouter {
       GoRoute(
         path: '/architect-dashboard',
         name: 'architect-dashboard',
-        pageBuilder: (context, state) => buildFadeTransitionPage(
-          key: state.pageKey,
-          child: const MainLayoutShell(role: UserRole.architect),
+        builder: (context, state) => const MainLayoutShell(
+          role: UserRole.architect,
         ),
       ),
+
+      GoRoute(
+        path: '/architect-project-list',
+        name: 'architect-project-list',
+        builder: (context, state) => const ProjectArchitectListPageWrapper(),
+      ),
+      
+
       GoRoute(
         path: '/architect-project-detail/:id',
         name: 'architect-project-detail',

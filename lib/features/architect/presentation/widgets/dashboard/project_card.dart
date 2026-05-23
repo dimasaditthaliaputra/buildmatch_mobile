@@ -92,7 +92,7 @@ class _CardContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final double padH = context.widthPct(0.035).clamp(14.0, 16.0);
-    final double padV = context.heightPct(0.015).clamp(12.0, 16.0);
+    final double padV = context.heightPct(0.01).clamp(8.0, 12.0);
     final double btnHeight = context.heightPct(0.04).clamp(33.0, 40.0);
 
     return Padding(
@@ -148,7 +148,7 @@ class _CardInfoBox extends StatelessWidget {
   Widget build(BuildContext context) {
     final double textFs = context.widthPct(0.028).clamp(10.0, 12.0); 
     final double padH = context.widthPct(0.025).clamp(10.0, 12.0);
-    final double padV = context.heightPct(0.01).clamp(8.0, 10.0);
+    final double padV = context.heightPct(0.005).clamp(4.0, 6.0);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: padH, vertical: padV),

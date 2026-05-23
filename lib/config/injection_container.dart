@@ -108,6 +108,22 @@ import '../features/contractor/domain/repositories/contractor_progres_repository
 import '../features/contractor/domain/usecases/get_contractor_progres_usecases.dart';
 import '../features/contractor/presentation/bloc/contractor_add_progres_bloc.dart';
 
+// Architect Dashboard Feature
+import 'package:buildmatch_mobile/features/architect/presentation/pages/architect_dashboard_page.dart';
+import 'package:buildmatch_mobile/features/architect/data/datasources/architect_dashboard_remote_datasource.dart';
+import 'package:buildmatch_mobile/features/architect/data/repositories/architect_dashboard_repository_impl.dart';
+import 'package:buildmatch_mobile/features/architect/domain/repositories/architect_dashboard_repository.dart';
+import 'package:buildmatch_mobile/features/architect/domain/usecases/get_architect_dashboard_usecase.dart';
+import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_dashboard_bloc.dart';
+// Architect Project List Feature
+import '../features/architect/presentation/pages/architect_project_detail_page.dart';
+import 'package:buildmatch_mobile/features/architect/domain/usecases/get_all_project.dart';
+import 'package:buildmatch_mobile/features/architect/domain/usecases/get_project_by_status.dart';
+import 'package:buildmatch_mobile/features/architect/domain/repositories/architect_project_list_repository.dart';
+import 'package:buildmatch_mobile/features/architect/data/datasources/architect_project_list_datasource.dart';
+import 'package:buildmatch_mobile/features/architect/data/repositories/architect_project_list_impl.dart';
+import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_project_list_bloc.dart';
+
 // Client Dashboard Feature
 import '../features/client/data/datasources/client_dashboard_local_data_source.dart';
 import '../features/client/data/repositories/client_dashboard_repository_impl.dart';
@@ -185,6 +201,9 @@ Future<void> init() async {
   initClientProject();
   initContractorProgres();
   initContractorProjectOffer();
+
+  initArchitectDashboard();
+  initArchitectProjectList();
 }
 
 void initContractorDashboard() {
@@ -404,5 +423,33 @@ void initContractorMilestone() {
     () => ContractorPublikasiMilestoneUseCase(
       sl<ContractorMilestoneRepository>(),
     ),
+  );
+}
+
+void initArchitectDashboard() {
+  sl.registerFactory(() => ArchitectDashboardBloc(getDashboardUseCase: sl()));
+  sl.registerLazySingleton(
+    () => GetArchitectDashboardUseCase(repository: sl()),
+  );
+  sl.registerLazySingleton<ArchitectDashboardRepository>(
+    () => ArchitectDashboardRepositoryImpl(remoteDataSource: sl()),
+  );
+  sl.registerLazySingleton<ArchitectDashboardRemoteDataSource>(
+    () => ArchitectDashboardRemoteDataSourceImpl(),
+  );
+}
+
+void initArchitectProjectList() {
+  sl.registerFactory(() => ArchitectProjectListBloc(
+        getAllProjects: sl(),
+        getProjectsByStatus: sl(),
+      ));
+  sl.registerLazySingleton(() => GetAllArchitectProjects(sl()));
+  sl.registerLazySingleton(() => GetArchitectProjectsByStatus(sl()));
+  sl.registerLazySingleton<ArchitectProjectListRepository>(
+    () => ArchitectProjectListRepositoryImpl(remoteDataSource: sl()),
+  );
+  sl.registerLazySingleton<ArchitectProjectListRemoteDataSource>(
+    () => ArchitectProjectRemoteDataSourceImpl(),
   );
 }

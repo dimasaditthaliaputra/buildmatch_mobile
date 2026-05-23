@@ -1,5 +1,5 @@
 import '../entities/architect_dashboard_entity.dart';
-import 'package:buildmatch_mobile/features/architect/data/repositories/architect_dashboard_repository.dart';
+import '../repositories/architect_dashboard_repository.dart';
 
 class GetArchitectDashboardUseCase {
   final ArchitectDashboardRepository repository;
