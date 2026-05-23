@@ -7,12 +7,16 @@ class SectionHeader extends StatelessWidget {
   final String title;
   final String actionText;
   final VoidCallback? onActionTap;
+  final Color? actionTextColor;
+  final TextStyle? actionTextStyle;
 
   const SectionHeader({
     super.key,
     required this.title,
     this.actionText = 'LIHAT SEMUA',
     this.onActionTap,
+    this.actionTextColor,
+    this.actionTextStyle,
   });
 
   @override
@@ -34,8 +38,8 @@ class SectionHeader extends StatelessWidget {
             onTap: onActionTap,
             child: Text(
               actionText,
-              style: AppTextStyles.labelSmall.copyWith(
-                color: AppColors.textPrimary,
+              style: (actionTextStyle ?? AppTextStyles.labelSmall).copyWith(
+                color: actionTextColor ?? AppColors.textPrimary,
                 fontWeight: FontWeight.w600,
                 letterSpacing: 0.5,
                 fontSize: 12,
