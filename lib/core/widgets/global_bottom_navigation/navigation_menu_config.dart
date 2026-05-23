@@ -77,7 +77,7 @@ class NavigationMenuConfig {
             label: 'Proyek',
             icon: LucideIcons.fileText,
             activeIcon: LucideIcons.fileText,
-            routeName: '/', // Fallback to '/'
+            routeName: '/architect-project-list',
           ),
           NavigationItem(
             label: 'Inbox',

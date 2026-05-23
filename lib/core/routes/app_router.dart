@@ -47,6 +47,8 @@ import '../../features/contractor/presentation/pages/contractor_add_progres_page
 import '../../features/architect/presentation/pages/architect_dashboard_page.dart';
 import '../../features/architect/presentation/pages/architect_project_detail_page.dart';
 import 'package:buildmatch_mobile/features/architect/presentation/pages/architect_project_offer.dart';
+import '../../features/architect/presentation/pages/architect_project_list.dart';
+
 
 // Features - Waiting Approval (Contractor Verification)
 import '../../features/waiting_approval/presentation/pages/verif_contractor_page.dart';
@@ -57,7 +59,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/architect-project-offer',
+    initialLocation: '/architect-project-list',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -194,7 +196,6 @@ class AppRouter {
           child: const MainLayoutShell(role: UserRole.architect),
         ),
       ),
-
       GoRoute(
         path: '/architect-project-detail/:id',
         name: 'architect-project-detail',
@@ -207,11 +208,16 @@ class AppRouter {
           );
         },
       ),
-
        GoRoute(
         path: '/architect-project-offer',
         name: 'architect-project-offer',
         builder: (context, state) => const ArchitectProjectOfferPageProvider(),
+      ),
+      GoRoute(
+        path: '/architect-project-list',
+        name: 'architect-project-list',
+        builder: (context, state) =>
+            const MainLayoutShell(role: UserRole.architect, initialTab: 1),
       ),
 
       // 6. GLOBAL FUNCTION
