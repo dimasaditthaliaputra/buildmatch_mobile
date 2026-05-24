@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/global_card.dart';
-import '../../../../core/utils/idr_formatter.dart';
 import '../../domain/entities/contractor_milestone_entity.dart';
-import 'estimasi_waktu_picker.dart'; // lib/features/contractor/presentation/widgets/
+import 'estimasi_waktu_picker.dart';
 
 class ContractorManualMilestoneCard extends StatefulWidget {
+  final int index;
   final ContractorMilestoneEntity milestone;
   final double totalNilaiKontrak;
   final ValueChanged<ContractorMilestoneEntity> onChanged;
@@ -15,6 +16,7 @@ class ContractorManualMilestoneCard extends StatefulWidget {
 
   const ContractorManualMilestoneCard({
     super.key,
+    required this.index,
     required this.milestone,
     required this.totalNilaiKontrak,
     required this.onChanged,
@@ -29,38 +31,58 @@ class ContractorManualMilestoneCard extends StatefulWidget {
 class _ContractorManualMilestoneCardState
     extends State<ContractorManualMilestoneCard> {
   late final TextEditingController _namaCtrl;
-  late final TextEditingController _persenCtrl;
+  late final TextEditingController _uangCtrl;
   bool _isEditingNama = false;
 
   @override
   void initState() {
     super.initState();
     _namaCtrl = TextEditingController(text: widget.milestone.nama);
-    final persen = (widget.milestone.persentase * 100).toStringAsFixed(0);
-    _persenCtrl = TextEditingController(text: persen == '0' ? '' : persen);
+
+    final uangInt = widget.milestone.jumlahUang.toInt();
+    final uangStr = uangInt == 0
+        ? ''
+        : NumberFormat.decimalPattern('id_ID').format(uangInt);
+    _uangCtrl = TextEditingController(text: uangStr);
   }
 
   @override
   void dispose() {
     _namaCtrl.dispose();
-    _persenCtrl.dispose();
+    _uangCtrl.dispose();
     super.dispose();
   }
 
-  void _onPersenChanged(String value) {
-    final parsed = int.tryParse(value) ?? 0;
-    final persen = parsed.clamp(0, 100) / 100.0;
-    widget.onChanged(widget.milestone.copyWith(
-      persentase: persen,
-      jumlahUang: widget.totalNilaiKontrak * persen,
-    ));
+  void _onUangChanged(String value) {
+    final cleanValue = value.replaceAll(RegExp(r'[^0-9]'), '');
+    final parsedUang = double.tryParse(cleanValue) ?? 0.0;
+
+    if (cleanValue.isNotEmpty) {
+      final formattedValue = NumberFormat.decimalPattern(
+        'id_ID',
+      ).format(int.parse(cleanValue));
+      _uangCtrl.value = TextEditingValue(
+        text: formattedValue,
+        selection: TextSelection.collapsed(offset: formattedValue.length),
+      );
+    } else {
+      _uangCtrl.value = const TextEditingValue(text: '');
+    }
+
+    double persen = 0.0;
+    if (widget.totalNilaiKontrak > 0) {
+      persen = parsedUang / widget.totalNilaiKontrak;
+    }
+
+    widget.onChanged(
+      widget.milestone.copyWith(persentase: persen, jumlahUang: parsedUang),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    final jumlahText = widget.milestone.jumlahUang > 0
-        ? IdrFormatter.formatFull(widget.milestone.jumlahUang)
-        : 'IDR 0';
+    final persenText =
+        '${(widget.milestone.persentase * 100).toStringAsFixed(1)} %';
 
     return GlobalCard(
       width: double.infinity,
@@ -69,7 +91,6 @@ class _ContractorManualMilestoneCardState
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // ── Header: nama + edit + delete icons
           Row(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
@@ -78,23 +99,27 @@ class _ContractorManualMilestoneCardState
                     ? TextField(
                         controller: _namaCtrl,
                         autofocus: true,
-                        style: AppTextStyles.bodyLarge
-                            .copyWith(fontWeight: FontWeight.w700),
+                        style: AppTextStyles.bodyLarge.copyWith(
+                          fontWeight: FontWeight.w700,
+                        ),
                         decoration: InputDecoration(
                           isDense: true,
-                          contentPadding:
-                              const EdgeInsets.symmetric(vertical: 4),
-                          border: UnderlineInputBorder(
-                            borderSide:
-                                BorderSide(color: AppColors.primary),
+                          contentPadding: const EdgeInsets.symmetric(
+                            vertical: 4,
                           ),
-                          focusedBorder: UnderlineInputBorder(
+                          border: const UnderlineInputBorder(
+                            borderSide: BorderSide(color: AppColors.primary),
+                          ),
+                          focusedBorder: const UnderlineInputBorder(
                             borderSide: BorderSide(
-                                color: AppColors.primary, width: 2),
+                              color: AppColors.primary,
+                              width: 2,
+                            ),
                           ),
                         ),
                         onChanged: (v) => widget.onChanged(
-                            widget.milestone.copyWith(nama: v)),
+                          widget.milestone.copyWith(nama: v),
+                        ),
                         onSubmitted: (_) =>
                             setState(() => _isEditingNama = false),
                       )
@@ -108,28 +133,35 @@ class _ContractorManualMilestoneCardState
               ),
               const SizedBox(width: 8),
               GestureDetector(
-                onTap: () =>
-                    setState(() => _isEditingNama = !_isEditingNama),
+                onTap: () => setState(() => _isEditingNama = !_isEditingNama),
                 child: Icon(
                   _isEditingNama ? Icons.check : Icons.edit_outlined,
                   size: 18,
                   color: AppColors.textSecondaryDark,
                 ),
               ),
-              const SizedBox(width: 8),
+              const SizedBox(width: 12),
               GestureDetector(
                 onTap: widget.onDelete,
-                child: Icon(
+                child: const Icon(
                   Icons.delete_outline,
                   size: 18,
                   color: AppColors.error,
+                ),
+              ),
+              const SizedBox(width: 12),
+              ReorderableDragStartListener(
+                index: widget.index,
+                child: const Icon(
+                  Icons.drag_handle,
+                  size: 22,
+                  color: AppColors.textSecondary,
                 ),
               ),
             ],
           ),
           const SizedBox(height: 12),
 
-          // ── Tipe Milestone
           Text(
             'Tipe Milestone',
             style: AppTextStyles.bodySmall.copyWith(
@@ -145,10 +177,31 @@ class _ContractorManualMilestoneCardState
           ),
           const SizedBox(height: 12),
 
-          // ── Persentase + Jumlah Uang
+          // --- BAGIAN INI SUDAH DITUKAR (Uang di Kiri, Persentase di Kanan) ---
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              Expanded(
+                flex: 6,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Jumlah Uang (IDR)',
+                      style: AppTextStyles.bodySmall.copyWith(
+                        color: AppColors.textSecondaryDark,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    const SizedBox(height: 6),
+                    _UangField(
+                      controller: _uangCtrl,
+                      onChanged: _onUangChanged,
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(width: 12),
               Expanded(
                 flex: 4,
                 child: Column(
@@ -162,44 +215,25 @@ class _ContractorManualMilestoneCardState
                       ),
                     ),
                     const SizedBox(height: 6),
-                    _PersenField(
-                      controller: _persenCtrl,
-                      onChanged: _onPersenChanged,
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(width: 12),
-              Expanded(
-                flex: 6,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Jumlah Uang',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondaryDark,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    const SizedBox(height: 6),
                     Container(
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 12),
+                        horizontal: 12,
+                        vertical: 12,
+                      ),
                       decoration: BoxDecoration(
-                        border:
-                            Border.all(color: AppColors.primaryLightGrey),
+                        border: Border.all(color: AppColors.primaryLightGrey),
                         borderRadius: BorderRadius.circular(10),
                         color: AppColors.background,
                       ),
                       child: Text(
-                        jumlahText,
+                        persenText,
+                        textAlign: TextAlign.center,
                         style: AppTextStyles.bodyMedium.copyWith(
-                          color: widget.milestone.jumlahUang > 0
+                          color: widget.milestone.persentase > 0
                               ? AppColors.textPrimary
                               : AppColors.textSecondary,
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                     ),
@@ -208,10 +242,9 @@ class _ContractorManualMilestoneCardState
               ),
             ],
           ),
+          // -------------------------------------------------------------------
           const SizedBox(height: 12),
 
-          // ── Deadline — reuse EstimasiWaktuPicker (label overridden via
-          //    a plain "Deadline" label above the picker)
           Text(
             'Deadline',
             style: AppTextStyles.bodySmall.copyWith(
@@ -220,11 +253,6 @@ class _ContractorManualMilestoneCardState
             ),
           ),
           const SizedBox(height: 6),
-
-          // EstimasiWaktuPicker has its own "Estimasi Waktu" label built-in;
-          // we suppress it by wrapping with a clip + negative offset trick —
-          // instead we call the widget without the label by using a thin
-          // wrapper that only renders the picker row (the Card inside).
           _DeadlinePickerOnly(
             selectedDate: widget.milestone.deadline,
             onDateSelected: (date) =>
@@ -236,8 +264,6 @@ class _ContractorManualMilestoneCardState
   }
 }
 
-/// Renders only the tappable date row from EstimasiWaktuPicker's internals,
-/// without the "Estimasi Waktu" header label, matching the design.
 class _DeadlinePickerOnly extends StatelessWidget {
   final DateTime? selectedDate;
   final ValueChanged<DateTime> onDateSelected;
@@ -249,19 +275,12 @@ class _DeadlinePickerOnly extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // We use EstimasiWaktuPicker directly. Its internal label ("Estimasi Waktu")
-    // is already shown; since the card above has "Deadline" as section header,
-    // we just use EstimasiWaktuPicker straight — the label reads as sub-label
-    // which is acceptable. If the project later removes the label from the
-    // widget itself, simply swap to EstimasiWaktuPicker without further changes.
     return EstimasiWaktuPicker(
       selectedDate: selectedDate,
       onDateSelected: onDateSelected,
     );
   }
 }
-
-// ─── Tipe dropdown ─────────────────────────────────────────────────────────
 
 class _TipeDropdown extends StatelessWidget {
   final MilestoneTipe value;
@@ -281,8 +300,10 @@ class _TipeDropdown extends StatelessWidget {
         child: DropdownButton<MilestoneTipe>(
           value: value,
           isExpanded: true,
-          icon: const Icon(Icons.keyboard_arrow_down,
-              color: AppColors.textSecondaryDark),
+          icon: const Icon(
+            Icons.keyboard_arrow_down,
+            color: AppColors.textSecondaryDark,
+          ),
           items: const [
             DropdownMenuItem(
               value: MilestoneTipe.nonPembangunan,
@@ -293,8 +314,9 @@ class _TipeDropdown extends StatelessWidget {
               child: Text('Pembangunan'),
             ),
           ],
-          style: AppTextStyles.bodyMedium
-              .copyWith(color: AppColors.textPrimary),
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.textPrimary,
+          ),
           onChanged: (v) {
             if (v != null) onChanged(v);
           },
@@ -304,16 +326,11 @@ class _TipeDropdown extends StatelessWidget {
   }
 }
 
-// ─── Percentage input field ────────────────────────────────────────────────
-
-class _PersenField extends StatelessWidget {
+class _UangField extends StatelessWidget {
   final TextEditingController controller;
   final ValueChanged<String> onChanged;
 
-  const _PersenField({
-    required this.controller,
-    required this.onChanged,
-  });
+  const _UangField({required this.controller, required this.onChanged});
 
   @override
   Widget build(BuildContext context) {
@@ -322,50 +339,18 @@ class _PersenField extends StatelessWidget {
         border: Border.all(color: AppColors.primaryLightGrey),
         borderRadius: BorderRadius.circular(10),
       ),
-      child: Row(
-        children: [
-          Expanded(
-            child: TextField(
-              controller: controller,
-              keyboardType: TextInputType.number,
-              inputFormatters: [
-                FilteringTextInputFormatter.digitsOnly,
-                LengthLimitingTextInputFormatter(3),
-              ],
-              textAlign: TextAlign.center,
-              style: AppTextStyles.bodyMedium
-                  .copyWith(fontWeight: FontWeight.w600),
-              decoration: const InputDecoration(
-                isDense: true,
-                contentPadding:
-                    EdgeInsets.symmetric(horizontal: 8, vertical: 12),
-                border: InputBorder.none,
-                hintText: '0',
-              ),
-              onChanged: onChanged,
-            ),
-          ),
-          Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
-            decoration: BoxDecoration(
-              border: Border(
-                  left: BorderSide(color: AppColors.primaryLightGrey)),
-              color: AppColors.background,
-              borderRadius: const BorderRadius.only(
-                topRight: Radius.circular(10),
-                bottomRight: Radius.circular(10),
-              ),
-            ),
-            child: Text(
-              '%',
-              style: AppTextStyles.bodyMedium.copyWith(
-                color: AppColors.textSecondaryDark,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-        ],
+      child: TextField(
+        controller: controller,
+        keyboardType: TextInputType.number,
+        style: AppTextStyles.bodyMedium.copyWith(fontWeight: FontWeight.w600),
+        decoration: const InputDecoration(
+          isDense: true,
+          contentPadding: EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+          border: InputBorder.none,
+          hintText: '0',
+          prefixText: 'Rp ',
+        ),
+        onChanged: onChanged,
       ),
     );
   }
