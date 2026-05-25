@@ -11,6 +11,8 @@ class GlobalCard extends StatelessWidget {
   
   final double borderRadius;
   final List<BoxShadow>? boxShadow;
+  final Color? borderColor;
+  final double? borderWidth;
   
   final VoidCallback? onTap;
   final VoidCallback? onDoubleTap; 
@@ -26,6 +28,8 @@ class GlobalCard extends StatelessWidget {
     this.backgroundColor = AppColors.surface,
     this.borderRadius = 16.0, 
     this.boxShadow,
+    this.borderColor,
+    this.borderWidth,
     this.onTap,
     this.onDoubleTap,
     this.onLongPress,
@@ -44,17 +48,22 @@ class GlobalCard extends StatelessWidget {
         padding: padding ?? const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: backgroundColor ?? Theme.of(context).cardColor,
-
           borderRadius: BorderRadius.circular(borderRadius),
-          
+          border: borderColor != null
+              ? Border.all(
+                  color: borderColor!,
+                  width: borderWidth ?? 1.0,
+                )
+              : null,
           boxShadow: boxShadow ?? [
             BoxShadow(
-              color: Colors.black.withOpacity(0.06),
+              color: Colors.black.withValues(alpha: 0.06),
               blurRadius: 12,
               offset: const Offset(0, 4),
             ),
           ],
         ),
+        clipBehavior: Clip.antiAlias,
         child: child,
       ),
     );
