@@ -2,16 +2,16 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../domain/entities/architect_project_list_entity.dart';
-import '../../domain/usecases/get_all_project.dart';
-import '../../domain/usecases/get_project_by_status.dart';
+import '../../domain/usecases/get_architect_all_project.dart';
+import '../../domain/usecases/get_architect_project_by_status.dart';
 
 part 'architect_project_list_event.dart';
 part 'architect_project_list_state.dart';
 
 class ArchitectProjectListBloc
     extends Bloc<ArchitectProjectListEvent, ArchitectProjectListState> {
-  final GetAllArchitectProjects getAllProjects;
-  final GetArchitectProjectsByStatus getProjectsByStatus;
+  final ArchitectGetAllProjects getAllProjects;
+  final ArchitectGetProjectsByStatus getProjectsByStatus;
 
   ArchitectProjectListBloc({
     required this.getAllProjects,
@@ -40,6 +40,7 @@ class ArchitectProjectListBloc
       ),
     );
   }
+
 
   Future<void> _onLoadProjectsByStatus(
     LoadProjectsByStatus event,

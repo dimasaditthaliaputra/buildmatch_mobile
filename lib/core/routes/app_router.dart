@@ -48,7 +48,6 @@ import '../../features/architect/presentation/pages/architect_dashboard_page.dar
 import '../../features/architect/presentation/pages/architect_project_detail_page.dart';
 import 'package:buildmatch_mobile/features/architect/presentation/pages/architect_project_offer.dart';
 import '../../features/architect/presentation/pages/architect_project_list.dart';
-import '../../features/architect/presentation/bloc/architect_project_list_bloc.dart';
 
 // Features - Waiting Approval (Contractor Verification)
 import '../../features/waiting_approval/presentation/pages/verif_contractor_page.dart';
@@ -203,6 +202,7 @@ class AppRouter {
           role: UserRole.architect,
         ),
       ),
+
       GoRoute(
         path: '/architect-project-list',
         name: 'architect-project-list',
@@ -222,11 +222,16 @@ class AppRouter {
           );
         },
       ),
-
        GoRoute(
         path: '/architect-project-offer',
         name: 'architect-project-offer',
         builder: (context, state) => const ArchitectProjectOfferPageProvider(),
+      ),
+      GoRoute(
+        path: '/architect-project-list',
+        name: 'architect-project-list',
+        builder: (context, state) =>
+            const MainLayoutShell(role: UserRole.architect, initialTab: 1),
       ),
 
       // 6. GLOBAL FUNCTION

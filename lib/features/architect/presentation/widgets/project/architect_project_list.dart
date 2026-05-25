@@ -1,3 +1,6 @@
+import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_project_list_bloc.dart';
+import 'package:buildmatch_mobile/features/architect/presentation/widgets/project/empty_project_list_state.dart';
+import 'package:buildmatch_mobile/features/architect/presentation/widgets/project/project_architect_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -7,9 +10,8 @@ import '../../../../../core/theme/app_text_styles.dart';
 import '../../../../../core/utils/screen_size.dart';
 import '../../../../../core/widgets/search_bar_widget.dart';
 import '../../../../../core/widgets/filter_bar_widget.dart';
-import '../bloc/architect_project_list_bloc.dart';
-import 'package:buildmatch_mobile/features/architect/presentation/widgets/project/empty_project_list_state.dart';
-import 'package:buildmatch_mobile/features/architect/presentation/widgets/project/project_architect_card.dart';
+
+
 
 import '../../../../../core/widgets/global_app_bar.dart';
 import '../../../../../core/widgets/error_state_view.dart';

@@ -12,19 +12,12 @@ class ArchitectProjectRemoteDataSourceImpl
     implements ArchitectProjectListRemoteDataSource {
   // final SupabaseClient supabaseClient;
 
-  // ContractorProjectRemoteDataSourceImpl({required this.supabaseClient});
+  // ArchitectProjectRemoteDataSourceImpl({required this.supabaseClient});
 
   ArchitectProjectRemoteDataSourceImpl();
 
   final List<ArchitectProjectListModel> _dummyProjects = [
-    ArchitectProjectListModel(
-      id: '1',
-      name: 'Renovasi Ruang LPY 4',
-      location: 'Polinema, Malang',
-      startDate: DateTime(2024, 7, 18),
-      clientName: 'Billie Eilish',
-      status: ProjectStatus.berjalan,
-    ),
+    
     ArchitectProjectListModel(
       id: '2',
       name: 'Proyek Pembangunan PT. Indah',
@@ -61,7 +54,7 @@ class ArchitectProjectRemoteDataSourceImpl
     //       .order('start_date', ascending: false);
 
     //   return (response as List)
-    //       .map((json) => ProjectContractorListModel.fromJson(json as Map<String, dynamic>))
+    //       .map((json) => ProjectArchitectListModel.fromJson(json as Map<String, dynamic>))
     //       .toList();
     // } on PostgrestException catch (e) {
     //   throw ServerException(e.message); 
@@ -86,7 +79,7 @@ class ArchitectProjectRemoteDataSourceImpl
     //       .order('start_date', ascending: false);
 
     //   return (response as List)
-    //       .map((json) => ProjectContractorListModel.fromJson(json as Map<String, dynamic>))
+    //       .map((json) => ProjectArchitectListModel.fromJson(json as Map<String, dynamic>))
     //       .toList();
     // } on PostgrestException catch (e) {
     //   // PERBAIKAN: Tambahkan throw

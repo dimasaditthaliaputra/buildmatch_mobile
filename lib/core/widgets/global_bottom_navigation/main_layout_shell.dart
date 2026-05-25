@@ -1,3 +1,4 @@
+import 'package:buildmatch_mobile/features/architect/presentation/pages/architect_project_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
@@ -76,8 +77,8 @@ class _MainLayoutShellState extends State<MainLayoutShell> {
         ];
       case UserRole.architect:
         return [
-          const ArchitectDashboardProvider(),
-          const _ArchitectProjectPlaceholderView(),
+          const ArchitectDashboardPage(),
+          const ProjectArchitectListPageWrapper(),
           _InboxPlaceholderView(role: widget.role),
           const ProfilePlaceholderPage(role: 'architect'),
         ];
