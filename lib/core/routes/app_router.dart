@@ -54,11 +54,14 @@ import '../../features/waiting_approval/presentation/pages/verif_contractor_page
 import '../../features/waiting_approval/presentation/bloc/waiting_approval_bloc.dart';
 import '../../features/auth/presentation/bloc/auth_bloc.dart';
 
+// Features - Milestone
+import '../../features/milestone/presentation/pages/milestone_contractor_page.dart';
+
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/architect-project-list',
+    initialLocation: '/splash',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -184,6 +187,11 @@ class AppRouter {
           final double totalNilai = state.extra as double? ?? 150000000.0;
           return ContractorMilestoneFormPage(totalNilaiKontrak: totalNilai);
         },
+      ),
+      GoRoute(
+        path: '/milestone-contractor',
+        name: 'milestone-contractor',
+        builder: (context, state) => const MilestoneContractorProvider(),
       ),
 
       // 5. ARCHITECT ROLE ROUTES

@@ -138,6 +138,14 @@ import '../features/client/domain/repositories/client_project_repository.dart';
 import '../features/client/domain/usecases/get_client_projects_usecase.dart';
 import '../features/client/presentation/bloc/client_project_bloc.dart';
 
+// milestone contractor
+import '../features/milestone/presentation/pages/milestone_contractor_page.dart';
+import '../features/milestone/data/datasources/milestone_contractor_local_data_source.dart';
+import '../features/milestone/data/repositories/milestone_contractor_repository_impl.dart';
+import '../features/milestone/domain/repositories/milestone_contractor_repository.dart';
+import '../features/milestone/domain/usecases/get_milestones_contractor_usecase.dart';
+import '../features/milestone/presentation/bloc/milestone_contractor_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -190,6 +198,7 @@ Future<void> init() async {
   initDetailPortofolio();
   initProjectContractorList();
   initContractorMilestone();
+  initMilestoneContractorPage();
 
   initArchitectProjectDetail();
   initArchitectProjectOffer();
@@ -451,5 +460,16 @@ void initArchitectProjectList() {
   );
   sl.registerLazySingleton<ArchitectProjectListRemoteDataSource>(
     () => ArchitectProjectRemoteDataSourceImpl(),
+  );
+}
+
+void initMilestoneContractorPage() {
+  sl.registerFactory(() => MilestoneContractorBloc(getMilestonesUseCase: sl()));
+  sl.registerLazySingleton(() => GetMilestonesUseCase(sl()));
+  sl.registerLazySingleton<MilestoneContractorRepository>(
+    () => MilestoneContractorRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<MilestoneContractorLocalDataSource>(
+    () => MilestoneContractorLocalDataSourceImpl(),
   );
 }
