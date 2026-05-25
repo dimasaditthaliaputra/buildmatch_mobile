@@ -6,6 +6,7 @@ import '../../../../config/injection_container.dart';
 import '../../../../core/widgets/filter_bar_widget.dart';
 import '../../../../core/widgets/global_app_bar.dart';
 import '../../../../core/widgets/main_button.dart';
+import '../../../../core/utils/idr_formatter.dart';
 import '../../domain/entities/contractor_milestone_entity.dart';
 import '../../domain/usecases/contractor_get_system_milestones_usecase.dart';
 import '../../domain/usecases/contractor_publikasi_milestone_usecase.dart';
@@ -16,7 +17,7 @@ import '../widgets/contractor_milestone_empty_state.dart';
 import '../widgets/contractor_manual_milestone_card.dart';
 import '../widgets/contractor_system_milestone_card.dart';
 import '../widgets/contractor_tambah_milestone_button.dart';
-import '../widgets/total_alokasi_widget.dart'; 
+import '../widgets/total_alokasi_widget.dart';
 
 class ContractorMilestoneFormPage extends StatelessWidget {
   final double totalNilaiKontrak;
@@ -30,7 +31,6 @@ class ContractorMilestoneFormPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => ContractorMilestoneBloc(
-        // Ganti context.read() dengan sl() atau di() sesuai nama instansi GetIt proyek Anda
         getSystemMilestones: sl<ContractorGetSystemMilestonesUseCase>(),
         publikasiMilestone: sl<ContractorPublikasiMilestoneUseCase>(),
         totalNilaiKontrak: totalNilaiKontrak,
@@ -107,7 +107,12 @@ class _ContractorMilestoneContent extends StatelessWidget {
     final isManual = state.inputMode == MilestoneInputMode.manual;
     final isFull = state.totalAlokasi >= 1.0;
 
+    final totalTerpakai = state.totalNilaiKontrak * state.totalAlokasi;
+    final sisaDana = state.totalNilaiKontrak - totalTerpakai;
+
     return SingleChildScrollView(
+      physics:
+          const ClampingScrollPhysics(), 
       padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -125,6 +130,42 @@ class _ContractorMilestoneContent extends StatelessWidget {
           const SizedBox(height: 16),
 
           TotalAlokasiWidget(percentage: state.totalAlokasi),
+          const SizedBox(height: 12), 
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            decoration: BoxDecoration(
+              color: Colors.white, 
+              borderRadius: BorderRadius.circular(8), 
+              border: Border.all(
+                color: Colors.grey.shade300, 
+                width: 1,
+              ),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Sisa Dana Keseluruhan:',
+                  style: AppTextStyles.bodyMedium.copyWith(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w600, 
+                  ),
+                ),
+                Text(
+                  IdrFormatter.formatFull(sisaDana),
+                  style: AppTextStyles.bodyLarge.copyWith(
+                    color: sisaDana >= 0
+                        ? const Color(
+                            0xFF387C2B,
+                          ) 
+                        : AppColors.error,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+              ],
+            ),
+          ),
+
           const SizedBox(height: 16),
 
           if (state.milestones.isEmpty && isManual)
@@ -164,9 +205,12 @@ class _SystemList extends StatelessWidget {
       itemCount: state.milestones.length,
       itemBuilder: (_, i) {
         final m = state.milestones[i];
+        final isDisabled = i > 0 && state.milestones[i - 1].deadline == null;
+
         return ContractorSystemMilestoneCard(
           key: ValueKey(m.id),
           milestone: m,
+          isDisabled: isDisabled,
           onDeadlineChanged: (date) => bloc.add(
             ContractorMilestoneSystemDeadlineUpdated(
               milestoneId: m.id,
@@ -206,6 +250,7 @@ class _ManualList extends StatelessWidget {
         return ContractorManualMilestoneCard(
           key: ValueKey(m.id),
           milestone: m,
+          index: i,
           totalNilaiKontrak: state.totalNilaiKontrak,
           onChanged: (updated) => bloc.add(ContractorMilestoneUpdated(updated)),
           onDelete: () => bloc.add(ContractorMilestoneDeleted(m.id)),

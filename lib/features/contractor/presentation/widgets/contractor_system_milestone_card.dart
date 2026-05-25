@@ -5,115 +5,127 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/global_card.dart';
 import '../../../../core/utils/idr_formatter.dart';
 import '../../domain/entities/contractor_milestone_entity.dart';
-import 'estimasi_waktu_picker.dart';
+import '../../../../core/utils/date_formatter.dart';
 
 class ContractorSystemMilestoneCard extends StatelessWidget {
   final ContractorMilestoneEntity milestone;
   final ValueChanged<DateTime> onDeadlineChanged;
+  final bool isDisabled;
 
   const ContractorSystemMilestoneCard({
     super.key,
     required this.milestone,
     required this.onDeadlineChanged,
+    this.isDisabled = false,
   });
 
   @override
   Widget build(BuildContext context) {
-    final persenText =
-        '${(milestone.persentase * 100).toStringAsFixed(0)} %';
+    final persenText = '${(milestone.persentase * 100).toStringAsFixed(0)} %';
     final jumlahText = IdrFormatter.formatFull(milestone.jumlahUang);
 
-    return GlobalCard(
-      width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // ── Title
-          Text(
-            milestone.nama,
-            style: AppTextStyles.bodyLarge.copyWith(
-              fontWeight: FontWeight.w700,
-              color: AppColors.textPrimary,
+    return Opacity(
+      opacity: isDisabled ? 0.4 : 1.0,
+      child: GlobalCard(
+        width: double.infinity,
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              milestone.nama,
+              style: AppTextStyles.bodyLarge.copyWith(
+                fontWeight: FontWeight.w700,
+                color: AppColors.textPrimary,
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
+            const SizedBox(height: 12),
 
-          // ── Percentage box + calculated amount
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              // percentage field (read-only style)
-              Container(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 12, vertical: 11),
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.primaryLightGrey),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Text(
-                  persenText,
-                  style: AppTextStyles.bodyMedium.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.textPrimary,
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 11,
+                  ),
+                  decoration: BoxDecoration(
+                    border: Border.all(color: AppColors.primaryLightGrey),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    persenText,
+                    style: AppTextStyles.bodyMedium.copyWith(
+                      fontWeight: FontWeight.w700,
+                      color: AppColors.textPrimary,
+                    ),
                   ),
                 ),
-              ),
-              const SizedBox(width: 12),
+                const SizedBox(width: 12),
 
-              // calculated amount label
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Jumlah yang Dihitung',
-                      style: AppTextStyles.bodySmall.copyWith(
-                        color: AppColors.textSecondaryDark,
-                        fontSize: 10,
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Jumlah yang Dihitung',
+                        style: AppTextStyles.bodySmall.copyWith(
+                          color: AppColors.textSecondaryDark,
+                          fontSize: 10,
+                        ),
                       ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      jumlahText,
-                      style: AppTextStyles.bodyMedium.copyWith(
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.textPrimary,
+                      const SizedBox(height: 2),
+                      Text(
+                        jumlahText,
+                        style: AppTextStyles.bodyMedium.copyWith(
+                          fontWeight: FontWeight.w600,
+                          color: AppColors.textPrimary,
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 14),
+              ],
+            ),
+            const SizedBox(height: 14),
 
-          // ── Deadline — reuse EstimasiWaktuPicker (local widget)
-          // We build a slim row version matching the design
-          _DeadlineRow(
-            selectedDate: milestone.deadline,
-            onDateSelected: onDeadlineChanged,
-          ),
-        ],
+            _DeadlineRow(
+              selectedDate: milestone.deadline,
+              onDateSelected: onDeadlineChanged,
+              isDisabled: isDisabled,
+            ),
+          ],
+        ),
       ),
     );
   }
 }
 
-/// Slim inline deadline row that wraps EstimasiWaktuPicker's date-picker
-/// logic but displays as the compact "Deadline  |  15 Mei 2026" row shown
-/// in the Dari Sistem design.
 class _DeadlineRow extends StatelessWidget {
   final DateTime? selectedDate;
   final ValueChanged<DateTime> onDateSelected;
+  final bool isDisabled;
 
   const _DeadlineRow({
     required this.selectedDate,
     required this.onDateSelected,
+    this.isDisabled = false,
   });
 
   Future<void> _pick(BuildContext context) async {
+    if (isDisabled) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Silakan atur deadline milestone sebelumnya terlebih dahulu.',
+          ),
+          backgroundColor: AppColors.error,
+        ),
+      );
+      return;
+    }
+
     final now = DateTime.now();
     final picked = await showDatePicker(
       context: context,
@@ -140,7 +152,7 @@ class _DeadlineRow extends StatelessWidget {
   Widget build(BuildContext context) {
     final hasDate = selectedDate != null;
     final label = hasDate
-        ? DateFormat('dd MMM yyyy', 'id_ID').format(selectedDate!)
+        ? DateFormat('dd MMM yyyy').format(selectedDate!)
         : 'Select Date';
 
     return GestureDetector(
@@ -164,8 +176,7 @@ class _DeadlineRow extends StatelessWidget {
             label,
             style: AppTextStyles.bodyMedium.copyWith(
               color: hasDate ? AppColors.textPrimary : AppColors.textSecondary,
-              fontWeight:
-                  hasDate ? FontWeight.w600 : FontWeight.w400,
+              fontWeight: hasDate ? FontWeight.w600 : FontWeight.w400,
             ),
           ),
         ],
