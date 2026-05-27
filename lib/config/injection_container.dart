@@ -198,7 +198,6 @@ Future<void> init() async {
 
   initArchitectProjectDetail();
   initArchitectProjectOffer();
-  initArchitectProjectList();
 
   initProfileSetup();
   initWaitingApproval();

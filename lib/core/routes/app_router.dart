@@ -202,7 +202,7 @@ class AppRouter {
           role: UserRole.architect,
         ),
       ),
-
+      
       GoRoute(
         path: '/architect-project-detail/:id',
         name: 'architect-project-detail',
