@@ -202,14 +202,6 @@ class AppRouter {
           role: UserRole.architect,
         ),
       ),
-
-      GoRoute(
-        path: '/architect-project-list',
-        name: 'architect-project-list',
-        builder: (context, state) => const ProjectArchitectListPageWrapper(),
-      ),
-      
-
       GoRoute(
         path: '/architect-project-detail/:id',
         name: 'architect-project-detail',
