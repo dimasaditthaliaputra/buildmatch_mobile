@@ -1,18 +1,14 @@
 import 'package:buildmatch_mobile/features/architect/data/datasources/architect_project_detail_local_data_source.dart';
-import 'package:buildmatch_mobile/features/architect/data/datasources/architect_project_list_datasource.dart';
 import 'package:buildmatch_mobile/features/architect/data/datasources/architect_project_offer_remote_datasource.dart';
 import 'package:buildmatch_mobile/features/architect/data/repositories/architect_project_detail_repository_impl.dart';
-import 'package:buildmatch_mobile/features/architect/data/repositories/architect_project_list_impl.dart';
 import 'package:buildmatch_mobile/features/architect/data/repositories/architect_project_offer_repository_impl.dart';
 import 'package:buildmatch_mobile/features/architect/domain/repositories/Architect_project_detail_repository.dart';
-import 'package:buildmatch_mobile/features/architect/domain/repositories/architect_project_list_repository.dart';
 import 'package:buildmatch_mobile/features/architect/domain/repositories/architect_project_offer_repository.dart';
 import 'package:buildmatch_mobile/features/architect/domain/usecases/get_architect_all_project.dart';
 import 'package:buildmatch_mobile/features/architect/domain/usecases/get_architect_project_by_status.dart';
 import 'package:buildmatch_mobile/features/architect/domain/usecases/get_architect_project_detail.dart';
 import 'package:buildmatch_mobile/features/architect/domain/usecases/get_architect_project_offer_usecase.dart';
 import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_project_detail_bloc.dart';
-import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_project_list_bloc.dart';
 import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_project_offer_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
@@ -212,7 +208,6 @@ Future<void> init() async {
   initContractorProjectOffer();
 
   initArchitectDashboard();
-  initArchitectProjectList();
 }
 
 void initContractorDashboard() {
@@ -445,21 +440,6 @@ void initArchitectDashboard() {
   );
   sl.registerLazySingleton<ArchitectDashboardRemoteDataSource>(
     () => ArchitectDashboardRemoteDataSourceImpl(),
-  );
-}
-
-void initArchitectProjectList() {
-  sl.registerFactory(() => ArchitectProjectListBloc(
-        getAllProjects: sl(),
-        getProjectsByStatus: sl(),
-      ));
-  sl.registerLazySingleton(() => GetAllArchitectProjects(sl()));
-  sl.registerLazySingleton(() => GetArchitectProjectsByStatus(sl()));
-  sl.registerLazySingleton<ArchitectProjectListRepository>(
-    () => ArchitectProjectListRepositoryImpl(remoteDataSource: sl()),
-  );
-  sl.registerLazySingleton<ArchitectProjectListRemoteDataSource>(
-    () => ArchitectProjectRemoteDataSourceImpl(),
   );
 }
 
