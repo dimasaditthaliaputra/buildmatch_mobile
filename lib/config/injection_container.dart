@@ -202,7 +202,6 @@ Future<void> init() async {
 
   initArchitectProjectDetail();
   initArchitectProjectOffer();
-  initArchitectProjectList();
 
   initProfileSetup();
   initWaitingApproval();
@@ -445,21 +444,6 @@ void initArchitectDashboard() {
   );
   sl.registerLazySingleton<ArchitectDashboardRemoteDataSource>(
     () => ArchitectDashboardRemoteDataSourceImpl(),
-  );
-}
-
-void initArchitectProjectList() {
-  sl.registerFactory(() => ArchitectProjectListBloc(
-        getAllProjects: sl(),
-        getProjectsByStatus: sl(),
-      ));
-  sl.registerLazySingleton(() => GetAllArchitectProjects(sl()));
-  sl.registerLazySingleton(() => GetArchitectProjectsByStatus(sl()));
-  sl.registerLazySingleton<ArchitectProjectListRepository>(
-    () => ArchitectProjectListRepositoryImpl(remoteDataSource: sl()),
-  );
-  sl.registerLazySingleton<ArchitectProjectListRemoteDataSource>(
-    () => ArchitectProjectRemoteDataSourceImpl(),
   );
 }
 
