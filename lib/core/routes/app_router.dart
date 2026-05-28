@@ -202,6 +202,7 @@ class AppRouter {
           role: UserRole.architect,
         ),
       ),
+      
       GoRoute(
         path: '/architect-project-detail/:id',
         name: 'architect-project-detail',
@@ -219,11 +220,11 @@ class AppRouter {
         name: 'architect-project-offer',
         builder: (context, state) => const ArchitectProjectOfferPageProvider(),
       ),
-      GoRoute(
+
+        GoRoute(
         path: '/architect-project-list',
         name: 'architect-project-list',
-        builder: (context, state) =>
-            const MainLayoutShell(role: UserRole.architect, initialTab: 1),
+        builder: (context, state) => const ProjectArchitectListPageWrapper(),
       ),
 
       // 6. GLOBAL FUNCTION
