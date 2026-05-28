@@ -1,85 +1,45 @@
 import 'package:flutter/material.dart';
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/theme/app_text_styles.dart';
+import '../../../../core/utils/screen_size.dart';
+import '../../../../core/widgets/search_bar_widget.dart';
 
 class ProjectSearchBarWidget extends StatefulWidget {
   final ValueChanged<String>? onChanged;
+  final VoidCallback? onFilterTap;
 
-  const ProjectSearchBarWidget({super.key, this.onChanged});
+  const ProjectSearchBarWidget({super.key, this.onChanged, this.onFilterTap});
 
   @override
   State<ProjectSearchBarWidget> createState() => _ProjectSearchBarWidgetState();
 }
 
 class _ProjectSearchBarWidgetState extends State<ProjectSearchBarWidget> {
-  final TextEditingController _controller = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   @override
   void dispose() {
-    _controller.dispose();
+    _searchController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        Expanded(
-          child: Container(
-            height: 48,
-            decoration: BoxDecoration(
-              color: AppColors.surface,
-              borderRadius: BorderRadius.circular(12),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.shadowDark.withOpacity(0.06),
-                  blurRadius: 8,
-                  offset: const Offset(0, 2),
-                ),
-              ],
-            ),
-            child: TextField(
-              controller: _controller,
-              onChanged: widget.onChanged,
-              style: AppTextStyles.bodyMedium,
-              decoration: InputDecoration(
-                hintText: 'Cari proyek...',
-                hintStyle: AppTextStyles.bodyMedium.copyWith(
-                  color: AppColors.primaryGrey,
-                ),
-                prefixIcon: Icon(
-                  Icons.search_rounded,
-                  color: AppColors.primaryGrey,
-                  size: 20,
-                ),
-                border: InputBorder.none,
-                contentPadding: const EdgeInsets.symmetric(vertical: 14),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(width: 10),
-        _FilterButton(),
-      ],
-    );
-  }
-}
-
-class _FilterButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 48,
-      height: 48,
-      decoration: BoxDecoration(
-        color: AppColors.primary,
-        borderRadius: BorderRadius.circular(12),
+    return SearchBarWidget(
+      controller: _searchController,
+      hintText: 'Cari proyek...',
+      onChanged: widget.onChanged,
+      fillColor: AppColors.surface,
+      borderRadius: 12.0,
+      borderSide: const BorderSide(
+        color: AppColors.surfaceBeige,
+        width: 1.0,
       ),
-      child: const Icon(
-        Icons.tune_rounded,
-        color: AppColors.textLight,
-        size: 22,
+      contentPadding: EdgeInsets.symmetric(
+        vertical: context.heightPct(0.015).clamp(14.0, 18.0),
+        horizontal: 16.0,
       ),
+      showFilter: true,
+      onFilterTap: widget.onFilterTap,
     );
   }
 }

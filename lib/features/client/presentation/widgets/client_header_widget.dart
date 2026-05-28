@@ -8,6 +8,7 @@ class ClientHeaderWidget extends StatelessWidget {
   final String greeting;
   final String? avatarUrl;
   final VoidCallback? onNotificationTap;
+  final bool hasUnreadNotification;
 
   const ClientHeaderWidget({
     super.key,
@@ -15,6 +16,7 @@ class ClientHeaderWidget extends StatelessWidget {
     required this.greeting,
     this.avatarUrl,
     this.onNotificationTap,
+    this.hasUnreadNotification = false,
   });
 
   @override
@@ -89,10 +91,35 @@ class ClientHeaderWidget extends StatelessWidget {
   Widget _buildNotificationButton() {
     return GestureDetector(
       onTap: onNotificationTap,
-      child: const Icon(
-        LucideIcons.bell,
-        color: AppColors.textLight,
-        size: 24,
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(
+              LucideIcons.bell,
+              color: AppColors.textLight,
+              size: 24,
+            ),
+          ),
+          if (hasUnreadNotification)
+            Positioned(
+              right: 8,
+              top: 8,
+              child: Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(
+                  color: AppColors.error,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.transparent,
+                    width: 0,
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

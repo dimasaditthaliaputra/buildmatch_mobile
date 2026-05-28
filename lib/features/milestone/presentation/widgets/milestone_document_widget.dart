@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
-import '../../../../core/widgets/circle_icon_widget.dart';
+import '../../../../core/widgets/icon_widget.dart';
 import '../../../../core/widgets/global_card.dart';
 import '../../../../core/widgets/section_header.dart';
 
@@ -41,7 +41,7 @@ class MilestoneDocumentWidget extends StatelessWidget {
       boxShadow: const [],
       child: Row(
         children: [
-          CircleIconWidget(
+          IconWidget(
             icon: icon,
             backgroundColor: AppColors.primaryLightGrey.withOpacity(0.5),
             iconColor: AppColors.primaryBlue,

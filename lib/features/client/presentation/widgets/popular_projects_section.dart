@@ -99,13 +99,6 @@ class _PopularProjectCard extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(24),
         color: AppColors.surface,
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.shadowDark.withOpacity(0.12),
-            blurRadius: 16,
-            offset: const Offset(0, 8),
-          ),
-        ],
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(24),

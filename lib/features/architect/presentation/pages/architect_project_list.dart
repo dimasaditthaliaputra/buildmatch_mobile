@@ -186,7 +186,12 @@ class _ProjectArchitectListPageState extends State<ProjectArchitectListPage> {
     final double padVertical = context.heightPct(0.015).clamp(12.0, 20.0);
 
     return ListView.builder(
-      padding: EdgeInsets.symmetric(horizontal: padHorizontal, vertical: padVertical),
+      padding: EdgeInsets.fromLTRB(
+        padHorizontal,
+        padVertical,
+        padHorizontal,
+        padVertical + context.bottomPadding,
+      ),
       itemCount: state.filteredProjects.length,
       itemBuilder: (context, index) {
         final project = state.filteredProjects[index];

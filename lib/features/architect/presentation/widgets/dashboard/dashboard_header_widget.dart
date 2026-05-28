@@ -8,6 +8,7 @@ class DashboardHeaderWidget extends StatelessWidget {
   final String architectRole;
   final String? avatarUrl;
   final VoidCallback? onNotificationTap;
+  final bool hasUnreadNotification;
 
   const DashboardHeaderWidget({
     super.key,
@@ -15,6 +16,7 @@ class DashboardHeaderWidget extends StatelessWidget {
     required this.architectRole,
     this.avatarUrl,
     this.onNotificationTap,
+    this.hasUnreadNotification = false,
   });
 
   @override
@@ -118,13 +120,35 @@ class DashboardHeaderWidget extends StatelessWidget {
   Widget _buildNotificationButton() {
     return GestureDetector(
       onTap: onNotificationTap,
-      child: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Icon(
-          Icons.notifications_none_rounded, 
-          color: AppColors.textLight,
-          size: 28,
-        ),
+      child: Stack(
+        clipBehavior: Clip.none,
+        children: [
+          const Padding(
+            padding: EdgeInsets.all(8.0),
+            child: Icon(
+              Icons.notifications_none_rounded, 
+              color: AppColors.textLight,
+              size: 28,
+            ),
+          ),
+          if (hasUnreadNotification)
+            Positioned(
+              right: 8,
+              top: 8,
+              child: Container(
+                width: 10,
+                height: 10,
+                decoration: BoxDecoration(
+                  color: AppColors.error,
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Colors.transparent,
+                    width: 0,
+                  ),
+                ),
+              ),
+            ),
+        ],
       ),
     );
   }

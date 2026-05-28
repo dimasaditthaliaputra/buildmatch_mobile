@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:buildmatch_mobile/core/theme/app_colors.dart';
 import 'package:buildmatch_mobile/core/theme/app_text_styles.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -69,7 +70,7 @@ class AvatarPickerWidget extends StatelessWidget {
                       icon: LucideIcons.camera,
                       label: 'Kamera',
                       onTap: () {
-                        Navigator.pop(context);
+                        context.pop();
                         _pickImage(context, ImageSource.camera);
                       },
                     ),
@@ -77,7 +78,7 @@ class AvatarPickerWidget extends StatelessWidget {
                       icon: LucideIcons.image,
                       label: 'Galeri',
                       onTap: () {
-                        Navigator.pop(context);
+                        context.pop();
                         _pickImage(context, ImageSource.gallery);
                       },
                     ),
@@ -87,7 +88,7 @@ class AvatarPickerWidget extends StatelessWidget {
                         label: 'Hapus',
                         iconColor: Colors.redAccent,
                         onTap: () {
-                          Navigator.pop(context);
+                          context.pop();
                           onImageSelected(null);
                         },
                       ),

@@ -191,7 +191,7 @@ class _VerifContractorPageState extends State<VerifContractorPage>
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
+            onPressed: () => context.pop(dialogContext),
             child: Text(
               'Batal',
               style: AppTextStyles.bodyMedium.copyWith(
@@ -201,7 +201,7 @@ class _VerifContractorPageState extends State<VerifContractorPage>
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(dialogContext);
+              context.pop(dialogContext);
               context.read<AuthBloc>().add(AuthLogoutRequested());
             },
             style: ElevatedButton.styleFrom(

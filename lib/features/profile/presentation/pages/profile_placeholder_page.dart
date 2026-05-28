@@ -310,7 +310,7 @@ class ProfilePlaceholderPage extends StatelessWidget {
         ),
         actions: [
           TextButton(
-            onPressed: () => Navigator.pop(dialogContext),
+            onPressed: () => context.pop(dialogContext),
             child: Text(
               'Batal',
               style: AppTextStyles.bodyMedium.copyWith(
@@ -320,7 +320,7 @@ class ProfilePlaceholderPage extends StatelessWidget {
           ),
           ElevatedButton(
             onPressed: () {
-              Navigator.pop(dialogContext);
+              context.go('/auth');
               context.read<AuthBloc>().add(AuthLogoutRequested());
             },
             style: ElevatedButton.styleFrom(

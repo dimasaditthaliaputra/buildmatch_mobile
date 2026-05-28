@@ -148,6 +148,26 @@ import '../features/milestone/domain/repositories/milestone_contractor_repositor
 import '../features/milestone/domain/usecases/get_milestones_contractor_usecase.dart';
 import '../features/milestone/presentation/bloc/milestone_contractor_bloc.dart';
 
+// Project Offers Feature
+import '../features/project_offers/data/datasources/project_offer_local_data_source.dart';
+import '../features/project_offers/presentation/bloc/project_offers_bloc.dart';
+
+// Notifications Feature
+import '../features/notifications/data/datasources/notification_local_data_source.dart';
+import '../features/notifications/data/repositories/notification_repository_impl.dart';
+import '../features/notifications/domain/repositories/notification_repository.dart';
+import '../features/notifications/presentation/bloc/notification_bloc.dart';
+
+// Inbox Feature
+import '../features/inbox/data/datasources/inbox_local_data_source.dart';
+import '../features/inbox/data/repositories/inbox_repository_impl.dart';
+import '../features/inbox/domain/repositories/inbox_repository.dart';
+import '../features/inbox/domain/usecases/get_consultation_rooms_usecase.dart';
+import '../features/inbox/domain/usecases/get_chat_messages_usecase.dart';
+import '../features/inbox/domain/usecases/send_message_usecase.dart';
+import '../features/inbox/presentation/bloc/inbox_list_bloc.dart';
+import '../features/inbox/presentation/bloc/chat_room_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -214,6 +234,9 @@ Future<void> init() async {
   initArchitectProjectDetail();
   initArchitectProjectOffer();
   initArchitectMilestone();
+  initProjectOffers();
+  initNotifications();
+  initInbox();
 }
 
 void initContractorDashboard() {
@@ -476,5 +499,45 @@ void initMilestoneContractorPage() {
   );
   sl.registerLazySingleton<MilestoneContractorLocalDataSource>(
     () => MilestoneContractorLocalDataSourceImpl(),
+  );
+}
+
+void initProjectOffers() {
+  sl.registerFactory(() => ProjectOffersBloc(localDataSource: sl()));
+  sl.registerLazySingleton<ProjectOfferLocalDataSource>(
+    () => ProjectOfferLocalDataSourceImpl(),
+  );
+}
+
+void initNotifications() {
+  sl.registerFactory(() => NotificationBloc(repository: sl()));
+  sl.registerLazySingleton<NotificationRepository>(
+    () => NotificationRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<NotificationLocalDataSource>(
+    () => NotificationLocalDataSourceImpl(),
+  );
+}
+
+void initInbox() {
+  // BLoCs
+  sl.registerFactory(() => InboxListBloc(getConsultationRoomsUseCase: sl()));
+  sl.registerFactory(
+    () => ChatRoomBloc(
+      getChatMessagesUseCase: sl(),
+      sendMessageUseCase: sl(),
+    ),
+  );
+  // Use Cases
+  sl.registerLazySingleton(() => GetConsultationRoomsUseCase(sl()));
+  sl.registerLazySingleton(() => GetChatMessagesUseCase(sl()));
+  sl.registerLazySingleton(() => SendMessageUseCase(sl()));
+  // Repository
+  sl.registerLazySingleton<InboxRepository>(
+    () => InboxRepositoryImpl(localDataSource: sl()),
+  );
+  // Data Source
+  sl.registerLazySingleton<InboxLocalDataSource>(
+    () => InboxLocalDataSourceImpl(),
   );
 }

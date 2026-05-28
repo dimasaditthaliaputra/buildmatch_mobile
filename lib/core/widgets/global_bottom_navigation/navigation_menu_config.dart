@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import 'navigation_item.dart';
 
@@ -27,9 +26,9 @@ class NavigationMenuConfig {
           ),
           NavigationItem(
             label: 'Inbox',
-            icon: LucideIcons.shoppingCart,
-            activeIcon: LucideIcons.shoppingCart,
-            routeName: '/', // Path not yet in router, fallback to '/'
+            icon: LucideIcons.messageCircle,
+            activeIcon: LucideIcons.messageCircle,
+            routeName: '/inbox',
           ),
           NavigationItem(
             label: 'Pengaturan',
@@ -54,9 +53,9 @@ class NavigationMenuConfig {
           ),
           NavigationItem(
             label: 'Inbox',
-            icon: LucideIcons.shoppingCart,
-            activeIcon: LucideIcons.shoppingCart,
-            routeName: '/', // Fallback to '/'
+            icon: LucideIcons.messageCircle,
+            activeIcon: LucideIcons.messageCircle,
+            routeName: '/inbox',
           ),
           NavigationItem(
             label: 'Pengaturan',
@@ -81,9 +80,9 @@ class NavigationMenuConfig {
           ),
           NavigationItem(
             label: 'Inbox',
-            icon: LucideIcons.shoppingCart,
-            activeIcon: LucideIcons.shoppingCart,
-            routeName: '/', // Fallback to '/'
+            icon: LucideIcons.messageCircle,
+            activeIcon: LucideIcons.messageCircle,
+            routeName: '/inbox',
           ),
           NavigationItem(
             label: 'Pengaturan',
