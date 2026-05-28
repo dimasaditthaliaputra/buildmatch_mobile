@@ -5,6 +5,7 @@ import 'package:dartz/dartz.dart';
 
 import 'package:buildmatch_mobile/features/client/presentation/pages/client_dashboard_page.dart';
 import '../../features/contractor/presentation/pages/contractor_milestone_form_page.dart';
+import 'package:buildmatch_mobile/features/architect/presentation/pages/architect_milestone_form_page.dart';
 import '../../features/detail_portofolio/presentation/pages/detail_portofolio_page.dart';
 import '../../features/rating/presentation/pages/rating_client_page.dart';
 
@@ -48,6 +49,7 @@ import '../../features/architect/presentation/pages/architect_dashboard_page.dar
 import '../../features/architect/presentation/pages/architect_project_detail_page.dart';
 import 'package:buildmatch_mobile/features/architect/presentation/pages/architect_project_offer.dart';
 import '../../features/architect/presentation/pages/architect_project_list.dart';
+
 
 // Features - Waiting Approval (Contractor Verification)
 import '../../features/waiting_approval/presentation/pages/verif_contractor_page.dart';
@@ -225,6 +227,15 @@ class AppRouter {
         path: '/architect-project-list',
         name: 'architect-project-list',
         builder: (context, state) => const ProjectArchitectListPageWrapper(),
+      ),
+
+      GoRoute(
+        path: '/architect-milestone-form',
+        name: 'architect-milestone-form',
+        builder: (context, state) {
+          final double totalNilai = state.extra as double? ?? 150000000.0;
+          return ArchitectMilestoneFormPage(totalNilaiKontrak: totalNilai);
+        },
       ),
 
       // 6. GLOBAL FUNCTION
