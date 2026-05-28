@@ -135,13 +135,14 @@ class InboxLocalDataSourceImpl implements InboxLocalDataSource {
     await Future.delayed(const Duration(milliseconds: 600));
     return _rooms
         .where((r) => r.clientId == currentUserId || r.professionalId == currentUserId)
-        .toList();
+        .toList(); // Already creates a new list via .toList()
   }
 
   @override
   Future<List<ChatMessageModel>> getChatMessages(String roomId) async {
     await Future.delayed(const Duration(milliseconds: 400));
-    return _messages[roomId] ?? [];
+    // Return a NEW copy so BLoC state doesn't share the same reference
+    return List<ChatMessageModel>.from(_messages[roomId] ?? []);
   }
 
   @override
