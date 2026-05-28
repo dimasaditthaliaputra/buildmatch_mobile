@@ -1,27 +1,20 @@
 import 'package:buildmatch_mobile/features/auth/presentation/pages/choose_roles_page.dart';
 import 'package:buildmatch_mobile/features/auth/presentation/pages/otp_page.dart';
 
-import 'package:dartz/dartz.dart';
-
-import 'package:buildmatch_mobile/features/client/presentation/pages/client_dashboard_page.dart';
 import '../../features/contractor/presentation/pages/contractor_milestone_form_page.dart';
 import 'package:buildmatch_mobile/features/architect/presentation/pages/architect_milestone_form_page.dart';
+import '../../features/project_offers/presentation/pages/offering_project_page.dart';
 import '../../features/detail_portofolio/presentation/pages/detail_portofolio_page.dart';
 import '../../features/rating/presentation/pages/rating_client_page.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
 // Dynamic Bottom Navigation Shell
 import 'package:buildmatch_mobile/core/widgets/global_bottom_navigation/main_layout_shell.dart';
 import 'package:buildmatch_mobile/core/widgets/global_bottom_navigation/navigation_menu_config.dart';
 
-// Dependency Injection
-import '../../config/injection_container.dart';
-
 // Core Widgets / Common Pages
-import '../../features/rating/presentation/pages/rating_client_page.dart';
 import '../widgets/no_connection_page.dart';
 
 // Features - Splash & Onboarding
@@ -32,20 +25,13 @@ import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/auth/presentation/pages/auth_page.dart';
 import '../../features/profile/presentation/pages/profile_user_page.dart';
 
-// Features - Client & Home
-import '../../features/home/presentation/pages/home_page.dart';
-
 // Features - Contractor Role
-import '../../features/contractor/presentation/pages/contractor_dashboard_page.dart';
-import '../../features/contractor/presentation/bloc/contractor_dashboard_bloc.dart';
 import '../../features/contractor/presentation/pages/contractor_project_requests_page.dart';
 import '../../features/contractor/presentation/pages/project_detail_page.dart';
 import '../../features/contractor/presentation/pages/contractor_project_offer_page.dart';
-import '../../features/contractor/presentation/pages/contractor_project_list.dart';
 import '../../features/contractor/presentation/pages/contractor_add_progres_page.dart';
 
 // Features - Architect Role
-import '../../features/architect/presentation/pages/architect_dashboard_page.dart';
 import '../../features/architect/presentation/pages/architect_project_detail_page.dart';
 import 'package:buildmatch_mobile/features/architect/presentation/pages/architect_project_offer.dart';
 import '../../features/architect/presentation/pages/architect_project_list.dart';
@@ -53,17 +39,23 @@ import '../../features/architect/presentation/pages/architect_project_list.dart'
 
 // Features - Waiting Approval (Contractor Verification)
 import '../../features/waiting_approval/presentation/pages/verif_contractor_page.dart';
-import '../../features/waiting_approval/presentation/bloc/waiting_approval_bloc.dart';
-import '../../features/auth/presentation/bloc/auth_bloc.dart';
 
 // Features - Milestone
 import '../../features/milestone/presentation/pages/milestone_contractor_page.dart';
+
+// Features - Notifications
+import '../../features/notifications/presentation/pages/list_notification_page.dart';
+
+// Features - Inbox
+import '../../features/inbox/presentation/pages/list_contact_chat_page.dart';
+import '../../features/inbox/presentation/pages/room_chat_page.dart';
+import '../../features/inbox/domain/entities/consultation_room_entity.dart';
 
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/client-dashboard',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -139,6 +131,14 @@ class AppRouter {
           key: state.pageKey,
           child: const MainLayoutShell(role: UserRole.client, initialTab: 1),
         ),
+      ),
+      GoRoute(
+        path: '/penawaran-project/:projectId',
+        name: 'penawaran-project',
+        builder: (context, state) {
+          final projectId = state.pathParameters['projectId'] ?? '';
+          return PenawaranProjectPageWrapper(projectId: projectId);
+        },
       ),
 
       // 4. CONTRACTOR ROLE ROUTES
@@ -249,6 +249,27 @@ class AppRouter {
         path: '/detail-portofolio',
         name: 'detail-portofolio',
         builder: (context, state) => const DetailPortofolioPageProvider(),
+      ),
+      GoRoute(
+        path: '/notifications',
+        name: 'notifications',
+        builder: (context, state) => const ListNotificationPage(),
+      ),
+
+      // 7. INBOX ROUTES
+      GoRoute(
+        path: '/inbox',
+        name: 'inbox',
+        builder: (context, state) => const ListContactChatPage(),
+      ),
+      GoRoute(
+        path: '/inbox/:roomId',
+        name: 'room-chat',
+        builder: (context, state) {
+          final roomId = state.pathParameters['roomId'] ?? '';
+          final room = state.extra as ConsultationRoomEntity?;
+          return RoomChatPage(roomId: roomId, room: room);
+        },
       ),
     ],
   );

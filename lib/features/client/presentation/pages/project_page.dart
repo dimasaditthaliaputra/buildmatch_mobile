@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../config/injection_container.dart';
@@ -11,6 +12,7 @@ import '../widgets/project_tab_bar_widget.dart';
 import '../widgets/project_empty_state_widget.dart';
 import '../widgets/client_project_card.dart';
 import '../../../../core/widgets/global_app_bar.dart';
+import '../../../../core/utils/screen_size.dart';
 
 // --- Provider Wrapper ---
 class ClientProjectProvider extends StatelessWidget {
@@ -40,7 +42,7 @@ class _ClientProjectPageState extends State<ClientProjectPage> {
   void initState() {
     super.initState();
     context.read<ClientProjectBloc>().add(
-      const LoadClientPenawaran(clientId: 'current_user'),
+      const LoadAllClientProjects(clientId: 'current_user'),
     );
   }
 
@@ -131,7 +133,16 @@ class _ClientProjectPageState extends State<ClientProjectPage> {
     final projects = state.filteredProjects;
 
     if (projects.isEmpty) {
-      final isPenawaran = state.currentTab == 0;
+      final isSearching = state.searchQuery.isNotEmpty;
+      final isPenawaran = state.currentTab == 1;
+
+      if (isSearching) {
+        return ProjectEmptyStateWidget(
+          title: 'Tidak Ditemukan',
+          subtitle: 'Proyek dengan kata kunci tersebut\ntidak ditemukan.',
+        );
+      }
+
       return ProjectEmptyStateWidget(
         title: isPenawaran ? 'Belum Ada Penawaran' : 'Belum Ada Proyek',
         subtitle: isPenawaran
@@ -141,7 +152,12 @@ class _ClientProjectPageState extends State<ClientProjectPage> {
     }
 
     return ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.fromLTRB(
+        16,
+        0,
+        16,
+        16 + context.bottomPadding,
+      ),
       physics: const BouncingScrollPhysics(),
       itemCount: projects.length,
       itemBuilder: (context, index) {
@@ -149,7 +165,7 @@ class _ClientProjectPageState extends State<ClientProjectPage> {
         return ClientProjectCard(
           project: project,
           onDetailTap: () {
-            // Navigate to detail
+            context.push('/penawaran-project/${project.id}');
           },
         );
       },

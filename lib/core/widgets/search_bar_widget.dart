@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../theme/app_colors.dart';
 import '../theme/app_text_styles.dart';
+import '../utils/screen_size.dart';
 
 class SearchBarWidget extends StatelessWidget {
   final TextEditingController controller;
@@ -18,6 +19,9 @@ class SearchBarWidget extends StatelessWidget {
   final double borderRadius;
   final BorderSide borderSide;
   final List<BoxShadow>? boxShadow;
+  
+  final bool showFilter;
+  final VoidCallback? onFilterTap;
 
   const SearchBarWidget({
     super.key,
@@ -33,18 +37,19 @@ class SearchBarWidget extends StatelessWidget {
     this.borderRadius = 12.0,
     this.borderSide = BorderSide.none,
     this.boxShadow,
+    this.showFilter = false,
+    this.onFilterTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    final Widget searchField = Container(
       margin: margin,
       decoration: BoxDecoration(
         color: containerColor,
         boxShadow: boxShadow,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
-
       child: ValueListenableBuilder<TextEditingValue>(
         valueListenable: controller,
         builder: (context, value, child) {
@@ -95,6 +100,35 @@ class SearchBarWidget extends StatelessWidget {
           );
         },
       ),
+    );
+
+    if (!showFilter) {
+      return searchField;
+    }
+
+    final double size = context.widthPct(0.12).clamp(36.0, 46.0);
+    
+    return Row(
+      children: [
+        Expanded(child: searchField),
+        SizedBox(width: context.widthPct(0.025).clamp(8.0, 12.0)),
+        GestureDetector(
+          onTap: onFilterTap,
+          child: Container(
+            width: size,
+            height: size,
+            decoration: BoxDecoration(
+              color: AppColors.primary,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(
+              Icons.tune_rounded,
+              color: AppColors.textLight,
+              size: context.widthPct(0.06).clamp(22.0, 26.0),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

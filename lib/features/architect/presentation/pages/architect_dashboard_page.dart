@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_dashboard_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/screen_size.dart';
@@ -36,6 +37,7 @@ class ArchitectDashboardPage extends StatefulWidget {
 class _ArchitectDashboardPageState extends State<ArchitectDashboardPage> {
   final ScrollController _scrollController = ScrollController();
   final PageController _chartPageController = PageController(viewportFraction: 0.92);
+  bool _hasUnreadNotification = true;
 
   @override
   void initState() {
@@ -143,6 +145,13 @@ class _ArchitectDashboardPageState extends State<ArchitectDashboardPage> {
                       architectName: dashboard.architectName,
                       architectRole: dashboard.architecRole,
                       avatarUrl: dashboard.avatarUrl,
+                      hasUnreadNotification: _hasUnreadNotification,
+                      onNotificationTap: () {
+                        setState(() {
+                          _hasUnreadNotification = false;
+                        });
+                        context.pushNamed('notifications');
+                      },
                     ),
                   ),
 

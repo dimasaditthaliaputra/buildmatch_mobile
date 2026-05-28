@@ -78,8 +78,8 @@ class _GlobalBottomNavigationBarState extends State<GlobalBottomNavigationBar> {
                     size: Size(screenWidth, barHeight + safeAreaBottom),
                     painter: CurvedNavBarPainter(
                       activeX: activeX,
-                      shadowColor: Colors.black.withOpacity(0.06),
-                      borderColor: Colors.black.withOpacity(0.04),
+                      shadowColor: AppColors.shadowDark.withValues(alpha: 0.07),
+                      borderColor: Colors.black.withValues(alpha: 0.1),
                       currentIndex: widget.currentIndex,
                       itemCount: widget.items.length,
                     ),
@@ -248,6 +248,9 @@ class CurvedNavBarPainter extends CustomPainter {
     // This perfectly handles edges: if the hump exceeds the left/right bounds,
     // the union organically merges it with the rounded corners, creating a seamless cutoff!
     Path finalPath = Path.combine(PathOperation.union, baseRectPath, humpPath);
+
+    // Draw shadow
+    canvas.drawShadow(finalPath, shadowColor, 8.0, true);
 
     // Draw main white body
     canvas.drawPath(finalPath, paint);

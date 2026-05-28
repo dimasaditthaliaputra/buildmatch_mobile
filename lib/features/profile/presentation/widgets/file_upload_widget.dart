@@ -1,7 +1,7 @@
 import 'package:buildmatch_mobile/core/theme/app_colors.dart';
 import 'package:buildmatch_mobile/core/theme/app_text_styles.dart';
 import 'package:buildmatch_mobile/core/utils/screen_size.dart';
-import 'package:buildmatch_mobile/core/widgets/circle_icon_widget.dart';
+import 'package:buildmatch_mobile/core/widgets/icon_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 
@@ -233,7 +233,7 @@ class _FileUploadWidgetState extends State<FileUploadWidget> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircleIconWidget(
+              IconWidget(
                 icon: LucideIcons.upload,
                 backgroundColor: AppColors.primaryBlue.withValues(alpha: 0.1),
                 iconColor: AppColors.primaryBlue,

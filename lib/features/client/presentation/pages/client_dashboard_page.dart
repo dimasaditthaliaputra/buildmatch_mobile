@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/dashboard_background_global_widget.dart';
 import '../../../../config/injection_container.dart';
@@ -33,6 +34,7 @@ class ClientDashboardPage extends StatefulWidget {
 
 class _ClientDashboardPageState extends State<ClientDashboardPage> {
   final ScrollController _scrollController = ScrollController();
+  bool _hasUnreadNotification = true;
 
   @override
   void initState() {
@@ -124,7 +126,6 @@ class _ClientDashboardPageState extends State<ClientDashboardPage> {
             ),
 
             SafeArea(
-              bottom: false,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -133,12 +134,17 @@ class _ClientDashboardPageState extends State<ClientDashboardPage> {
                     clientName: dashboard.clientName,
                     greeting: dashboard.greeting,
                     avatarUrl: dashboard.avatarUrl,
-                    onNotificationTap: () {},
+                    hasUnreadNotification: _hasUnreadNotification,
+                    onNotificationTap: () {
+                      setState(() {
+                        _hasUnreadNotification = false;
+                      });
+                      context.pushNamed('notifications');
+                    },
                   ),
 
                   const SizedBox(height: 20),
 
-                  // Action Cards (Butuh Desain, Cari Kontraktor, shortcuts)
                   ClientActionCardsWidget(
                     onDesainBaru: () {},
                     onCariKontraktor: () {},

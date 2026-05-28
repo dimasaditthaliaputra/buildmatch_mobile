@@ -1,18 +1,15 @@
 import 'package:buildmatch_mobile/features/architect/presentation/pages/architect_project_list.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
-import '../../../config/injection_container.dart';
 import '../../../features/client/presentation/pages/client_dashboard_page.dart';
 import '../../../features/client/presentation/pages/project_page.dart';
 import '../../../features/contractor/presentation/pages/contractor_dashboard_page.dart';
-import '../../../features/contractor/presentation/bloc/contractor_dashboard_bloc.dart';
 import '../../../features/contractor/presentation/pages/contractor_project_requests_page.dart';
 import '../../../features/architect/presentation/pages/architect_dashboard_page.dart';
 import '../../../features/profile/presentation/pages/profile_placeholder_page.dart';
+import '../../../features/inbox/presentation/pages/list_contact_chat_page.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
-import 'navigation_item.dart';
 import 'navigation_menu_config.dart';
 import 'global_bottom_navigation_bar.dart';
 
@@ -65,21 +62,21 @@ class _MainLayoutShellState extends State<MainLayoutShell> {
         return [
           const ClientDashboardProvider(),
           const ClientProjectProvider(),
-          _InboxPlaceholderView(role: widget.role),
+          const ListContactChatPage(),
           const ProfilePlaceholderPage(role: 'client'),
         ];
       case UserRole.contractor:
         return [
           const ContractorDashboardProvider(),
           const ContractorProjectRequestsPage(),
-          _InboxPlaceholderView(role: widget.role),
+          const ListContactChatPage(),
           const ProfilePlaceholderPage(role: 'contractor'),
         ];
       case UserRole.architect:
         return [
           const ArchitectDashboardPage(),
           const ProjectArchitectListPageWrapper(),
-          _InboxPlaceholderView(role: widget.role),
+          const ListContactChatPage(),
           const ProfilePlaceholderPage(role: 'architect'),
         ];
     }
@@ -89,15 +86,19 @@ class _MainLayoutShellState extends State<MainLayoutShell> {
   Widget build(BuildContext context) {
     final menuItems = NavigationMenuConfig.getMenuItemsForRole(widget.role);
     final pages = _getPages();
+    final bool isKeyboardVisible = MediaQuery.of(context).viewInsets.bottom > 0;
 
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: AppColors.background,
       body: Stack(
         children: [
           MediaQuery(
             data: MediaQuery.of(context).copyWith(
               padding: MediaQuery.of(context).padding.copyWith(
-                bottom: 84.0 + MediaQuery.of(context).padding.bottom,
+                bottom: isKeyboardVisible
+                    ? MediaQuery.of(context).padding.bottom
+                    : 84.0 + MediaQuery.of(context).padding.bottom,
               ),
             ),
             child: PageView(
@@ -108,12 +109,13 @@ class _MainLayoutShellState extends State<MainLayoutShell> {
           ),
 
           // Custom global floating bottom navigation bar
-          GlobalBottomNavigationBar(
-            items: menuItems,
-            currentIndex: _currentIndex,
-            onTap: _onTabTapped,
-            role: widget.role,
-          ),
+          if (!isKeyboardVisible)
+            GlobalBottomNavigationBar(
+              items: menuItems,
+              currentIndex: _currentIndex,
+              onTap: _onTabTapped,
+              role: widget.role,
+            ),
         ],
       ),
     );
@@ -142,7 +144,7 @@ class _InboxPlaceholderView extends StatelessWidget {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text(
-          'Pesan Masuk',
+          'Pesan',
           style: AppTextStyles.heading3.copyWith(
             color: color,
             fontWeight: FontWeight.w800,
@@ -160,7 +162,7 @@ class _InboxPlaceholderView extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: color.withOpacity(0.08),
+                color: color.withValues(alpha: 0.08),
               ),
               child: Icon(
                 LucideIcons.messageSquare,
@@ -219,7 +221,7 @@ class _ArchitectProjectPlaceholderView extends StatelessWidget {
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: AppColors.architectPrimary.withOpacity(0.08),
+                color: AppColors.architectPrimary.withValues(alpha: 0.08),
               ),
               child: const Icon(
                 LucideIcons.draftingCompass,

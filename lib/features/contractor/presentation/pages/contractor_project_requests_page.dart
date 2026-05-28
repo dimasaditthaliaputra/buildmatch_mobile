@@ -152,7 +152,7 @@ class _ContractorProjectRequestsViewState
               listPadH,
               listPadV,
               listPadH,
-              listPadV * 3,
+              listPadV * 3 + context.bottomPadding,
             ),
             itemCount: state.filteredRequests.length, 
             itemBuilder: (context, index) {

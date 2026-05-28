@@ -21,7 +21,7 @@ class ProjectEmptyStateWidget extends StatelessWidget {
           Icon(
             Icons.folder_off_outlined,
             size: 80,
-            color: AppColors.primaryGrey.withOpacity(0.5),
+            color: AppColors.primaryGrey.withValues(alpha: 0.5),
           ),
           const SizedBox(height: 24),
           Text(

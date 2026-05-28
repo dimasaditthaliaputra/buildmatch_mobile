@@ -37,7 +37,7 @@ class ArchitectProjectOfferPage extends StatelessWidget {
 }
 
 class ArchitectProjectOfferView extends StatefulWidget {
-  const ArchitectProjectOfferView();
+  const ArchitectProjectOfferView({super.key});
 
   @override
   State<ArchitectProjectOfferView> createState() =>

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class CircleIconWidget extends StatelessWidget {
+class IconWidget extends StatelessWidget {
   final IconData icon;  
   final Color backgroundColor;
   final double size;
   final Color iconColor;
 
-  const CircleIconWidget({
+  const IconWidget({
     super.key, 
     required this.icon, 
     this.backgroundColor = Colors.blue, 

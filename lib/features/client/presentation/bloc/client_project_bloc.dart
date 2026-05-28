@@ -63,20 +63,20 @@ class ClientProjectBloc extends Bloc<ClientProjectEvent, ClientProjectState> {
     final currentState = state;
     if (currentState is ClientProjectLoaded) {
       final targetProjects =
-          event.tabIndex == 0 ? _penawaranCache : _allProjectsCache;
+          event.tabIndex == 0 ? _allProjectsCache : _penawaranCache;
 
       // If cache empty, fetch
       if (targetProjects.isEmpty) {
         emit(ClientProjectLoading());
         try {
           final fetched = event.tabIndex == 0
-              ? await getPenawaranUseCase('current_user')
-              : await getAllProjectsUseCase('current_user');
+              ? await getAllProjectsUseCase('current_user')
+              : await getPenawaranUseCase('current_user');
 
           if (event.tabIndex == 0) {
-            _penawaranCache = fetched;
-          } else {
             _allProjectsCache = fetched;
+          } else {
+            _penawaranCache = fetched;
           }
 
           emit(ClientProjectLoaded(
