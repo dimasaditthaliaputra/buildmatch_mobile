@@ -20,8 +20,8 @@ class ListContactChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<InboxListBloc>()
-        ..add(const LoadInboxRoomsEvent(_kCurrentUserId)),
+      create: (_) =>
+          sl<InboxListBloc>()..add(const LoadInboxRoomsEvent(_kCurrentUserId)),
       child: const _ListContactChatBody(),
     );
   }
@@ -60,7 +60,9 @@ class _ListContactChatBodyState extends State<_ListContactChatBody> {
                 builder: (context, state) {
                   if (state is InboxListLoading) {
                     return const Center(
-                      child: CircularProgressIndicator(color: AppColors.primary),
+                      child: CircularProgressIndicator(
+                        color: AppColors.primary,
+                      ),
                     );
                   }
                   if (state is InboxListError) {
@@ -70,14 +72,16 @@ class _ListContactChatBodyState extends State<_ListContactChatBody> {
                     final filtered = _searchQuery.isEmpty
                         ? state.rooms
                         : state.rooms
-                            .where((r) =>
-                                (r.otherUserName ?? '')
-                                    .toLowerCase()
-                                    .contains(_searchQuery.toLowerCase()) ||
-                                (r.projectTitle ?? '')
-                                    .toLowerCase()
-                                    .contains(_searchQuery.toLowerCase()))
-                            .toList();
+                              .where(
+                                (r) =>
+                                    (r.otherUserName ?? '')
+                                        .toLowerCase()
+                                        .contains(_searchQuery.toLowerCase()) ||
+                                    (r.projectTitle ?? '')
+                                        .toLowerCase()
+                                        .contains(_searchQuery.toLowerCase()),
+                              )
+                              .toList();
 
                     if (filtered.isEmpty) return _buildEmptyState();
                     return _buildRoomList(filtered);
@@ -118,17 +122,23 @@ class _ListContactChatBodyState extends State<_ListContactChatBody> {
             color: AppColors.primaryGrey,
           ),
           prefixIcon: const Icon(Icons.search, color: AppColors.primaryGrey),
+
           filled: true,
           fillColor: AppColors.surfacePale,
-          contentPadding: const EdgeInsets.symmetric(vertical: 12),
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide.none,
+
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 16,
+            vertical: 14,
           ),
+
           enabledBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
-            borderSide: BorderSide.none,
+            borderSide: const BorderSide(
+              color: AppColors.primaryGrey,
+              width: 0.5,
+            ),
           ),
+
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(16),
             borderSide: const BorderSide(color: AppColors.primary, width: 1.5),
@@ -142,11 +152,8 @@ class _ListContactChatBodyState extends State<_ListContactChatBody> {
     return ListView.separated(
       padding: const EdgeInsets.only(top: 4, bottom: 20),
       itemCount: rooms.length,
-      separatorBuilder: (_, __) => const Divider(
-        height: 1,
-        indent: 86,
-        color: AppColors.border,
-      ),
+      separatorBuilder: (_, __) =>
+          const Divider(height: 1, indent: 86, color: AppColors.border),
       itemBuilder: (context, index) {
         final room = rooms[index];
         return InboxContactTileWidget(
@@ -207,25 +214,35 @@ class _ListContactChatBodyState extends State<_ListContactChatBody> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Icon(Icons.wifi_off_rounded, size: 48, color: AppColors.primaryGrey),
+          const Icon(
+            Icons.wifi_off_rounded,
+            size: 48,
+            color: AppColors.primaryGrey,
+          ),
           const SizedBox(height: 16),
           Text(
             'Gagal memuat percakapan',
-            style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textPrimary),
+            style: AppTextStyles.bodyMedium.copyWith(
+              color: AppColors.textPrimary,
+            ),
           ),
           const SizedBox(height: 12),
           ElevatedButton(
-            onPressed: () => context
-                .read<InboxListBloc>()
-                .add(const LoadInboxRoomsEvent(_kCurrentUserId)),
+            onPressed: () => context.read<InboxListBloc>().add(
+              const LoadInboxRoomsEvent(_kCurrentUserId),
+            ),
             style: ElevatedButton.styleFrom(
               backgroundColor: AppColors.primary,
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12)),
+                borderRadius: BorderRadius.circular(12),
+              ),
             ),
-            child: Text('Coba Lagi',
-                style: AppTextStyles.bodyMedium
-                    .copyWith(color: AppColors.textLight)),
+            child: Text(
+              'Coba Lagi',
+              style: AppTextStyles.bodyMedium.copyWith(
+                color: AppColors.textLight,
+              ),
+            ),
           ),
         ],
       ),

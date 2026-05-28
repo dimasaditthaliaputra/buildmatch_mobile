@@ -5,35 +5,53 @@ import '../datasources/inbox_local_data_source.dart';
 
 class InboxRepositoryImpl implements InboxRepository {
   final InboxLocalDataSource localDataSource;
-
   InboxRepositoryImpl({required this.localDataSource});
 
   @override
-  Future<List<ConsultationRoomEntity>> getConsultationRooms(
-      String currentUserId) async {
-    return await localDataSource.getConsultationRooms(currentUserId);
-  }
+  Future<List<ConsultationRoomEntity>> getConsultationRooms(String currentUserId) =>
+      localDataSource.getConsultationRooms(currentUserId);
 
   @override
-  Future<List<ChatMessageEntity>> getChatMessages(String roomId) async {
-    return await localDataSource.getChatMessages(roomId);
-  }
+  Future<List<ChatMessageEntity>> getChatMessages(String roomId) =>
+      localDataSource.getChatMessages(roomId);
 
   @override
   Future<ChatMessageEntity> sendMessage({
     required String roomId,
     required String senderId,
     required String message,
-  }) async {
-    return await localDataSource.sendMessage(
-      roomId: roomId,
-      senderId: senderId,
-      message: message,
-    );
-  }
+    String? replyToId,
+    String? replyToMessage,
+    String? replyToSenderId,
+    String? attachmentUrl,
+    String? attachmentType,
+    String? attachmentName,
+  }) =>
+      localDataSource.sendMessage(
+        roomId: roomId,
+        senderId: senderId,
+        message: message,
+        replyToId: replyToId,
+        replyToMessage: replyToMessage,
+        replyToSenderId: replyToSenderId,
+        attachmentUrl: attachmentUrl,
+        attachmentType: attachmentType,
+        attachmentName: attachmentName,
+      );
 
   @override
-  Future<void> markMessagesAsRead(String roomId, String currentUserId) async {
-    return await localDataSource.markMessagesAsRead(roomId, currentUserId);
-  }
+  Future<ChatMessageEntity> editMessage({
+    required String roomId,
+    required String messageId,
+    required String newMessage,
+  }) =>
+      localDataSource.editMessage(
+        roomId: roomId,
+        messageId: messageId,
+        newMessage: newMessage,
+      );
+
+  @override
+  Future<void> markMessagesAsRead(String roomId, String currentUserId) =>
+      localDataSource.markMessagesAsRead(roomId, currentUserId);
 }
