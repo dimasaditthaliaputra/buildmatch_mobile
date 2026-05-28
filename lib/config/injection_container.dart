@@ -1,16 +1,21 @@
+import 'package:buildmatch_mobile/features/architect/data/datasources/architect_milestone_local_data_source.dart';
 import 'package:buildmatch_mobile/features/architect/data/datasources/architect_project_detail_local_data_source.dart';
 import 'package:buildmatch_mobile/features/architect/data/datasources/architect_project_list_datasource.dart';
 import 'package:buildmatch_mobile/features/architect/data/datasources/architect_project_offer_remote_datasource.dart';
+import 'package:buildmatch_mobile/features/architect/data/repositories/architect_milestone_repository_impl.dart';
 import 'package:buildmatch_mobile/features/architect/data/repositories/architect_project_detail_repository_impl.dart';
 import 'package:buildmatch_mobile/features/architect/data/repositories/architect_project_list_impl.dart';
 import 'package:buildmatch_mobile/features/architect/data/repositories/architect_project_offer_repository_impl.dart';
 import 'package:buildmatch_mobile/features/architect/domain/repositories/Architect_project_detail_repository.dart';
+import 'package:buildmatch_mobile/features/architect/domain/repositories/architect_milestone_repository.dart';
 import 'package:buildmatch_mobile/features/architect/domain/repositories/architect_project_list_repository.dart';
 import 'package:buildmatch_mobile/features/architect/domain/repositories/architect_project_offer_repository.dart';
 import 'package:buildmatch_mobile/features/architect/domain/usecases/get_architect_all_project.dart';
 import 'package:buildmatch_mobile/features/architect/domain/usecases/get_architect_project_by_status.dart';
 import 'package:buildmatch_mobile/features/architect/domain/usecases/get_architect_project_detail.dart';
 import 'package:buildmatch_mobile/features/architect/domain/usecases/get_architect_project_offer_usecase.dart';
+import 'package:buildmatch_mobile/features/architect/domain/usecases/get_architect_publikasi_milestone_usecase.dart';
+import 'package:buildmatch_mobile/features/architect/domain/usecases/get_architect_system_milestones_usecase.dart';
 import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_project_detail_bloc.dart';
 import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_project_list_bloc.dart';
 import 'package:buildmatch_mobile/features/architect/presentation/bloc/architect_project_offer_bloc.dart';
@@ -200,9 +205,6 @@ Future<void> init() async {
   initContractorMilestone();
   initMilestoneContractorPage();
 
-  initArchitectProjectDetail();
-  initArchitectProjectOffer();
-
   initProfileSetup();
   initWaitingApproval();
   initClientDashboard();
@@ -212,6 +214,9 @@ Future<void> init() async {
 
   initArchitectDashboard();
   initArchitectProjectList();
+  initArchitectProjectDetail();
+  initArchitectProjectOffer();
+  initArchitectMilestone();
 }
 
 void initContractorDashboard() {
@@ -367,6 +372,25 @@ void initArchitectProjectList() {
   );
   sl.registerLazySingleton<ArchitectProjectListRemoteDataSource>(
     () => ArchitectProjectRemoteDataSourceImpl(),
+  );
+}
+
+void initArchitectMilestone() {
+  sl.registerLazySingleton<ArchitectMilestoneLocalDataSource>(
+    () => ArchitectMilestoneLocalDataSourceImpl(),
+  );
+  sl.registerLazySingleton<ArchitectMilestoneRepository>(
+    () => ArchitectMilestoneRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton(
+    () => ArchitectGetSystemMilestonesUseCase(
+      sl<ArchitectMilestoneRepository>(),
+    ),
+  );
+  sl.registerLazySingleton(
+    () => ArchitectPublikasiMilestoneUseCase(
+      sl<ArchitectMilestoneRepository>(),
+    ),
   );
 }
 
