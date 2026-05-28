@@ -8,6 +8,17 @@ abstract class InboxLocalDataSource {
     required String roomId,
     required String senderId,
     required String message,
+    String? replyToId,
+    String? replyToMessage,
+    String? replyToSenderId,
+    String? attachmentUrl,
+    String? attachmentType,
+    String? attachmentName,
+  });
+  Future<ChatMessageModel> editMessage({
+    required String roomId,
+    required String messageId,
+    required String newMessage,
   });
   Future<void> markMessagesAsRead(String roomId, String currentUserId);
 }
@@ -76,17 +87,22 @@ class InboxLocalDataSourceImpl implements InboxLocalDataSource {
         senderId: _dummyCurrentUser,
         message: 'Apakah bisa menggunakan konsep open space?',
         isRead: true,
-        createdAt: DateTime.now().subtract(const Duration(hours: 4, minutes: 30)),
-        updatedAt: DateTime.now().subtract(const Duration(hours: 4, minutes: 30)),
+        createdAt: DateTime.now().subtract(const Duration(hours: 3, minutes: 30)),
+        updatedAt: DateTime.now().subtract(const Duration(hours: 3, minutes: 30)),
+        replyToId: 'msg-001',
+        replyToMessage: '👋 Selamat datang! Ada yang bisa saya bantu terkait proyek Anda?',
+        replyToSenderId: _dummyProfessional1,
       ),
       ChatMessageModel(
         id: 'msg-004',
         roomId: 'room-001',
         senderId: _dummyProfessional1,
-        message: 'Tentu bisa! Konsep open space sangat cocok untuk Modern Zen Villa. Saya sudah siapkan beberapa referensi untuknya.',
+        message: 'Tentu bisa! Konsep open space sangat cocok untuk Modern Zen Villa.',
         isRead: true,
+        isEdited: true,
+        editedAt: DateTime.now().subtract(const Duration(hours: 1, minutes: 45)),
         createdAt: DateTime.now().subtract(const Duration(hours: 2)),
-        updatedAt: DateTime.now().subtract(const Duration(hours: 2)),
+        updatedAt: DateTime.now().subtract(const Duration(hours: 1, minutes: 45)),
       ),
       ChatMessageModel(
         id: 'msg-005',
@@ -135,13 +151,12 @@ class InboxLocalDataSourceImpl implements InboxLocalDataSource {
     await Future.delayed(const Duration(milliseconds: 600));
     return _rooms
         .where((r) => r.clientId == currentUserId || r.professionalId == currentUserId)
-        .toList(); // Already creates a new list via .toList()
+        .toList();
   }
 
   @override
   Future<List<ChatMessageModel>> getChatMessages(String roomId) async {
     await Future.delayed(const Duration(milliseconds: 400));
-    // Return a NEW copy so BLoC state doesn't share the same reference
     return List<ChatMessageModel>.from(_messages[roomId] ?? []);
   }
 
@@ -150,6 +165,12 @@ class InboxLocalDataSourceImpl implements InboxLocalDataSource {
     required String roomId,
     required String senderId,
     required String message,
+    String? replyToId,
+    String? replyToMessage,
+    String? replyToSenderId,
+    String? attachmentUrl,
+    String? attachmentType,
+    String? attachmentName,
   }) async {
     await Future.delayed(const Duration(milliseconds: 200));
     final newMessage = ChatMessageModel(
@@ -160,10 +181,54 @@ class InboxLocalDataSourceImpl implements InboxLocalDataSource {
       isRead: false,
       createdAt: DateTime.now(),
       updatedAt: DateTime.now(),
+      replyToId: replyToId,
+      replyToMessage: replyToMessage,
+      replyToSenderId: replyToSenderId,
+      attachmentUrl: attachmentUrl,
+      attachmentType: attachmentType,
+      attachmentName: attachmentName,
     );
     _messages[roomId] ??= [];
     _messages[roomId]!.add(newMessage);
     return newMessage;
+  }
+
+  @override
+  Future<ChatMessageModel> editMessage({
+    required String roomId,
+    required String messageId,
+    required String newMessage,
+  }) async {
+    await Future.delayed(const Duration(milliseconds: 200));
+    final messages = _messages[roomId];
+    if (messages == null) throw Exception('Room not found');
+    final index = messages.indexWhere((m) => m.id == messageId);
+    if (index == -1) throw Exception('Message not found');
+
+    final old = messages[index];
+    final diff = DateTime.now().difference(old.createdAt);
+    if (diff.inMinutes > 30) throw Exception('Batas waktu edit (30 menit) telah habis');
+
+    final edited = ChatMessageModel(
+      id: old.id,
+      roomId: old.roomId,
+      senderId: old.senderId,
+      message: newMessage,
+      metadata: old.metadata,
+      isRead: old.isRead,
+      createdAt: old.createdAt,
+      updatedAt: DateTime.now(),
+      replyToId: old.replyToId,
+      replyToMessage: old.replyToMessage,
+      replyToSenderId: old.replyToSenderId,
+      isEdited: true,
+      editedAt: DateTime.now(),
+      attachmentUrl: old.attachmentUrl,
+      attachmentType: old.attachmentType,
+      attachmentName: old.attachmentName,
+    );
+    _messages[roomId]![index] = edited;
+    return edited;
   }
 
   @override
@@ -172,16 +237,16 @@ class InboxLocalDataSourceImpl implements InboxLocalDataSource {
     final messages = _messages[roomId];
     if (messages == null) return;
     for (int i = 0; i < messages.length; i++) {
-      if (messages[i].senderId != currentUserId) {
+      if (messages[i].senderId != currentUserId && !messages[i].isRead) {
+        final m = messages[i];
         _messages[roomId]![i] = ChatMessageModel(
-          id: messages[i].id,
-          roomId: messages[i].roomId,
-          senderId: messages[i].senderId,
-          message: messages[i].message,
-          metadata: messages[i].metadata,
-          isRead: true,
-          createdAt: messages[i].createdAt,
-          updatedAt: DateTime.now(),
+          id: m.id, roomId: m.roomId, senderId: m.senderId, message: m.message,
+          metadata: m.metadata, isRead: true,
+          createdAt: m.createdAt, updatedAt: DateTime.now(),
+          replyToId: m.replyToId, replyToMessage: m.replyToMessage,
+          replyToSenderId: m.replyToSenderId, isEdited: m.isEdited,
+          editedAt: m.editedAt, attachmentUrl: m.attachmentUrl,
+          attachmentType: m.attachmentType, attachmentName: m.attachmentName,
         );
       }
     }

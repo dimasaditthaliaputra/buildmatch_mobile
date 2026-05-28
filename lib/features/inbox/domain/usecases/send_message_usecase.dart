@@ -9,11 +9,23 @@ class SendMessageUseCase {
     required String roomId,
     required String senderId,
     required String message,
+    String? replyToId,
+    String? replyToMessage,
+    String? replyToSenderId,
+    String? attachmentUrl,
+    String? attachmentType,
+    String? attachmentName,
   }) {
     return repository.sendMessage(
       roomId: roomId,
       senderId: senderId,
       message: message,
+      replyToId: replyToId,
+      replyToMessage: replyToMessage,
+      replyToSenderId: replyToSenderId,
+      attachmentUrl: attachmentUrl,
+      attachmentType: attachmentType,
+      attachmentName: attachmentName,
     );
   }
 }

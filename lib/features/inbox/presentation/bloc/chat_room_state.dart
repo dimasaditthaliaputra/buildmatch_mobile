@@ -14,14 +14,32 @@ class ChatRoomLoading extends ChatRoomState {}
 class ChatRoomLoaded extends ChatRoomState {
   final List<ChatMessageEntity> messages;
   final bool isSending;
-  const ChatRoomLoaded(this.messages, {this.isSending = false});
-  @override
-  List<Object?> get props => [messages, isSending];
+  final ChatMessageEntity? replyingTo;
+  final ChatMessageEntity? editingMessage;
 
-  ChatRoomLoaded copyWith({List<ChatMessageEntity>? messages, bool? isSending}) {
+  const ChatRoomLoaded(
+    this.messages, {
+    this.isSending = false,
+    this.replyingTo,
+    this.editingMessage,
+  });
+
+  @override
+  List<Object?> get props => [messages, isSending, replyingTo, editingMessage];
+
+  ChatRoomLoaded copyWith({
+    List<ChatMessageEntity>? messages,
+    bool? isSending,
+    ChatMessageEntity? replyingTo,
+    bool clearReply = false,
+    ChatMessageEntity? editingMessage,
+    bool clearEditing = false,
+  }) {
     return ChatRoomLoaded(
       messages ?? this.messages,
       isSending: isSending ?? this.isSending,
+      replyingTo: clearReply ? null : (replyingTo ?? this.replyingTo),
+      editingMessage: clearEditing ? null : (editingMessage ?? this.editingMessage),
     );
   }
 }

@@ -165,6 +165,7 @@ import '../features/inbox/domain/repositories/inbox_repository.dart';
 import '../features/inbox/domain/usecases/get_consultation_rooms_usecase.dart';
 import '../features/inbox/domain/usecases/get_chat_messages_usecase.dart';
 import '../features/inbox/domain/usecases/send_message_usecase.dart';
+import '../features/inbox/domain/usecases/edit_message_usecase.dart';
 import '../features/inbox/presentation/bloc/inbox_list_bloc.dart';
 import '../features/inbox/presentation/bloc/chat_room_bloc.dart';
 
@@ -526,12 +527,14 @@ void initInbox() {
     () => ChatRoomBloc(
       getChatMessagesUseCase: sl(),
       sendMessageUseCase: sl(),
+      editMessageUseCase: sl(),
     ),
   );
   // Use Cases
   sl.registerLazySingleton(() => GetConsultationRoomsUseCase(sl()));
   sl.registerLazySingleton(() => GetChatMessagesUseCase(sl()));
   sl.registerLazySingleton(() => SendMessageUseCase(sl()));
+  sl.registerLazySingleton(() => EditMessageUseCase(sl()));
   // Repository
   sl.registerLazySingleton<InboxRepository>(
     () => InboxRepositoryImpl(localDataSource: sl()),
