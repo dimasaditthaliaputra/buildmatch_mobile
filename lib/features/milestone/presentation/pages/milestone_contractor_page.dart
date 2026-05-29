@@ -10,24 +10,27 @@ import '../bloc/milestone_contractor_bloc.dart';
 import '../bloc/milestone_contractor_event.dart';
 import '../bloc/milestone_contractor_state.dart';
 import '../../domain/entities/milestone_entity.dart';
+import '../../../contractor/domain/entities/contractor_project_list_entity.dart';
 import '../widgets/milestone_document_widget.dart';
 import '../widgets/milestone_header_widget.dart';
 import '../widgets/milestone_timeline_item_widget.dart';
 
 class MilestoneContractorProvider extends StatelessWidget {
-  const MilestoneContractorProvider({super.key});
+  final ContractorProjectListEntity? project;
+  const MilestoneContractorProvider({super.key, this.project});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => sl<MilestoneContractorBloc>(),
-      child: const MilestoneContractorPage(),
+      child: MilestoneContractorPage(project: project),
     );
   }
 }
 
 class MilestoneContractorPage extends StatefulWidget {
-  const MilestoneContractorPage({super.key});
+  final ContractorProjectListEntity? project;
+  const MilestoneContractorPage({super.key, this.project});
 
   @override
   State<MilestoneContractorPage> createState() =>
@@ -96,6 +99,7 @@ class _MilestoneContractorPageState extends State<MilestoneContractorPage> {
                   MilestoneHeaderWidget(
                     activeMilestone: activeMilestone,
                     remainingPhases: remainingPhases,
+                    project: widget.project,
                   ),
 
                   const SizedBox(height: 20),

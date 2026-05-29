@@ -43,6 +43,7 @@ import '../../features/waiting_approval/presentation/pages/verif_contractor_page
 
 // Features - Milestone
 import '../../features/milestone/presentation/pages/milestone_contractor_page.dart';
+import '../../features/contractor/domain/entities/contractor_project_list_entity.dart';
 
 // Features - Notifications
 import '../../features/notifications/presentation/pages/list_notification_page.dart';
@@ -194,7 +195,10 @@ class AppRouter {
       GoRoute(
         path: '/milestone-contractor',
         name: 'milestone-contractor',
-        builder: (context, state) => const MilestoneContractorProvider(),
+        builder: (context, state) {
+          final project = state.extra as ContractorProjectListEntity?;
+          return MilestoneContractorProvider(project: project);
+        },
       ),
 
       // 5. ARCHITECT ROLE ROUTES

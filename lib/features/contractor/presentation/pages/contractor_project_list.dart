@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../../config/injection_container.dart';
 import '../../../../../core/theme/app_colors.dart';
@@ -198,7 +199,7 @@ class _ProjectContractorListPageState extends State<ProjectContractorListPage> {
         return ProjectContractorCard(
           project: project,
           onTap: () {
-            // context.push('/project/${project.id}');
+            context.push('/milestone-contractor', extra: project);
           },
         );
       },

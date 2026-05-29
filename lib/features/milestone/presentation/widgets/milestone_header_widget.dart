@@ -4,15 +4,18 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/badge_widget.dart';
 import '../../../../core/widgets/custom_progress_bar.dart';
 import '../../domain/entities/milestone_entity.dart';
+import '../../../contractor/domain/entities/contractor_project_list_entity.dart';
 
 class MilestoneHeaderWidget extends StatelessWidget {
   final MilestoneEntity? activeMilestone;
   final int remainingPhases;
+  final ContractorProjectListEntity? project;
 
   const MilestoneHeaderWidget({
     super.key,
     this.activeMilestone,
     this.remainingPhases = 0,
+    this.project,
   });
 
   @override
@@ -44,7 +47,7 @@ class MilestoneHeaderWidget extends StatelessWidget {
               ),
               const SizedBox(height: 12),
               Text(
-                'Modern Villa',
+                project?.name ?? 'Modern Villa',
                 style: AppTextStyles.heading1.copyWith(
                   color: Colors.white,
                 ),
@@ -55,7 +58,7 @@ class MilestoneHeaderWidget extends StatelessWidget {
                   const Icon(Icons.location_on_outlined, color: Colors.white, size: 16),
                   const SizedBox(width: 4),
                   Text(
-                    'Uluwatu, Bali - Luas 4.200 m²',
+                    project?.location ?? 'Uluwatu, Bali - Luas 4.200 m²',
                     style: AppTextStyles.bodyMedium.copyWith(color: Colors.white),
                   ),
                 ],
