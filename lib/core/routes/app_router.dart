@@ -52,11 +52,16 @@ import '../../features/inbox/presentation/pages/list_contact_chat_page.dart';
 import '../../features/inbox/presentation/pages/room_chat_page.dart';
 import '../../features/inbox/domain/entities/consultation_room_entity.dart';
 
+// Features - Setting
+import '../../features/setting/domain/entities/setting_user_entity.dart';
+import '../../features/setting/presentation/pages/setting_page.dart';
+import '../../features/setting/presentation/pages/setting_profile_page.dart';
+
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/client-dashboard',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -275,6 +280,20 @@ class AppRouter {
           final roomId = state.pathParameters['roomId'] ?? '';
           final room = state.extra as ConsultationRoomEntity?;
           return RoomChatPage(roomId: roomId, room: room);
+        },
+      ),
+      // 8. SETTING ROUTES
+      GoRoute(
+        path: '/setting',
+        name: 'setting',
+        builder: (context, state) => const SettingPageProvider(),
+      ),
+      GoRoute(
+        path: '/setting-edit-profile',
+        name: 'setting-edit-profile',
+        builder: (context, state) {
+          final user = state.extra as SettingUserEntity?;
+          return SettingProfilePageProvider(initialUser: user);
         },
       ),
     ],

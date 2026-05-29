@@ -173,6 +173,14 @@ import '../features/inbox/domain/usecases/edit_message_usecase.dart';
 import '../features/inbox/presentation/bloc/inbox_list_bloc.dart';
 import '../features/inbox/presentation/bloc/chat_room_bloc.dart';
 
+// Setting Feature
+import '../features/setting/data/datasources/setting_remote_data_source.dart';
+import '../features/setting/data/repositories/setting_repository_impl.dart';
+import '../features/setting/domain/repositories/setting_repository.dart';
+import '../features/setting/domain/usecases/get_user_profile_usecase.dart';
+import '../features/setting/domain/usecases/update_user_profile_usecase.dart';
+import '../features/setting/presentation/bloc/setting_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -243,6 +251,7 @@ Future<void> init() async {
   initProjectOffers();
   initNotifications();
   initInbox();
+  initSetting();
 }
 
 void initContractorDashboard() {
@@ -558,5 +567,26 @@ void initInbox() {
   // Data Source
   sl.registerLazySingleton<InboxLocalDataSource>(
     () => InboxLocalDataSourceImpl(),
+  );
+}
+
+void initSetting() {
+  // BLoC — registered as Factory so each page/tab gets its own instance.
+  sl.registerFactory(
+    () => SettingBloc(
+      getUserProfileUseCase: sl(),
+      updateUserProfileUseCase: sl(),
+    ),
+  );
+  // Use Cases
+  sl.registerLazySingleton(() => GetUserProfileUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateUserProfileUseCase(sl()));
+  // Repository
+  sl.registerLazySingleton<SettingRepository>(
+    () => SettingRepositoryImpl(remoteDataSource: sl()),
+  );
+  // Data Source
+  sl.registerLazySingleton<SettingRemoteDataSource>(
+    () => SettingRemoteDataSourceImpl(),
   );
 }
