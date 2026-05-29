@@ -113,7 +113,11 @@ class _ContractorProjectRequestsViewState
                     SearchContractorProjectRequests(value),
                   );
                 },
-                onClear: () {},
+                onClear: () {
+                  context.read<ContractorProjectRequestBloc>().add(
+                    SearchContractorProjectRequests(''),
+                  );
+                },
               ),
             ),
           ),

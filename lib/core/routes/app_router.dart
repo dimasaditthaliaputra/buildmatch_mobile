@@ -62,7 +62,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/contractor-dashboard',
+    initialLocation: '/splash',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -169,12 +169,12 @@ class AppRouter {
         name: 'proyek-detail',
         pageBuilder: (context, state) {
           final String id = state.pathParameters['id'] ?? '0';
-          final bool isFromRequest = state.extra as bool? ?? true;  
+          final bool isFromRequest = state.extra as bool? ?? true;
           return buildFadeTransitionPage(
             key: state.pageKey,
             child: ProjectDetailPage(
               projectId: id,
-              isFromRequest: isFromRequest, 
+              isFromRequest: isFromRequest,
             ),
           );
         },
@@ -263,13 +263,11 @@ class AppRouter {
         path: '/rating-client',
         name: 'rating-client',
         builder: (context, state) {
-          final Map<String, dynamic>? extra = state.extra as Map<String, dynamic>?;
+          final Map<String, dynamic>? extra =
+              state.extra as Map<String, dynamic>?;
           final String clientId = extra?['clientId'] as String? ?? '';
           final String clientName = extra?['clientName'] as String? ?? '';
-          return RatingClientPage(
-            clientId: clientId,
-            clientName: clientName,
-          );
+          return RatingClientPage(clientId: clientId, clientName: clientName);
         },
       ),
       GoRoute(
