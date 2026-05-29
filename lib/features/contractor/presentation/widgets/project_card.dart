@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/screen_size.dart'; 
@@ -129,7 +130,9 @@ class _CardContent extends StatelessWidget {
               fontSize: context.widthPct(0.035).clamp(12.0, 14.0),
               fontWeight: FontWeight.w900,
               padding: EdgeInsets.zero,
-              onPressed: () {},
+              onPressed: () {
+                context.push('/architect-project-detail/:id');
+              },
             ),
           ),
         ],

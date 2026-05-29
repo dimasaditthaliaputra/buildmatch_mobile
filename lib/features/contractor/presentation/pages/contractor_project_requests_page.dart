@@ -59,9 +59,12 @@ class _ContractorProjectRequestsViewState
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const GlobalAppBar(
+      appBar: GlobalAppBar(
         title: 'Penawaran Proyek',
         showBackButton: true,
+        onBackPressed: () {
+          context.push('/contractor-dashboard');
+        }
       ),
       body: Column(
         children: [
