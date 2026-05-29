@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -6,8 +7,43 @@ import '../../../../core/widgets/icon_widget.dart';
 import '../../../../core/widgets/global_card.dart';
 import '../../../../core/widgets/section_header.dart';
 
-class MilestoneDocumentWidget extends StatelessWidget {
+import '../../data/datasources/milestone_document_local_data_source.dart';
+
+class MilestoneDocumentWidget extends StatefulWidget {
   const MilestoneDocumentWidget({super.key});
+
+  @override
+  State<MilestoneDocumentWidget> createState() => _MilestoneDocumentWidgetState();
+}
+
+class _MilestoneDocumentWidgetState extends State<MilestoneDocumentWidget> {
+  final MilestoneDocumentLocalDataSource _dataSource = MilestoneDocumentLocalDataSourceImpl();
+  List<Map<String, dynamic>> _documents = [];
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadDocuments();
+  }
+
+  Future<void> _loadDocuments() async {
+    try {
+      final docs = await _dataSource.getDocuments();
+      if (mounted) {
+        setState(() {
+          _documents = docs.take(2).toList();
+          _isLoading = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,12 +55,45 @@ class MilestoneDocumentWidget extends StatelessWidget {
           actionText: 'Lihat Semua',
           actionTextColor: AppColors.primary,
           actionTextStyle: AppTextStyles.bodyMedium,
-          onActionTap: () {},
+          onActionTap: () {
+            context.push('/milestone-document');
+          },
         ),
         const SizedBox(height: 16),
-        _buildDocumentItem('Kontrak', 'PDF • 2.4 MB', Icons.check_circle_outline),
-        const SizedBox(height: 12),
-        _buildDocumentItem('Invoice', 'PDF • 1.1 MB', Icons.shield_outlined),
+        if (_isLoading)
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.symmetric(vertical: 20),
+              child: CircularProgressIndicator(
+                color: AppColors.primary,
+              ),
+            ),
+          )
+        else if (_documents.isEmpty)
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 20),
+            child: Center(
+              child: Text(
+                'Tidak ada dokumen',
+                style: AppTextStyles.bodyMedium.copyWith(color: AppColors.textSecondary),
+              ),
+            ),
+          )
+        else
+          ListView.separated(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: _documents.length,
+            separatorBuilder: (context, index) => const SizedBox(height: 12),
+            itemBuilder: (context, index) {
+              final doc = _documents[index];
+              return _buildDocumentItem(
+                doc['title'] as String,
+                doc['subtitle'] as String,
+                doc['icon'] as IconData,
+              );
+            },
+          ),
       ],
     );
   }
@@ -43,7 +112,7 @@ class MilestoneDocumentWidget extends StatelessWidget {
         children: [
           IconWidget(
             icon: icon,
-            backgroundColor: AppColors.primaryLightGrey.withOpacity(0.5),
+            backgroundColor: AppColors.primaryLightGrey.withValues(alpha: 0.5),
             iconColor: AppColors.primaryBlue,
             size: 36,
           ),
@@ -63,7 +132,20 @@ class MilestoneDocumentWidget extends StatelessWidget {
               ],
             ),
           ),
-          const Icon(LucideIcons.download, color: AppColors.textPrimary, size: 24),
+          IconButton(
+            padding: EdgeInsets.zero,
+            constraints: const BoxConstraints(),
+            icon: const Icon(LucideIcons.download, color: AppColors.textPrimary, size: 24),
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Mengunduh $title...'),
+                  behavior: SnackBarBehavior.floating,
+                  backgroundColor: AppColors.success,
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

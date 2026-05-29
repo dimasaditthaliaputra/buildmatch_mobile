@@ -7,4 +7,10 @@ abstract class MilestoneContractorEvent extends Equatable {
   List<Object> get props => [];
 }
 
-class LoadMilestoneContractorData extends MilestoneContractorEvent {}
+class LoadMilestoneContractorData extends MilestoneContractorEvent {
+  final String? projectId;
+  const LoadMilestoneContractorData({this.projectId});
+
+  @override
+  List<Object> get props => [projectId ?? ''];
+}

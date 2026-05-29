@@ -176,28 +176,6 @@ class MilestoneProgressItemWidget extends StatelessWidget {
                     ),
                   ],
                 ),
-                if (progress.paymentStatus != 'LUNAS') ...[
-                  const SizedBox(height: 12),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: () {},
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primary,
-                        elevation: 0,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      child: Text(
-                        'Edit',
-                        style: AppTextStyles.button.copyWith(
-                          color: AppColors.textLight,
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
               ],
             ),
           ),

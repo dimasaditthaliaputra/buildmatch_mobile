@@ -1,5 +1,6 @@
 import 'dart:ui' show PathMetric;
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
@@ -71,7 +72,8 @@ class MilestoneTimelineItemWidget extends StatelessWidget {
                           (progress) =>
                               MilestoneProgressItemWidget(progress: progress),
                         ),
-                        _buildAddProgressButton(),
+                        if (milestone.status != 'SELESAI')
+                          _buildAddProgressButton(context),
                       ],
                     ],
                   ),
@@ -324,37 +326,58 @@ class MilestoneTimelineItemWidget extends StatelessWidget {
     );
   }
 
-  Widget _buildAddProgressButton() {
-    return CustomPaint(
-      foregroundPainter: DashedBorderPainter(
-        color: AppColors.primaryUltraGrey,
-        radius: 12.0,
-        strokeWidth: 1.5,
-        gap: 4.0,
-        dash: 6.0,
-      ),
-      child: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(vertical: 16),
-        decoration: BoxDecoration(
-          color: AppColors.surface,
-          borderRadius: BorderRadius.circular(12),
+  Widget _buildAddProgressButton(BuildContext context) {
+    final bool hasPendingPayment = milestone.progressList?.any((p) => p.paymentStatus == 'MENUNGGU') ?? false;
+
+    return GestureDetector(
+      onTap: hasPendingPayment
+          ? () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text(
+                    'Selesaikan pembayaran progres sebelumnya terlebih dahulu untuk menambah progres baru.',
+                  ),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            }
+          : () {
+              context.push('/contractor-add-progres');
+            },
+      child: CustomPaint(
+        foregroundPainter: DashedBorderPainter(
+          color: hasPendingPayment ? AppColors.primaryUltraGrey : AppColors.primaryUltraGrey,
+          radius: 12.0,
+          strokeWidth: 1.5,
+          gap: 4.0,
+          dash: 6.0,
         ),
-        child: Column(
-          children: [
-            const Icon(
-              Icons.add_circle_outline,
-              color: AppColors.textPrimary,
-              size: 24,
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'Tambah Progres Baru',
-              style: AppTextStyles.bodyMedium.copyWith(
-                fontWeight: FontWeight.bold,
+        child: Container(
+          width: double.infinity,
+          padding: const EdgeInsets.symmetric(vertical: 16),
+          decoration: BoxDecoration(
+            color: hasPendingPayment
+                ? AppColors.primaryUltraLightGrey
+                : AppColors.surface,
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: Column(
+            children: [
+              Icon(
+                Icons.add_circle_outline,
+                color: hasPendingPayment ? AppColors.textLight.withValues(alpha: 0.6) : AppColors.textPrimary,
+                size: 24,
               ),
-            ),
-          ],
+              const SizedBox(height: 8),
+              Text(
+                'Tambah Progres Baru',
+                style: AppTextStyles.bodyMedium.copyWith(
+                  fontWeight: FontWeight.bold,
+                  color: hasPendingPayment ? AppColors.textLight.withValues(alpha: 0.6) : AppColors.textPrimary,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

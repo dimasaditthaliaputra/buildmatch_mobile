@@ -113,7 +113,7 @@ class _RatingClientViewState extends State<_RatingClientView> {
                     SizedBox(width: context.widthPct(0.035).clamp(12.0, 16.0)),
                     Expanded(
                       child: Text(
-                        'Diyah Ramadhani Putri',
+                        state.clientName.isNotEmpty ? state.clientName : 'Diyah Ramadhani Putri',
                         style: AppTextStyles.bodyLarge.copyWith(
                           fontSize: nameSize,
                           fontWeight: FontWeight.w700,

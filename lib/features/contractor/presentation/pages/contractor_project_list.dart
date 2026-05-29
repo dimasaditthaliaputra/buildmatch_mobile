@@ -55,11 +55,13 @@ class _ProjectContractorListPageState extends State<ProjectContractorListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.background,
-      appBar: const GlobalAppBar(
+      appBar: GlobalAppBar(
         title: 'Proyek',
         backgroundColor: AppColors.surface,
         showBackButton: true,
-        actions: [], 
+        onBackPressed: () {
+          context.push('/contractor-dashboard');
+        }
       ),
       body: Column(
         children: [

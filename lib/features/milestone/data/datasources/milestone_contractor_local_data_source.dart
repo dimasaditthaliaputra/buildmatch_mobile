@@ -2,16 +2,20 @@ import '../models/milestone_model.dart';
 import '../models/progress_model.dart';
 
 abstract class MilestoneContractorLocalDataSource {
-  Future<List<MilestoneModel>> getMilestones();
+  Future<List<MilestoneModel>> getMilestones({String? projectId});
 }
 
 class MilestoneContractorLocalDataSourceImpl implements MilestoneContractorLocalDataSource {
   @override
-  Future<List<MilestoneModel>> getMilestones() async {
+  Future<List<MilestoneModel>> getMilestones({String? projectId}) async {
     // Simulate network delay
     await Future.delayed(const Duration(milliseconds: 800));
 
-    return [
+    if (projectId == '2') {
+      return [];
+    }
+
+    final milestones = [
       const MilestoneModel(
         id: '1',
         title: 'Survei Lokasi & Pondasi',
@@ -113,5 +117,42 @@ class MilestoneContractorLocalDataSourceImpl implements MilestoneContractorLocal
         completionPercentage: 0.0,
       ),
     ];
+
+    if (projectId == '5') {
+      return milestones.map((m) {
+        if (m.id == '5' && m.progressList != null) {
+          final updatedProgressList = m.progressList!.map((p) {
+            if (p.id == 'p2') {
+              return ProgressModel(
+                id: p.id,
+                title: p.title,
+                description: p.description,
+                percentage: p.percentage,
+                evidencePhotos: p.evidencePhotos,
+                paymentStatus: 'LUNAS',
+                paymentAmount: p.paymentAmount,
+              );
+            }
+            return p;
+          }).toList();
+
+          return MilestoneModel(
+            id: m.id,
+            title: m.title,
+            description: m.description,
+            status: m.status,
+            isConstruction: m.isConstruction,
+            paymentAmount: m.paymentAmount,
+            paymentStatus: m.paymentStatus,
+            evidencePhotos: m.evidencePhotos,
+            progressList: updatedProgressList,
+            completionPercentage: m.completionPercentage,
+          );
+        }
+        return m;
+      }).toList();
+    }
+
+    return milestones;
   }
 }
