@@ -164,7 +164,7 @@ class ProjectContractorCard extends StatelessWidget {
             child: MainButton(
               backgroundColor: AppColors.primary,
               text: 'Lihat Detail Proyek',
-              onPressed: () => context.push('/milestone-contractor'),
+              onPressed: onTap,
               borderRadius: 12,
               padding: const EdgeInsets.symmetric(vertical: 0), 
               fontSize: titleSize,
