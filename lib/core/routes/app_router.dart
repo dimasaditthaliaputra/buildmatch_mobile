@@ -57,6 +57,8 @@ import '../../features/inbox/domain/entities/consultation_room_entity.dart';
 import '../../features/setting/domain/entities/setting_user_entity.dart';
 import '../../features/setting/presentation/pages/setting_page.dart';
 import '../../features/setting/presentation/pages/setting_profile_page.dart';
+// Features - Rating
+import '../../features/rating/presentation/pages/list_rating_page.dart';
 
 class AppRouter {
   AppRouter._();
@@ -309,6 +311,11 @@ class AppRouter {
           final user = state.extra as SettingUserEntity?;
           return SettingProfilePageProvider(initialUser: user);
         },
+      ),
+      GoRoute(
+        path: '/ulasan-rating',
+        name: 'ulasan-rating',
+        builder: (context, state) => const ListRatingPageProvider(),
       ),
     ],
   );

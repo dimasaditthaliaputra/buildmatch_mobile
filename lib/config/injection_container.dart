@@ -181,6 +181,14 @@ import '../features/setting/domain/usecases/get_user_profile_usecase.dart';
 import '../features/setting/domain/usecases/update_user_profile_usecase.dart';
 import '../features/setting/presentation/bloc/setting_bloc.dart';
 
+// Rating Feature
+import '../features/rating/data/datasources/rating_local_data_source.dart';
+import '../features/rating/data/repositories/rating_repository_impl.dart';
+import '../features/rating/domain/repositories/rating_repository.dart';
+import '../features/rating/domain/usecases/get_rating_stats_usecase.dart';
+import '../features/rating/domain/usecases/get_reviews_usecase.dart';
+import '../features/rating/presentation/bloc/rating_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -252,6 +260,7 @@ Future<void> init() async {
   initNotifications();
   initInbox();
   initSetting();
+  initRating();
 }
 
 void initContractorDashboard() {
@@ -591,5 +600,22 @@ void initSetting() {
   // Data Source
   sl.registerLazySingleton<SettingRemoteDataSource>(
     () => SettingRemoteDataSourceImpl(),
+  );
+}
+
+void initRating() {
+  sl.registerFactory(
+    () => RatingBloc(
+      getRatingStatsUseCase: sl(),
+      getReviewsUseCase: sl(),
+    ),
+  );
+  sl.registerLazySingleton(() => GetRatingStatsUseCase(sl()));
+  sl.registerLazySingleton(() => GetReviewsUseCase(sl()));
+  sl.registerLazySingleton<RatingRepository>(
+    () => RatingRepositoryImpl(localDataSource: sl()),
+  );
+  sl.registerLazySingleton<RatingLocalDataSource>(
+    () => RatingLocalDataSourceImpl(),
   );
 }
