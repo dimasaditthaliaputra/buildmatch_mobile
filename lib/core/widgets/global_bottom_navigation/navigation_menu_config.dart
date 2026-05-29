@@ -34,7 +34,7 @@ class NavigationMenuConfig {
             label: 'Pengaturan',
             icon: LucideIcons.user,
             activeIcon: LucideIcons.user,
-            routeName: '/', // Fallback to '/'
+            routeName: '/setting',
           ),
         ];
       case UserRole.contractor:
@@ -61,7 +61,7 @@ class NavigationMenuConfig {
             label: 'Pengaturan',
             icon: LucideIcons.user,
             activeIcon: LucideIcons.user,
-            routeName: '/', // Fallback to '/'
+            routeName: '/setting',
           ),
         ];
       case UserRole.architect:
@@ -88,7 +88,7 @@ class NavigationMenuConfig {
             label: 'Pengaturan',
             icon: LucideIcons.user,
             activeIcon: LucideIcons.user,
-            routeName: '/', // Fallback to '/'
+            routeName: '/setting',
           ),
         ];
     }

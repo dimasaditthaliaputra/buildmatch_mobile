@@ -4,10 +4,9 @@ import 'package:lucide_icons_flutter/lucide_icons.dart';
 import '../../../features/client/presentation/pages/client_dashboard_page.dart';
 import '../../../features/client/presentation/pages/project_page.dart';
 import '../../../features/contractor/presentation/pages/contractor_dashboard_page.dart';
-import '../../../features/contractor/presentation/bloc/contractor_dashboard_bloc.dart';
 import '../../../features/contractor/presentation/pages/contractor_project_list.dart';
 import '../../../features/architect/presentation/pages/architect_dashboard_page.dart';
-import '../../../features/profile/presentation/pages/profile_placeholder_page.dart';
+import '../../../features/setting/presentation/pages/setting_page.dart';
 import '../../../features/inbox/presentation/pages/list_contact_chat_page.dart';
 import '../../theme/app_colors.dart';
 import '../../theme/app_text_styles.dart';
@@ -64,21 +63,21 @@ class _MainLayoutShellState extends State<MainLayoutShell> {
           const ClientDashboardProvider(),
           const ClientProjectProvider(),
           const ListContactChatPage(),
-          const ProfilePlaceholderPage(role: 'client'),
+          const SettingPageProvider(),
         ];
       case UserRole.contractor:
         return [
           const ContractorDashboardProvider(),
           const ProjectContractorListPageWrapper(),
-          _InboxPlaceholderView(role: widget.role),
-          const ProfilePlaceholderPage(role: 'contractor'),
+          const ListContactChatPage(),
+          const SettingPageProvider(),
         ];
       case UserRole.architect:
         return [
           const ArchitectDashboardProvider(),
           const ProjectArchitectListPageWrapper(),
           const ListContactChatPage(),
-          const ProfilePlaceholderPage(role: 'architect'),
+          const SettingPageProvider(),
         ];
     }
   }
