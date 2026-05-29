@@ -155,9 +155,7 @@ class SettingPage extends StatelessWidget {
                               Icons.chevron_right_rounded,
                               color: AppColors.textSecondaryDark,
                             ),
-                            onTap: () => SnackbarUtils.showInfo(
-                              'Fitur Ulasan & Rating segera hadir!',
-                            ),
+                            onTap: () => context.push('/ulasan-rating'),
                           ),
                         ],
                       ]),

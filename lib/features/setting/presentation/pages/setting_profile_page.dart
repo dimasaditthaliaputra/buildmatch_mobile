@@ -135,14 +135,12 @@ class _SettingProfilePageState extends State<SettingProfilePage> {
 
             return Stack(
               children: [
-                _buildOrangeHeader(context, avatarUrl, displayName, roleName),
-                SafeArea(
-                  child: Column(
-                    children: [
-                      SizedBox(height: context.heightPct(0.22)),
-
-                      Expanded(
-                        child: SingleChildScrollView(
+                Positioned.fill(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        _buildOrangeHeader(context, avatarUrl, displayName, roleName),
+                        Padding(
                           padding: EdgeInsets.symmetric(
                             horizontal: context.widthPct(0.05),
                             vertical: 16,
@@ -216,8 +214,8 @@ class _SettingProfilePageState extends State<SettingProfilePage> {
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
 
