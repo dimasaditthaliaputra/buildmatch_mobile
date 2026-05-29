@@ -21,24 +21,36 @@ import '../widgets/insight_item.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   final String projectId;
+  final bool isFromRequest; 
 
-  const ProjectDetailPage({super.key, required this.projectId});
+  const ProjectDetailPage({
+    super.key,
+    required this.projectId,
+    this.isFromRequest = true, 
+  });
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => sl<ContractorProjectDetailBloc>()..add(LoadContractorProjectDetail(projectId)),
-      child: const _ProjectDetailView(),
+      create: (_) =>
+          sl<ContractorProjectDetailBloc>()
+            ..add(LoadContractorProjectDetail(projectId)),
+      child: _ProjectDetailView(isFromRequest: isFromRequest),
     );
   }
 }
 
 class _ProjectDetailView extends StatelessWidget {
-  const _ProjectDetailView();
+  final bool isFromRequest;
+
+  const _ProjectDetailView({required this.isFromRequest});
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ContractorProjectDetailBloc, ContractorProjectDetailState>(
+    return BlocBuilder<
+      ContractorProjectDetailBloc,
+      ContractorProjectDetailState
+    >(
       builder: (context, state) {
         if (state.isLoading) {
           return const Scaffold(
@@ -56,7 +68,10 @@ class _ProjectDetailView extends StatelessWidget {
           );
         }
 
-        return _ProjectDetailContent(project: state.project!);
+        return _ProjectDetailContent(
+          project: state.project!,
+          isFromRequest: isFromRequest,
+        );
       },
     );
   }
@@ -64,8 +79,12 @@ class _ProjectDetailView extends StatelessWidget {
 
 class _ProjectDetailContent extends StatelessWidget {
   final ContractorProjectDetailEntity project;
+  final bool isFromRequest;
 
-  const _ProjectDetailContent({required this.project});
+  const _ProjectDetailContent({
+    required this.project,
+    required this.isFromRequest,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -241,14 +260,16 @@ class _ProjectDetailContent extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: context.widthPct(0.04)),
       child: Row(
         children: stats
-            .map((s) => Expanded(
-                  child: _buildStatChip(
-                    context,
-                    value: s.value,
-                    label: s.label,
-                    isHighlight: s.isHighlight,
-                  ),
-                ))
+            .map(
+              (s) => Expanded(
+                child: _buildStatChip(
+                  context,
+                  value: s.value,
+                  label: s.label,
+                  isHighlight: s.isHighlight,
+                ),
+              ),
+            )
             .toList(),
       ),
     );
@@ -268,9 +289,7 @@ class _ProjectDetailContent extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.01)),
       padding: EdgeInsets.symmetric(vertical: chipPadV),
       decoration: BoxDecoration(
-        color: isHighlight
-            ? AppColors.textOrangeDark
-            : AppColors.surfaceCream,
+        color: isHighlight ? AppColors.textOrangeDark : AppColors.surfaceCream,
         borderRadius: BorderRadius.circular(10),
       ),
       child: Column(
@@ -608,6 +627,17 @@ class _ProjectDetailContent extends StatelessWidget {
     final double btnVertPad = context.heightPct(0.02).clamp(14.0, 20.0);
     final double btnFontSize = context.widthPct(0.045).clamp(16.0, 18.0);
 
+    final String buttonText = isFromRequest
+        ? 'Ajukan Penawaran'
+        : 'Lihat Milestone';
+    final VoidCallback onPressed = () {
+      if (isFromRequest) {
+        context.push('/contractor-proyek-offer');
+      } else {
+        context.push('/milestone-contractor');
+      }
+    };
+
     return Positioned(
       left: 0,
       right: 0,
@@ -632,11 +662,11 @@ class _ProjectDetailContent extends StatelessWidget {
         child: SizedBox(
           width: double.infinity,
           child: MainButton(
-            text: 'Buat Milestone',
+            text: buttonText,
             borderRadius: 24,
             fontSize: btnFontSize,
             padding: EdgeInsets.symmetric(vertical: btnVertPad),
-            onPressed: () {},
+            onPressed: onPressed,
           ),
         ),
       ),

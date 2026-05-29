@@ -10,7 +10,7 @@ import '../../../../../core/widgets/badge_widget.dart';
 import '../../../../../core/widgets/main_button.dart';
 
 class ProjectContractorCard extends StatelessWidget {
-  final ContractorProjectListEntity project; 
+  final ContractorProjectListEntity project;
   final VoidCallback onTap;
 
   const ProjectContractorCard({
@@ -54,11 +54,13 @@ class ProjectContractorCard extends StatelessWidget {
               SizedBox(width: context.widthPct(0.02)),
               BadgeWidget(
                 text: isRunning ? 'Berjalan' : 'Selesai',
-                textColor: isRunning ? AppColors.textOrangeLight : AppColors.success,
+                textColor: isRunning
+                    ? AppColors.textOrangeLight
+                    : AppColors.success,
                 backgroundColor: isRunning
                     ? AppColors.primary.withOpacity(0.12)
                     : AppColors.successBackground,
-                borderColor: Colors.transparent, 
+                borderColor: Colors.transparent,
               ),
             ],
           ),
@@ -84,13 +86,13 @@ class ProjectContractorCard extends StatelessWidget {
               ),
             ],
           ),
-          
+
           Padding(
             padding: EdgeInsets.symmetric(vertical: spacing * 1.5),
             child: Divider(
-              color: AppColors.primaryUltraLightGrey, 
-              height: 1, 
-              thickness: 1
+              color: AppColors.primaryUltraLightGrey,
+              height: 1,
+              thickness: 1,
             ),
           ),
 
@@ -150,9 +152,9 @@ class ProjectContractorCard extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(vertical: spacing * 1.5),
             child: Divider(
-              color: AppColors.primaryUltraLightGrey, 
-              height: 1, 
-              thickness: 1
+              color: AppColors.primaryUltraLightGrey,
+              height: 1,
+              thickness: 1,
             ),
           ),
 
@@ -164,11 +166,13 @@ class ProjectContractorCard extends StatelessWidget {
             child: MainButton(
               backgroundColor: AppColors.primary,
               text: 'Lihat Detail Proyek',
-              onPressed: onTap,
               borderRadius: 12,
-              padding: const EdgeInsets.symmetric(vertical: 0), 
+              padding: const EdgeInsets.symmetric(vertical: 0),
               fontSize: titleSize,
               fontWeight: FontWeight.w600,
+              onPressed: () {
+                context.push('/proyek-detail/${project.id}', extra: false);
+              },
             ),
           ),
         ],

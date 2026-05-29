@@ -37,7 +37,6 @@ import 'package:buildmatch_mobile/features/architect/presentation/pages/architec
 import '../../features/architect/presentation/pages/architect_project_list.dart';
 import 'package:buildmatch_mobile/features/architect/presentation/pages/architect_project_requests_page.dart';
 
-
 // Features - Waiting Approval (Contractor Verification)
 import '../../features/waiting_approval/presentation/pages/verif_contractor_page.dart';
 
@@ -127,9 +126,8 @@ class AppRouter {
       GoRoute(
         path: '/client-dashboard',
         name: 'client-dashboard',
-        builder: (context, state) => const MainLayoutShell(
-          role: UserRole.client,
-        ),
+        builder: (context, state) =>
+            const MainLayoutShell(role: UserRole.client),
       ),
       GoRoute(
         path: '/client-proyek',
@@ -152,9 +150,8 @@ class AppRouter {
       GoRoute(
         path: '/contractor-dashboard',
         name: 'contractor-dashboard',
-        builder: (context, state) => const MainLayoutShell(
-          role: UserRole.contractor,
-        ),
+        builder: (context, state) =>
+            const MainLayoutShell(role: UserRole.contractor),
       ),
       GoRoute(
         path: '/contractor-proyek-requests',
@@ -171,10 +168,13 @@ class AppRouter {
         name: 'proyek-detail',
         pageBuilder: (context, state) {
           final String id = state.pathParameters['id'] ?? '0';
-
+          final bool isFromRequest = state.extra as bool? ?? true;  
           return buildFadeTransitionPage(
             key: state.pageKey,
-            child: ProjectDetailPage(projectId: id),
+            child: ProjectDetailPage(
+              projectId: id,
+              isFromRequest: isFromRequest, 
+            ),
           );
         },
       ),
@@ -210,11 +210,10 @@ class AppRouter {
       GoRoute(
         path: '/architect-dashboard',
         name: 'architect-dashboard',
-        builder: (context, state) => const MainLayoutShell(
-          role: UserRole.architect,
-        ),
+        builder: (context, state) =>
+            const MainLayoutShell(role: UserRole.architect),
       ),
-      
+
       GoRoute(
         path: '/architect-project-detail/:id',
         name: 'architect-project-detail',
@@ -232,13 +231,13 @@ class AppRouter {
         name: 'architect-proyek-requests',
         builder: (context, state) => const ArchitectProjectRequestsPage(),
       ),
-       GoRoute(
+      GoRoute(
         path: '/architect-project-offer',
         name: 'architect-project-offer',
         builder: (context, state) => const ArchitectProjectOfferPageProvider(),
       ),
 
-        GoRoute(
+      GoRoute(
         path: '/architect-project-list',
         name: 'architect-project-list',
         builder: (context, state) => const ProjectArchitectListPageWrapper(),
