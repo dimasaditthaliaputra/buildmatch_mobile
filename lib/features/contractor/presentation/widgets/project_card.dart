@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:go_router/go_router.dart';
 
 import '../../../../core/theme/app_colors.dart';
-import '../../../../core/utils/screen_size.dart'; 
+import '../../../../core/utils/screen_size.dart';
 import '../../../../core/widgets/main_button.dart';
-import '../../../../core/widgets/global_card.dart'; 
+import '../../../../core/widgets/global_card.dart';
 
 class AppCardInfo {
   final String label;
@@ -15,14 +14,14 @@ class AppCardInfo {
 }
 
 class ProjectCard extends StatelessWidget {
-  final String? imageUrl; 
+  final String? imageUrl;
   final List<AppCardInfo> infoItems;
   final Widget? child;
   final VoidCallback? onTap;
 
   const ProjectCard({
     super.key,
-    this.imageUrl, 
+    this.imageUrl,
     required this.infoItems,
     this.child,
     this.onTap,
@@ -32,18 +31,19 @@ class ProjectCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GlobalCard(
       onTap: onTap,
-      padding: EdgeInsets.zero, 
+      padding: EdgeInsets.zero,
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(16.0), 
+        borderRadius: BorderRadius.circular(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
-            if (imageUrl != null && imageUrl!.isNotEmpty) 
+            if (imageUrl != null && imageUrl!.isNotEmpty)
               _CardImage(imageUrl: imageUrl!),
             _CardContent(
               infoItems: infoItems,
               child: child,
+              onTap: onTap, 
             ),
           ],
         ),
@@ -87,8 +87,9 @@ class _CardImage extends StatelessWidget {
 class _CardContent extends StatelessWidget {
   final List<AppCardInfo> infoItems;
   final Widget? child;
+  final VoidCallback? onTap; 
 
-  const _CardContent({required this.infoItems, this.child});
+  const _CardContent({required this.infoItems, this.child, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -103,7 +104,7 @@ class _CardContent extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           if (child != null) child!,
-          
+
           if (infoItems.isNotEmpty) ...[
             Row(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -130,9 +131,7 @@ class _CardContent extends StatelessWidget {
               fontSize: context.widthPct(0.035).clamp(12.0, 14.0),
               fontWeight: FontWeight.w900,
               padding: EdgeInsets.zero,
-              onPressed: () {
-                context.push('/architect-project-detail/:id');
-              },
+              onPressed: onTap, 
             ),
           ),
         ],
@@ -149,14 +148,14 @@ class _CardInfoBox extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double textFs = context.widthPct(0.028).clamp(10.0, 12.0); 
+    final double textFs = context.widthPct(0.028).clamp(10.0, 12.0);
     final double padH = context.widthPct(0.025).clamp(10.0, 12.0);
     final double padV = context.heightPct(0.01).clamp(8.0, 10.0);
 
     return Container(
       padding: EdgeInsets.symmetric(horizontal: padH, vertical: padV),
       decoration: BoxDecoration(
-        color: AppColors.surfacePale, 
+        color: AppColors.surfacePale,
         borderRadius: BorderRadius.circular(10),
         border: Border.all(color: AppColors.border),
       ),
@@ -167,18 +166,18 @@ class _CardInfoBox extends StatelessWidget {
           Text(
             label,
             style: GoogleFonts.inter(
-              fontSize: textFs, 
-              fontWeight: FontWeight.w400, 
-              color: AppColors.textMid, 
+              fontSize: textFs,
+              fontWeight: FontWeight.w400,
+              color: AppColors.textMid,
             ),
           ),
           SizedBox(height: context.heightPct(0.003)),
           Text(
             value,
             style: GoogleFonts.inter(
-              fontSize: textFs, 
-              fontWeight: FontWeight.w600, 
-              color: AppColors.textDark, 
+              fontSize: textFs,
+              fontWeight: FontWeight.w600,
+              color: AppColors.textDark,
             ),
           ),
         ],

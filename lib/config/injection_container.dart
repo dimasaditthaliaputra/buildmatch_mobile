@@ -270,11 +270,14 @@ void initContractorDashboard() {
 void initContractorProjectDetail() {
   sl.registerFactory(() => ContractorProjectDetailBloc(sl()));
   sl.registerLazySingleton(() => GetContractorProjectDetail(sl()));
-  sl.registerLazySingleton<ContractorProjectDetailRepository>(
-    () => ContractorProjectDetailRepositoryImpl(sl()),
+  sl.registerLazySingleton<ContractorProjectRequestDetailLocalDataSourceImpl>(
+    () => ContractorProjectRequestDetailLocalDataSourceImpl(),
   );
   sl.registerLazySingleton<ContractorProjectRequestDetailLocalDataSource>(
-    () => ContractorProjectRequestDetailLocalDataSourceImpl(),
+    () => sl<ContractorProjectRequestDetailLocalDataSourceImpl>(),
+  );
+  sl.registerLazySingleton<ContractorProjectDetailRepository>(
+    () => ContractorProjectDetailRepositoryImpl(sl()),
   );
 }
 

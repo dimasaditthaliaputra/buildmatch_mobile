@@ -64,7 +64,7 @@ class _ContractorProjectRequestsViewState
         showBackButton: true,
         onBackPressed: () {
           context.push('/contractor-dashboard');
-        }
+        },
       ),
       body: Column(
         children: [
@@ -137,14 +137,12 @@ class _ContractorProjectRequestsViewState
     >(
       builder: (context, state) {
         if (state.isLoading) {
-          //
           return const Center(
             child: CircularProgressIndicator(color: AppColors.primary),
           );
         }
 
         if (state.filteredRequests.isEmpty) {
-          //
           return _buildEmptyState();
         }
 
@@ -157,9 +155,9 @@ class _ContractorProjectRequestsViewState
               listPadH,
               listPadV * 3 + context.bottomPadding,
             ),
-            itemCount: state.filteredRequests.length, 
+            itemCount: state.filteredRequests.length,
             itemBuilder: (context, index) {
-              final request = state.filteredRequests[index]; 
+              final request = state.filteredRequests[index];
 
               return Padding(
                 padding: EdgeInsets.only(
@@ -168,7 +166,7 @@ class _ContractorProjectRequestsViewState
                 child: ProjectCard(
                   imageUrl: request.imageUrl,
                   onTap: () =>
-                      context.push('/contractor-project-request/${request.id}'),
+                      context.push('/proyek-detail/${request.id}', extra: true),
                   infoItems: [
                     AppCardInfo(
                       label: 'Rentang Harga',
