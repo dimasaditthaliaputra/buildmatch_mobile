@@ -50,6 +50,14 @@ class ContractorProjectRemoteDataSourceImpl
       clientName: 'Albert Einsten',
       status: ProjectStatus.selesai,
     ),
+    ContractorProjectListModel(
+      id: '5',
+      name: 'Pembangunan Kost Eksekutif',
+      location: 'Suhat, Malang',
+      startDate: DateTime(2026, 5, 10),
+      clientName: 'Ariana Grande',
+      status: ProjectStatus.berjalan,
+    ),
   ];
 
   @override

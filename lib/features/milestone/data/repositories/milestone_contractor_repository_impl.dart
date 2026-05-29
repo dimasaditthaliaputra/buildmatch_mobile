@@ -8,9 +8,9 @@ class MilestoneContractorRepositoryImpl implements MilestoneContractorRepository
   MilestoneContractorRepositoryImpl({required this.localDataSource});
 
   @override
-  Future<List<MilestoneEntity>> getMilestones() async {
+  Future<List<MilestoneEntity>> getMilestones({String? projectId}) async {
     try {
-      final milestoneModels = await localDataSource.getMilestones();
+      final milestoneModels = await localDataSource.getMilestones(projectId: projectId);
       // Since MilestoneModel extends MilestoneEntity, we can just return it as List<MilestoneEntity>
       return milestoneModels;
     } catch (e) {

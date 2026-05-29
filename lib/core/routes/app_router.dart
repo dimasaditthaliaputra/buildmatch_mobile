@@ -42,6 +42,7 @@ import '../../features/waiting_approval/presentation/pages/verif_contractor_page
 
 // Features - Milestone
 import '../../features/milestone/presentation/pages/milestone_contractor_page.dart';
+import '../../features/milestone/presentation/pages/milestone_document_page.dart';
 import '../../features/contractor/domain/entities/contractor_project_list_entity.dart';
 
 // Features - Notifications
@@ -61,7 +62,7 @@ class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/client-dashboard',
+    initialLocation: '/contractor-dashboard',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -205,6 +206,11 @@ class AppRouter {
           return MilestoneContractorProvider(project: project);
         },
       ),
+      GoRoute(
+        path: '/milestone-document',
+        name: 'milestone-document',
+        builder: (context, state) => const MilestoneDocumentPage(),
+      ),
 
       // 5. ARCHITECT ROLE ROUTES
       GoRoute(
@@ -256,8 +262,15 @@ class AppRouter {
       GoRoute(
         path: '/rating-client',
         name: 'rating-client',
-        builder: (context, state) =>
-            const RatingClientPage(clientId: '', clientName: ''),
+        builder: (context, state) {
+          final Map<String, dynamic>? extra = state.extra as Map<String, dynamic>?;
+          final String clientId = extra?['clientId'] as String? ?? '';
+          final String clientName = extra?['clientName'] as String? ?? '';
+          return RatingClientPage(
+            clientId: clientId,
+            clientName: clientName,
+          );
+        },
       ),
       GoRoute(
         path: '/detail-portofolio',

@@ -12,7 +12,7 @@ class MilestoneContractorBloc
     on<LoadMilestoneContractorData>((event, emit) async {
       emit(MilestoneContractorLoading());
       try {
-        final milestones = await getMilestonesUseCase();
+        final milestones = await getMilestonesUseCase(projectId: event.projectId);
         emit(MilestoneContractorLoaded(milestones: milestones));
       } catch (e) {
         emit(MilestoneContractorError(message: e.toString()));

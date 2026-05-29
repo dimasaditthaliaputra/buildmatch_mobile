@@ -6,7 +6,7 @@ class GetMilestonesUseCase {
 
   GetMilestonesUseCase(this.repository);
 
-  Future<List<MilestoneEntity>> call() async {
-    return await repository.getMilestones();
+  Future<List<MilestoneEntity>> call({String? projectId}) async {
+    return await repository.getMilestones(projectId: projectId);
   }
 }
