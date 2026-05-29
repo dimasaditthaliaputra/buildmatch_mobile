@@ -21,12 +21,12 @@ import '../widgets/insight_item.dart';
 
 class ProjectDetailPage extends StatelessWidget {
   final String projectId;
-  final bool isFromRequest; 
+  final bool isFromRequest;
 
   const ProjectDetailPage({
     super.key,
     required this.projectId,
-    this.isFromRequest = true, 
+    this.isFromRequest = true,
   });
 
   @override
@@ -662,11 +662,25 @@ class _ProjectDetailContent extends StatelessWidget {
         child: SizedBox(
           width: double.infinity,
           child: MainButton(
-            text: buttonText,
+            text: isFromRequest ? 'Kirim Penawaran' : 'Buat Milestone',
             borderRadius: 24,
             fontSize: btnFontSize,
             padding: EdgeInsets.symmetric(vertical: btnVertPad),
-            onPressed: onPressed,
+            onPressed: () {
+              if (isFromRequest) {
+                context.pushNamed('contractor-proyek-offer');
+              } else {
+                final double totalNilai =
+                    double.tryParse(
+                      project.priceMin.replaceAll(RegExp(r'[^0-9]'), ''),
+                    ) ??
+                    150000000.0;
+                context.pushNamed(
+                  'contractor-milestone-form',
+                  extra: totalNilai,
+                );
+              }
+            },
           ),
         ),
       ),
