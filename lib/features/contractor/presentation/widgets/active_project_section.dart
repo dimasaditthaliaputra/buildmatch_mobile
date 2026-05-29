@@ -30,7 +30,7 @@ class ActiveProjectSection extends StatelessWidget {
           title: 'Proyek Aktif',
           actionText: 'LIHAT SEMUA',
           onActionTap: () {
-            context.push('/project-contractor-list');
+            context.push('/contractor-project-list');
           },
         ),
 

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../../core/utils/date_formatter.dart';
 import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_text_styles.dart';
@@ -163,7 +164,7 @@ class ProjectContractorCard extends StatelessWidget {
             child: MainButton(
               backgroundColor: AppColors.primary,
               text: 'Lihat Detail Proyek',
-              onPressed: onTap,
+              onPressed: () => context.push('/milestone-contractor'),
               borderRadius: 12,
               padding: const EdgeInsets.symmetric(vertical: 0), 
               fontSize: titleSize,
