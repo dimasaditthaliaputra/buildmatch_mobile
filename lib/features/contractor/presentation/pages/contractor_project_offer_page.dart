@@ -9,6 +9,7 @@ import '../../../../core/widgets/global_text_field.dart';
 import '../../../../core/utils/screen_size.dart';
 import '../../../../core/widgets/global_card.dart';
 import '../../../../core/widgets/global_app_bar.dart';
+import '../../../../core/widgets/global_skeleton.dart';
 import '../bloc/contractor_project_offer_bloc.dart';
 import '../widgets/budget_range_input.dart';
 import '../widgets/estimasi_waktu_picker.dart';
@@ -247,10 +248,14 @@ class _ContractorProjectOfferViewState
                     ],
                   ),
                   child: isLoading
-                      ? const MainButton(
-                          text: 'Mengirim...',
-                          backgroundColor: AppColors.primary, 
-                          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+                      ? GlobalSkeleton(
+                          child: const MainButton(
+                            text: 'Kirim Penawaran',
+                            icon: Icons.send_rounded,
+                            backgroundColor: AppColors.primary, 
+                            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+                            onPressed: null,
+                          ),
                         )
                       : MainButton(
                           text: 'Kirim Penawaran',

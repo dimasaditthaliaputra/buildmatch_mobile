@@ -9,6 +9,7 @@ import '../../../../core/utils/screen_size.dart';
 import '../../../../core/widgets/global_app_bar.dart';
 import '../../../../core/widgets/main_button.dart';
 import '../../../../core/widgets/filter_bar_widget.dart';
+import '../../../../core/widgets/global_skeleton.dart';
 
 import '../bloc/contractor_add_progres_bloc.dart';
 import '../widgets/jenis_pekerjaan_dropdown.dart';
@@ -218,10 +219,14 @@ class _SimpanButton extends StatelessWidget {
       child: SizedBox(
         width: double.infinity,
         child: state.isSimpanLoading
-            ? const MainButton(
-                text: 'Menyimpan...',
-                backgroundColor: AppColors.primary,
-                padding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+            ? GlobalSkeleton(
+                child: const MainButton(
+                  text: 'Simpan Progres',
+                  icon: LucideIcons.send,
+                  backgroundColor: AppColors.primary,
+                  padding: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
+                  onPressed: null,
+                ),
               )
             : MainButton(
                 text: 'Simpan Progres',
