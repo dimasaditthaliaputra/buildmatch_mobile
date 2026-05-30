@@ -11,6 +11,7 @@ import '../../../../core/utils/screen_size.dart';
 import '../../../../core/widgets/main_button.dart';
 import '../../../../core/widgets/file_row.dart';
 import '../../../../core/widgets/global_card.dart';
+import '../../../../core/widgets/global_skeleton.dart';
 import '../../domain/entities/contractor_project_detail_entity.dart';
 import '../../domain/entities/contractor_project_list_entity.dart';
 import '../../domain/entities/contractor_project_request_entity.dart';
@@ -55,12 +56,7 @@ class _ProjectDetailView extends StatelessWidget {
     >(
       builder: (context, state) {
         if (state.isLoading) {
-          return const Scaffold(
-            backgroundColor: AppColors.background,
-            body: Center(
-              child: CircularProgressIndicator(color: AppColors.primary),
-            ),
-          );
+          return const _ProjectDetailSkeleton();
         }
 
         if (state.project == null) {
@@ -75,6 +71,501 @@ class _ProjectDetailView extends StatelessWidget {
           isFromRequest: isFromRequest,
         );
       },
+    );
+  }
+}
+
+class _ProjectDetailSkeleton extends StatelessWidget {
+  const _ProjectDetailSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    final double heroHeight = context.heightPct(0.30).clamp(200.0, 320.0);
+    final double bottomButtonHeight = context
+        .heightPct(0.11)
+        .clamp(80.0, 110.0);
+
+    return Scaffold(
+      backgroundColor: AppColors.background,
+      body: Stack(
+        children: [
+          ScrollConfiguration(
+            behavior: ScrollConfiguration.of(
+              context,
+            ).copyWith(overscroll: false),
+            child: CustomScrollView(
+              physics: const ClampingScrollPhysics(),
+              slivers: [
+                _buildHeroAppBar(context, heroHeight),
+                SliverToBoxAdapter(
+                  child: Column(
+                    children: [
+                      SizedBox(height: context.heightPct(0.02)),
+                      _buildStatsRow(context),
+                      SizedBox(height: context.heightPct(0.02)),
+                      _buildKonstruksiCard(context),
+                      SizedBox(height: context.heightPct(0.02)),
+                      _buildBudgetCard(context),
+                      SizedBox(height: context.heightPct(0.02)),
+                      _buildDeskripsiCard(context),
+                      SizedBox(height: context.heightPct(0.02)),
+                      _buildFileDesainCard(context),
+                      SizedBox(height: context.heightPct(0.02)),
+                      _buildInsightPenawaranCard(context),
+                      SizedBox(height: context.heightPct(0.02)),
+                      _buildClientCard(context),
+                      SizedBox(height: bottomButtonHeight),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          _buildBottomButton(context),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHeroAppBar(BuildContext context, double heroHeight) {
+    final double backBtnSize = context.widthPct(0.10).clamp(36.0, 48.0);
+
+    return SliverAppBar(
+      expandedHeight: heroHeight,
+      stretch: false,
+      pinned: true,
+      backgroundColor: AppColors.background,
+      surfaceTintColor: Colors.transparent,
+      leading: Padding(
+        padding: EdgeInsets.only(
+          left: context.widthPct(0.03),
+          top: 4,
+          bottom: 4,
+        ),
+        child: Container(
+          width: backBtnSize,
+          height: backBtnSize,
+          decoration: BoxDecoration(
+            color: AppColors.surface.withValues(alpha: 0.8),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            LucideIcons.arrowLeft,
+            color: AppColors.textPrimary,
+            size: backBtnSize * 0.5,
+          ),
+        ),
+      ),
+      flexibleSpace: FlexibleSpaceBar(
+        background: Stack(
+          fit: StackFit.expand,
+          children: [
+            const GlobalSkeleton(
+              width: double.infinity,
+              height: double.infinity,
+            ),
+            DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                  colors: [
+                    Colors.transparent,
+                    AppColors.shadowDark.withValues(alpha: 0.87),
+                  ],
+                  stops: const [0.5, 1.0],
+                ),
+              ),
+            ),
+            Positioned(
+              left: context.widthPct(0.04),
+              right: context.widthPct(0.04),
+              bottom: context.heightPct(0.02),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GlobalSkeleton.text(
+                    width: context.widthPct(0.6),
+                    height: context.widthPct(0.055).clamp(18.0, 24.0),
+                  ),
+                  SizedBox(height: context.heightPct(0.01)),
+                  Row(
+                    children: [
+                      Icon(
+                        LucideIcons.mapPin,
+                        size: context.widthPct(0.04).clamp(14.0, 18.0),
+                        color: AppColors.textLight.withValues(alpha: 0.6),
+                      ),
+                      SizedBox(width: context.widthPct(0.01)),
+                      GlobalSkeleton.text(
+                        width: context.widthPct(0.3),
+                        height: context.widthPct(0.035).clamp(12.0, 14.0),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStatsRow(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: context.widthPct(0.04)),
+      child: Row(
+        children: List.generate(
+          4,
+          (index) => Expanded(
+            child: Container(
+              margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.01)),
+              padding: EdgeInsets.symmetric(
+                vertical: context.heightPct(0.015).clamp(10.0, 16.0),
+              ),
+              decoration: BoxDecoration(
+                color: AppColors.primaryUltraLightGrey,
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  GlobalSkeleton.text(
+                    width: context.widthPct(0.12),
+                    height: context.widthPct(0.035).clamp(12.0, 16.0),
+                  ),
+                  SizedBox(height: context.heightPct(0.006)),
+                  GlobalSkeleton.text(
+                    width: context.widthPct(0.08),
+                    height: context.widthPct(0.028).clamp(10.0, 12.0),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildKonstruksiCard(BuildContext context) {
+    final double titleFontSize = context.widthPct(0.045).clamp(16.0, 20.0);
+
+    return GlobalCard(
+      margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.05)),
+      width: double.infinity,
+      backgroundColor: AppColors.surface,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GlobalSkeleton.text(
+            width: context.widthPct(0.4),
+            height: titleFontSize,
+          ),
+          SizedBox(height: context.heightPct(0.016)),
+          ...List.generate(
+            5,
+            (index) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  GlobalSkeleton.text(
+                    width: context.widthPct(0.25),
+                    height: 14,
+                  ),
+                  GlobalSkeleton.text(
+                    width: context.widthPct(0.35),
+                    height: 14,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBudgetCard(BuildContext context) {
+    final double titleFontSize = context.widthPct(0.045).clamp(16.0, 20.0);
+
+    return GlobalCard(
+      margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.05)),
+      width: double.infinity,
+      backgroundColor: AppColors.surface,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GlobalSkeleton.text(
+            width: context.widthPct(0.5),
+            height: titleFontSize,
+          ),
+          SizedBox(height: context.heightPct(0.016)),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(context.widthPct(0.04)),
+            decoration: BoxDecoration(
+              color: AppColors.background,
+              borderRadius: BorderRadius.circular(10),
+              border: const Border(
+                left: BorderSide(color: AppColors.primaryGrey, width: 4),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GlobalSkeleton.text(
+                  width: context.widthPct(0.4),
+                  height: 12,
+                ),
+                SizedBox(height: context.heightPct(0.008)),
+                GlobalSkeleton.text(
+                  width: context.widthPct(0.6),
+                  height: 18,
+                ),
+                SizedBox(height: context.heightPct(0.006)),
+                GlobalSkeleton.text(
+                  width: context.widthPct(0.3),
+                  height: 10,
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDeskripsiCard(BuildContext context) {
+    final double titleFontSize = context.widthPct(0.045).clamp(16.0, 20.0);
+
+    return GlobalCard(
+      margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.05)),
+      width: double.infinity,
+      backgroundColor: AppColors.surface,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          GlobalSkeleton.text(
+            width: context.widthPct(0.45),
+            height: titleFontSize,
+          ),
+          SizedBox(height: context.heightPct(0.016)),
+          Container(
+            width: double.infinity,
+            padding: EdgeInsets.all(context.widthPct(0.04)),
+            decoration: BoxDecoration(
+              color: AppColors.background,
+              borderRadius: BorderRadius.circular(10),
+              border: const Border(
+                left: BorderSide(color: AppColors.primaryGrey, width: 4),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GlobalSkeleton.text(width: double.infinity, height: 14),
+                SizedBox(height: 6),
+                GlobalSkeleton.text(width: double.infinity, height: 14),
+                SizedBox(height: 6),
+                GlobalSkeleton.text(width: context.widthPct(0.5), height: 14),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFileDesainCard(BuildContext context) {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: context.widthPct(0.05)),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GlobalSkeleton.text(
+                width: context.widthPct(0.4),
+                height: context.widthPct(0.045).clamp(16.0, 20.0),
+              ),
+              GlobalSkeleton.text(
+                width: 80,
+                height: 14,
+              ),
+            ],
+          ),
+          SizedBox(height: context.heightPct(0.015)),
+          ...List.generate(
+            2,
+            (index) => Padding(
+              padding: const EdgeInsets.only(bottom: 8.0),
+              child: Container(
+                padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: AppColors.surface,
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: AppColors.border),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: BoxDecoration(
+                        color: AppColors.primaryUltraLightGrey,
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Icon(
+                        LucideIcons.fileText,
+                        color: AppColors.textSecondary.withValues(alpha: 0.5),
+                        size: 24,
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          GlobalSkeleton.text(width: 140, height: 14),
+                          const SizedBox(height: 4),
+                          GlobalSkeleton.text(width: 60, height: 10),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      LucideIcons.download,
+                      color: AppColors.textSecondary.withValues(alpha: 0.5),
+                      size: 20,
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildInsightPenawaranCard(BuildContext context) {
+    return GlobalCard(
+      margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.05)),
+      width: double.infinity,
+      backgroundColor: AppColors.surface,
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              GlobalSkeleton.text(
+                width: context.widthPct(0.42),
+                height: context.widthPct(0.045).clamp(16.0, 20.0),
+              ),
+              Container(
+                width: 48,
+                height: 20,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryLightGrey,
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+            ],
+          ),
+          SizedBox(height: context.heightPct(0.02)),
+          Row(
+            children: List.generate(
+              3,
+              (index) => Expanded(
+                child: Container(
+                  margin: EdgeInsets.only(
+                    left: index == 0 ? 0 : 4,
+                    right: index == 2 ? 0 : 4,
+                  ),
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  decoration: BoxDecoration(
+                    color: AppColors.surface,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    children: [
+                      GlobalSkeleton.text(width: 40, height: 18),
+                      const SizedBox(height: 6),
+                      GlobalSkeleton.text(width: 60, height: 10),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildClientCard(BuildContext context) {
+    final double avatarSize = context.widthPct(0.14).clamp(48.0, 64.0);
+
+    return GlobalCard(
+      margin: EdgeInsets.symmetric(horizontal: context.widthPct(0.05)),
+      width: double.infinity,
+      backgroundColor: AppColors.surface,
+      child: Row(
+        children: [
+          GlobalSkeleton.avatar(size: avatarSize),
+          SizedBox(width: context.widthPct(0.04)),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                GlobalSkeleton.text(width: 120, height: 16),
+                SizedBox(height: context.heightPct(0.008)),
+                GlobalSkeleton.text(width: 160, height: 12),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildBottomButton(BuildContext context) {
+    return Positioned(
+      left: 0,
+      right: 0,
+      bottom: 0,
+      child: Container(
+        padding: EdgeInsets.fromLTRB(
+          context.widthPct(0.04),
+          context.heightPct(0.015),
+          context.widthPct(0.04),
+          context.heightPct(0.034),
+        ),
+        decoration: BoxDecoration(
+          color: AppColors.background,
+          boxShadow: [
+            BoxShadow(
+              color: AppColors.shadowDark.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -4),
+            ),
+          ],
+        ),
+        child: GlobalSkeleton(
+          borderRadius: 24,
+          child: Container(
+            width: double.infinity,
+            height: context.heightPct(0.06).clamp(48.0, 56.0),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(24),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

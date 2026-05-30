@@ -9,6 +9,7 @@ import '../../../../core/theme/app_colors.dart';
 import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/utils/screen_size.dart';
 import '../../../../core/widgets/global_app_bar.dart';
+import '../../../../core/widgets/global_skeleton.dart';
 import '../../../../core/widgets/search_bar_widget.dart';
 
 import '../widgets/project_card.dart';
@@ -141,8 +142,83 @@ class _ContractorProjectRequestsViewState
     >(
       builder: (context, state) {
         if (state.isLoading) {
-          return const Center(
-            child: CircularProgressIndicator(color: AppColors.primary),
+          return ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            padding: EdgeInsets.fromLTRB(
+              listPadH,
+              listPadV,
+              listPadH,
+              listPadV * 3 + context.bottomPadding,
+            ),
+            itemCount: 3,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.only(
+                  bottom: context.heightPct(0.03).clamp(6.0, 12.0),
+                ),
+                child: GlobalSkeleton(
+                  borderRadius: 16.0,
+                  child: ProjectCard(
+                    imageUrl: '',
+                    onTap: null,
+                    infoItems: const [
+                      AppCardInfo(
+                        label: 'Rentang Harga',
+                        value: 'Rp 00.000.000 - Rp 00.000.000',
+                      ),
+                      AppCardInfo(label: 'Luas Bangunan', value: '000 m²'),
+                    ],
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Row(
+                          children: [
+                            _buildTag(context, 'Kategori'),
+                            SizedBox(
+                              width: context.widthPct(0.015).clamp(6.0, 10.0),
+                            ),
+                            Icon(
+                              LucideIcons.mapPin,
+                              size: locIconSize,
+                              color: AppColors.primaryDark,
+                            ),
+                            const SizedBox(width: 4),
+                            Expanded(
+                              child: Text(
+                                'Nama Lokasi Kota',
+                                style: AppTextStyles.bodySmall.copyWith(
+                                  color: AppColors.primaryDark,
+                                  fontWeight: FontWeight.w600,
+                                  fontSize: locTextSize,
+                                ),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: context.heightPct(0.01).clamp(8.0, 12.0),
+                        ),
+                        Text(
+                          'Judul Proyek Skeleton Loading Panjang Dan Dinamis',
+                          style: AppTextStyles.heading3.copyWith(
+                            fontSize: titleSize,
+                            fontWeight: FontWeight.w700,
+                            color: AppColors.textPrimary,
+                          ),
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        SizedBox(
+                          height: context.heightPct(0.015).clamp(12.0, 16.0),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              );
+            },
           );
         }
 
