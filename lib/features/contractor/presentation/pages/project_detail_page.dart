@@ -12,6 +12,8 @@ import '../../../../core/widgets/main_button.dart';
 import '../../../../core/widgets/file_row.dart';
 import '../../../../core/widgets/global_card.dart';
 import '../../domain/entities/contractor_project_detail_entity.dart';
+import '../../domain/entities/contractor_project_list_entity.dart';
+import '../../domain/entities/contractor_project_request_entity.dart';
 import '../bloc/contractor_project_detail_bloc.dart';
 import '../bloc/contractor_project_detail_event.dart';
 import '../bloc/contractor_project_detail_state.dart';
@@ -662,7 +664,7 @@ class _ProjectDetailContent extends StatelessWidget {
         child: SizedBox(
           width: double.infinity,
           child: MainButton(
-            text: isFromRequest ? 'Kirim Penawaran' : 'Buat Milestone',
+            text: isFromRequest ? 'Kirim Penawaran' : 'Lihat Milestone',
             borderRadius: 24,
             fontSize: btnFontSize,
             padding: EdgeInsets.symmetric(vertical: btnVertPad),
@@ -670,14 +672,19 @@ class _ProjectDetailContent extends StatelessWidget {
               if (isFromRequest) {
                 context.pushNamed('contractor-proyek-offer');
               } else {
-                final double totalNilai =
-                    double.tryParse(
-                      project.priceMin.replaceAll(RegExp(r'[^0-9]'), ''),
-                    ) ??
-                    150000000.0;
+                final projectListEntity = ContractorProjectListEntity(
+                  id: project.id,
+                  name: project.title,
+                  location: project.city,
+                  startDate: DateTime.tryParse(project.startDate) ?? DateTime.now(),
+                  clientName: project.client.name,
+                  status: project.status == ProjectRequestStatus.ongoing
+                      ? ProjectStatus.berjalan
+                      : ProjectStatus.selesai,
+                );
                 context.pushNamed(
-                  'contractor-milestone-form',
-                  extra: totalNilai,
+                  'milestone-contractor',
+                  extra: projectListEntity,
                 );
               }
             },
