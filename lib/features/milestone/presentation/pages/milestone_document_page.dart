@@ -5,6 +5,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../core/widgets/global_app_bar.dart';
 import '../../../../core/widgets/icon_widget.dart';
 import '../../../../core/widgets/global_card.dart';
+import '../../../../core/widgets/global_skeleton.dart';
 import '../../data/datasources/milestone_document_local_data_source.dart';
 
 class MilestoneDocumentPage extends StatefulWidget {
@@ -64,10 +65,34 @@ class _MilestoneDocumentPageState extends State<MilestoneDocumentPage> {
         backgroundColor: AppColors.surface,
       ),
       body: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: AppColors.primary,
-              ),
+          ? Column(
+              children: [
+                Container(
+                  color: AppColors.surface,
+                  padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                  child: GlobalSkeleton(
+                    child: Container(
+                      height: 48,
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: ListView.builder(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: GlobalSkeleton.card(height: 90),
+                      );
+                    },
+                  ),
+                ),
+              ],
             )
           : Column(
               children: [

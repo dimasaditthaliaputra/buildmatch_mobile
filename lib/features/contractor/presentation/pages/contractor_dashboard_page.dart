@@ -13,6 +13,7 @@ import '../widgets/active_project_section.dart';
 import '../widgets/project_listing_section.dart';
 import '../widgets/chart_widgets.dart';
 import '../../../../core/widgets/dashboard_background_global_widget.dart';
+import '../../../../core/widgets/global_skeleton.dart';
 
 class ContractorDashboardProvider extends StatelessWidget {
   const ContractorDashboardProvider({super.key});
@@ -76,15 +77,71 @@ class _ContractorDashboardPageState extends State<ContractorDashboardPage> {
   }
 
   Widget _buildLoadingState() {
-    return Column(
-      children: [
-        _buildOrangeHeader(),
-        Expanded(
-          child: Center(
-            child: CircularProgressIndicator(color: AppColors.primary, strokeWidth: 2.5),
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      child: Stack(
+        children: [
+          const DashboardBackgroundGlobalWidget(),
+          SafeArea(
+            child: GlobalSkeleton(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 8.0, left: 16, right: 16),
+                    child: Row(
+                      children: [
+                        Container(width: 50, height: 50, decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle)),
+                        const SizedBox(width: 16),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Container(width: 140, height: 16, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4))),
+                            const SizedBox(height: 8),
+                            Container(width: 80, height: 12, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4))),
+                          ],
+                        ),
+                        const Spacer(),
+                        Container(width: 40, height: 40, decoration: const BoxDecoration(color: Colors.white, shape: BoxShape.circle)),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Container(height: 100, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12))),
+                  ),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Container(width: 120, height: 20, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4))),
+                  ),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Container(height: 140, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12))),
+                  ),
+                  const SizedBox(height: 24),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Container(width: 120, height: 20, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4))),
+                  ),
+                  const SizedBox(height: 12),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      children: List.generate(3, (index) => Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Container(height: 120, decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(12))),
+                      )),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

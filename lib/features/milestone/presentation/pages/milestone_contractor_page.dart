@@ -16,6 +16,7 @@ import '../../../contractor/domain/entities/contractor_project_list_entity.dart'
 import '../widgets/milestone_document_widget.dart';
 import '../widgets/milestone_header_widget.dart';
 import '../widgets/milestone_timeline_item_widget.dart';
+import '../../../../core/widgets/global_skeleton.dart';
 
 class MilestoneContractorProvider extends StatelessWidget {
   final ContractorProjectListEntity? project;
@@ -56,7 +57,52 @@ class _MilestoneContractorPageState extends State<MilestoneContractorPage> {
         Widget? bottomNavWidget;
 
         if (state is MilestoneContractorLoading) {
-          bodyWidget = const Center(child: CircularProgressIndicator());
+          bodyWidget = SingleChildScrollView(
+            child: Column(
+              children: [
+                GlobalSkeleton(
+                  child: Container(
+                    height: 250,
+                    decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.only(
+                        bottomLeft: Radius.circular(32),
+                        bottomRight: Radius.circular(32),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GlobalSkeleton.text(width: 150, height: 24),
+                          GlobalSkeleton.text(width: 100, height: 16),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: 3,
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: const EdgeInsets.only(bottom: 16),
+                            child: GlobalSkeleton.card(height: 160),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
         } else if (state is MilestoneContractorError) {
           bodyWidget = Center(child: Text('Error: ${state.message}'));
         } else if (state is MilestoneContractorLoaded) {

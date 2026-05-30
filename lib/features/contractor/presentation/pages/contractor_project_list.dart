@@ -14,6 +14,7 @@ import '../widgets/project_contractor_card.dart';
 
 import '../../../../../core/widgets/global_app_bar.dart';
 import '../../../../../core/widgets/error_state_view.dart';
+import '../../../../../core/widgets/global_skeleton.dart';
 
 class ProjectContractorListPageWrapper extends StatelessWidget {
   const ProjectContractorListPageWrapper({super.key});
@@ -74,10 +75,30 @@ class _ProjectContractorListPageState extends State<ProjectContractorListPage> {
               builder: (context, state) {
                 if (state is ProjectContractorListLoading ||
                     state is ProjectContractorListInitial) {
-                  return const Center(
-                    child: CircularProgressIndicator(
-                      color: AppColors.primary,
+                  final double padHorizontal = context.widthPct(0.04).clamp(16.0, 24.0);
+                  final double padVertical = context.heightPct(0.015).clamp(12.0, 20.0);
+                  return ListView.builder(
+                    padding: EdgeInsets.fromLTRB(
+                      padHorizontal, 
+                      padVertical, 
+                      padHorizontal, 
+                      padVertical + MediaQuery.of(context).padding.bottom,
                     ),
+                    itemCount: 5,
+                    itemBuilder: (context, index) {
+                      return Padding(
+                        padding: EdgeInsets.only(bottom: padVertical),
+                        child: GlobalSkeleton(
+                          child: Container(
+                            height: 140,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
                   );
                 }
 
