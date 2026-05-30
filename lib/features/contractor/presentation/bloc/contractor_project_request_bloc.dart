@@ -9,8 +9,9 @@ class ContractorProjectRequestBloc extends Bloc<ContractorProjectRequestEvent, C
   final GetContractorProjectRequests getContractorProjectRequests;
 
   ContractorProjectRequestBloc(this.getContractorProjectRequests) : super(const ContractorProjectRequestState()) {
-    on<LoadContractorProjectRequests>((event, emit) {
+    on<LoadContractorProjectRequests>((event, emit) async {
       emit(state.copyWith(isLoading: true));
+      await Future.delayed(const Duration(milliseconds: 1500));
       final requests = getContractorProjectRequests.execute();
       final filtered = requests
           .where((r) => r.status == ProjectRequestStatus.offering)

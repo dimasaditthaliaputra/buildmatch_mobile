@@ -8,6 +8,7 @@ import '../../../../../core/theme/app_colors.dart';
 import '../../../../../core/theme/app_text_styles.dart';
 import '../../../../../core/utils/screen_size.dart';
 import '../../../../../core/widgets/global_app_bar.dart';
+import '../../../../../core/widgets/global_skeleton.dart';
 import '../../../../../core/widgets/global_text_field.dart';
 import '../../../../../core/widgets/main_button.dart';
 import '../bloc/rating_client_bloc.dart';
@@ -86,7 +87,9 @@ class _RatingClientViewState extends State<_RatingClientView> {
     final double avatarRadius = context.widthPct(0.07).clamp(24.0, 32.0);
     final double nameSize = context.widthPct(0.045).clamp(15.0, 18.0);
 
-    return Column(
+    final bool isLoading = state.status == RatingClientStatus.loading;
+
+    final Widget bodyContent = Column(
       children: [
         Expanded(
           child: SingleChildScrollView(
@@ -178,28 +181,32 @@ class _RatingClientViewState extends State<_RatingClientView> {
             padding: EdgeInsets.fromLTRB(padH, 16.0, padH, padV),
             child: SizedBox(
               width: double.infinity,
-              child: state.status == RatingClientStatus.loading
-                  ? const Center(
-                      child: CircularProgressIndicator(
-                        color: AppColors.primary,
-                      ),
-                    )
-                  : MainButton(
-                      text: 'Kirim Rating',
-                      icon: LucideIcons.send,
-                      borderRadius: 24,
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                      onPressed: () {
-                        context.read<RatingClientBloc>().add(
-                          SubmitRatingClientRequested(),
-                        );
-                      },
-                    ),
+              child: MainButton(
+                text: 'Kirim Rating',
+                icon: LucideIcons.send,
+                borderRadius: 24,
+                padding: const EdgeInsets.symmetric(vertical: 16),
+                onPressed: () {
+                  context.read<RatingClientBloc>().add(
+                    SubmitRatingClientRequested(),
+                  );
+                },
+              ),
             ),
           ),
         ),
       ],
     );
+
+    if (isLoading) {
+      return AbsorbPointer(
+        child: GlobalSkeleton(
+          child: bodyContent,
+        ),
+      );
+    }
+
+    return bodyContent;
   }
 
   void _blocListener(BuildContext context, RatingClientState state) {

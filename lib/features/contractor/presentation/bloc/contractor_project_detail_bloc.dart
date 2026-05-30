@@ -8,8 +8,9 @@ class ContractorProjectDetailBloc extends Bloc<ContractorProjectDetailEvent, Con
   final GetContractorProjectDetail getProjectDetail;
 
   ContractorProjectDetailBloc(this.getProjectDetail) : super(const ContractorProjectDetailState()) {
-    on<LoadContractorProjectDetail>((event, emit) {
+    on<LoadContractorProjectDetail>((event, emit) async {
       emit(state.copyWith(isLoading: true));
+      await Future.delayed(const Duration(milliseconds: 1000));
       try {
         final project = getProjectDetail.execute(event.projectId);
         emit(state.copyWith(isLoading: false, project: project));

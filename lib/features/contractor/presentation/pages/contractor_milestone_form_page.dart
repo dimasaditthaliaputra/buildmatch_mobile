@@ -5,6 +5,7 @@ import '../../../../core/theme/app_text_styles.dart';
 import '../../../../config/injection_container.dart';
 import '../../../../core/widgets/filter_bar_widget.dart';
 import '../../../../core/widgets/global_app_bar.dart';
+import '../../../../core/widgets/global_skeleton.dart';
 import '../../../../core/widgets/main_button.dart';
 import '../../../../core/utils/idr_formatter.dart';
 import '../../domain/entities/contractor_milestone_entity.dart';
@@ -84,10 +85,8 @@ class _ContractorMilestoneFormView extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context, ContractorMilestoneState state) {
-    if (state is ContractorMilestoneLoading) {
-      return const Center(
-        child: CircularProgressIndicator(color: AppColors.primary),
-      );
+    if (state is ContractorMilestoneLoading || state is ContractorMilestoneInitial) {
+      return const _ContractorMilestoneFormSkeleton();
     }
     if (state is ContractorMilestoneLoaded) {
       return _ContractorMilestoneContent(state: state);
@@ -299,6 +298,98 @@ class _PublikasiButton extends StatelessWidget {
               : AppColors.primaryLightGrey,
           padding: const EdgeInsets.symmetric(vertical: 16),
         ),
+      ),
+    );
+  }
+}
+
+class _ContractorMilestoneFormSkeleton extends StatelessWidget {
+  const _ContractorMilestoneFormSkeleton();
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      physics: const NeverScrollableScrollPhysics(),
+      padding: const EdgeInsets.fromLTRB(16, 16, 16, 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Filter Bar Skeleton
+          const GlobalSkeleton(
+            width: double.infinity,
+            height: 48,
+            borderRadius: 8,
+          ),
+          const SizedBox(height: 16),
+
+          // Total Alokasi Widget Skeleton
+          const GlobalSkeleton(
+            width: double.infinity,
+            height: 72,
+            borderRadius: 8,
+          ),
+          const SizedBox(height: 12),
+
+          // Sisa Dana Keseluruhan Skeleton
+          const GlobalSkeleton(
+            width: double.infinity,
+            height: 56,
+            borderRadius: 8,
+          ),
+          const SizedBox(height: 16),
+
+          // Cards List Skeleton
+          ...List.generate(
+            3,
+            (index) => Container(
+              margin: const EdgeInsets.only(bottom: 12),
+              padding: const EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: AppColors.primaryLightGrey),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GlobalSkeleton.text(width: 140, height: 18),
+                  const SizedBox(height: 16),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      const GlobalSkeleton(
+                        width: 50,
+                        height: 44,
+                        borderRadius: 10,
+                      ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GlobalSkeleton.text(width: 100, height: 10),
+                            const SizedBox(height: 6),
+                            GlobalSkeleton.text(width: 160, height: 14),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 16),
+                  Row(
+                    children: [
+                      GlobalSkeleton.avatar(size: 16),
+                      const SizedBox(width: 8),
+                      GlobalSkeleton.text(width: 60, height: 12),
+                      const Spacer(),
+                      GlobalSkeleton.text(width: 80, height: 12),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
