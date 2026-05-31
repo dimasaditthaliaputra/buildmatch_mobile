@@ -207,17 +207,17 @@ class _RoomChatBodyState extends State<_RoomChatBody> {
               children: [
                 _attachmentOption(
                     Icons.camera_alt_rounded, 'Kamera', AppColors.primary, () {
-                  Navigator.pop(context);
+                  context.pop();
                   _pickFromCamera(context);
                 }),
                 _attachmentOption(
                     Icons.image_rounded, 'Galeri Media', AppColors.primaryBlue, () {
-                  Navigator.pop(context);
+                  context.pop();
                   _pickMediaFromStorage(context);
                 }),
                 _attachmentOption(
                     Icons.insert_drive_file_rounded, 'Dokumen', AppColors.primaryGreen, () {
-                  Navigator.pop(context);
+                  context.pop();
                   _pickDocumentFromStorage(context);
                 }),
               ],

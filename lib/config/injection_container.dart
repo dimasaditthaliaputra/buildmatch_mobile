@@ -189,6 +189,13 @@ import '../features/rating/domain/usecases/get_rating_stats_usecase.dart';
 import '../features/rating/domain/usecases/get_reviews_usecase.dart';
 import '../features/rating/presentation/bloc/rating_bloc.dart';
 
+// Reference CRUD Feature
+import '../features/reference_crud/data/datasources/category_remote_data_source.dart';
+import '../features/reference_crud/data/repositories/category_repository_impl.dart';
+import '../features/reference_crud/domain/repositories/category_repository.dart';
+import '../features/reference_crud/domain/usecases/category_usecases.dart';
+import '../features/reference_crud/presentation/bloc/category_bloc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> init() async {
@@ -261,6 +268,7 @@ Future<void> init() async {
   initInbox();
   initSetting();
   initRating();
+  initReferenceCrud();
 }
 
 void initContractorDashboard() {
@@ -617,5 +625,31 @@ void initRating() {
   );
   sl.registerLazySingleton<RatingLocalDataSource>(
     () => RatingLocalDataSourceImpl(),
+  );
+}
+
+void initReferenceCrud() {
+  sl.registerFactory(
+    () => CategoryBloc(
+      getCategoriesUseCase: sl(),
+      getCategoryDetailUseCase: sl(),
+      createCategoryUseCase: sl(),
+      updateCategoryUseCase: sl(),
+      deleteCategoryUseCase: sl(),
+    ),
+  );
+
+  sl.registerLazySingleton(() => GetCategoriesUseCase(sl()));
+  sl.registerLazySingleton(() => GetCategoryDetailUseCase(sl()));
+  sl.registerLazySingleton(() => CreateCategoryUseCase(sl()));
+  sl.registerLazySingleton(() => UpdateCategoryUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteCategoryUseCase(sl()));
+
+  sl.registerLazySingleton<CategoryRepository>(
+    () => CategoryRepositoryImpl(remoteDataSource: sl()),
+  );
+  
+  sl.registerLazySingleton<CategoryRemoteDataSource>(
+    () => CategoryRemoteDataSourceImpl(),
   );
 }
