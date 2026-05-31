@@ -60,11 +60,17 @@ import '../../features/setting/presentation/pages/setting_profile_page.dart';
 // Features - Rating
 import '../../features/rating/presentation/pages/list_rating_page.dart';
 
+// Features - Reference CRUD
+import '../../features/reference_crud/presentation/pages/category_list_page.dart';
+import '../../features/reference_crud/presentation/pages/category_detail_page.dart';
+import '../../features/reference_crud/presentation/pages/category_form_page.dart';
+import '../../features/reference_crud/domain/entities/category_entity.dart';
+
 class AppRouter {
   AppRouter._();
 
   static final GoRouter router = GoRouter(
-    initialLocation: '/splash',
+    initialLocation: '/reference-crud',
     routes: [
       // 1. COMMON / GLOBAL ROUTES
       GoRoute(
@@ -316,6 +322,30 @@ class AppRouter {
         path: '/ulasan-rating',
         name: 'ulasan-rating',
         builder: (context, state) => const ListRatingPageProvider(),
+      ),
+
+
+      // Contoh CRUD
+      GoRoute(
+        path: '/reference-crud',
+        name: 'reference-crud',
+        builder: (context, state) => const CategoryListPageProvider(),
+      ),
+      GoRoute(
+        path: '/reference-crud/detail/:id',
+        name: 'reference-crud-detail',
+        builder: (context, state) {
+          final id = state.pathParameters['id'] ?? '';
+          return CategoryDetailPageProvider(categoryId: id);
+        },
+      ),
+      GoRoute(
+        path: '/reference-crud/form',
+        name: 'reference-crud-form',
+        builder: (context, state) {
+          final category = state.extra as CategoryEntity?;
+          return CategoryFormPageProvider(category: category);
+        },
       ),
     ],
   );
